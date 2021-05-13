@@ -36,6 +36,10 @@ p{
   color: ${theme.colors.secondary};
   font-weight: 500;
 }
+
+h1{
+  color: ${theme.colors.title}
+}
 `;
 
 const App = ({ Component, pageProps }) => {

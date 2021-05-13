@@ -2,10 +2,11 @@ import styled from 'styled-components';
 import Image from 'next/image';
 import Icons from './Icons';
 import { createFromIconfontCN } from '@ant-design/icons';
-import { useContext, useState } from 'react';
-import AuthContext from '../../context/AuthContext';
+import { useState } from 'react';
 import Router from 'next/router';
 import Modal from '../UI/Modal';
+import useAuth from '../../context/AuthContext';
+import Spinner from '../UI/Spinner';
 
 const Icon = createFromIconfontCN({
   scriptUrl: [
@@ -14,17 +15,30 @@ const Icon = createFromIconfontCN({
 });
 
 const Navigation = () => {
-  const [auth, setAuth] = useContext(AuthContext);
+  const { logout } = useAuth();
   const [modalActive, setModalActive] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const logoutHandler = () => {
-    setAuth(false);
-    Router.push('/auth');
+    setLoading(true);
+    logout()
+      .then(res => {
+        console.log(res);
+        Router.push('/auth');
+      })
+      .catch(error => alert(error.message));
   };
+
+  if (loading) return <Spinner />;
 
   return (
     <StyledNavigation>
-      <Image src="/avatar.jpg" height={50} width={50} className="avatar" />
+      <Image
+        src="/navigationLogo.png"
+        height={70}
+        width={50}
+        className="logo"
+      />
       <Icons />
       <Icon
         type="icon-logout"
@@ -37,7 +51,7 @@ const Navigation = () => {
         }}
       />
       <Modal active={modalActive} closeModal={() => setModalActive(false)}>
-        <h1>Hi</h1>
+        <button onClick={logoutHandler}>Logout</button>
       </Modal>
     </StyledNavigation>
   );
@@ -51,12 +65,10 @@ const StyledNavigation = styled.div`
   background-color: ${({ theme }) => theme.colors.primary};
   padding: 0 30px;
 
-  .avatar {
-    justify-content: flex-start;
-    border-radius: 50%;
+  .logo {
     cursor: pointer;
     margin-bottom: 50px !important;
-    height: 50px !important;
+    height: 70px !important;
     width: 50px !important;
     min-height: 0 !important;
     position: static !important;

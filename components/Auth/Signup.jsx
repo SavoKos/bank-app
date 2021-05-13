@@ -1,7 +1,9 @@
 import React, { useContext, useState } from 'react';
 import axios from '../../axios-instance';
-import AuthContext from '../../context/AuthContext';
+import useAuth from '../../context/AuthContext';
 import Router from 'next/router';
+import Image from 'next/image';
+import Spinner from '../UI/Spinner';
 
 const Signup = props => {
   const [credentials, setCredentials] = useState({
@@ -11,8 +13,9 @@ const Signup = props => {
   });
   const [inputError, setInputError] = useState([]);
   const [databaseError, setDatabaseError] = useState(undefined);
+  const [loading, setLoading] = useState(false);
 
-  const [auth, setAuth] = useContext(AuthContext);
+  const { signup } = useAuth();
 
   const updateInputValueHandler = event => {
     setCredentials(prevState => ({
@@ -22,30 +25,21 @@ const Signup = props => {
   };
 
   const signupUser = () => {
-    const data = {
-      password: credentials.password,
-      email: credentials.email,
-      returnSecureToken: true,
-      displayName: credentials.name,
-    };
-
-    axios
-      .post(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCqXIuIWW_Yxys8Ed28Y1dfdsF9pmJLDMY',
-        data
-      )
-      .then(response => {
-        console.log(response);
-        setAuth({ ...data, ...response.data });
+    setLoading(true);
+    signup(credentials.email, credentials.password)
+      .then(user => {
         Router.push('/');
       })
-      .catch(error =>
-        setDatabaseError('Account already exists. Try with another email.')
-      );
+      .catch(error => {
+        console.log(error);
+        setDatabaseError(error.message);
+        setLoading(false);
+      });
   };
 
-  const checkErrors = () => {
-    const isError = props.trySignup(credentials);
+  const checkErrors = e => {
+    e.preventDefault();
+    const isError = props.validateInput(credentials);
     if (isError.length === 0) return signupUser();
     return setInputError(isError);
   };
@@ -60,6 +54,8 @@ const Signup = props => {
 
   if (databaseError) error = <p>{databaseError}</p>;
 
+  if (loading) return <Spinner />;
+
   return (
     <>
       <div className="login-box-formbox">
@@ -68,12 +64,12 @@ const Signup = props => {
           <a onClick={props.toggleSignupActive}> Log in</a>
         </div>
         <div className="login-box-login">
-          <h1>Welcome to quikCash</h1>
+          <h1>Welcome to Excellence Holdings</h1>
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta,
             laudantium dolorem?
           </p>
-          <form action="#">
+          <form onSubmit={checkErrors}>
             <div>
               <label htmlFor="name"> Name</label>
               <input
@@ -103,24 +99,15 @@ const Signup = props => {
             </div>
             {error}
             <div>
-              <input
-                type="button"
-                value="Sign up"
-                className="btn"
-                onClick={checkErrors}
-              />
+              <button className="btn">Sign Up</button>
             </div>
           </form>
         </div>
       </div>
       <div className="login-box-quotebox">
-        <div className="quote-container">
-          <div className="quote">Make a Dream.</div>
-          <div className="quote-small">
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem
-            repellendus cumque voluptatum animi, illum veniam?"
-          </div>
-        </div>
+        <Image src="/loginLogo.png" height={193} width={150} className="logo" />
+        <h1>Excellence Holdings</h1>
+        <h1 className="quote">Make it happen.</h1>
       </div>
     </>
   );

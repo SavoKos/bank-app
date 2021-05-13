@@ -5,17 +5,17 @@ import { useContext } from 'react';
 import AuthContext from '../../context/AuthContext';
 
 const Header = () => {
-  const [auth, setAuth] = useContext(AuthContext);
+  // const [auth, setAuth] = useContext(AuthContext);
   return (
     <StyledHeader>
       <StyledLeft>
         <h1>Overview</h1>
-        <p>Hi {auth.displayName}, Welcome back.</p>
+        <p>Hi Savo, Welcome back.</p>
       </StyledLeft>
       <StyledRight>
         <SearchOutlined />
         <StyledUserPicture>
-          <h2>{auth.displayName.slice(0, 1)}</h2>
+          <h2>S</h2>
         </StyledUserPicture>
       </StyledRight>
     </StyledHeader>
@@ -52,7 +52,7 @@ const StyledUserPicture = styled.div`
   height: 50px;
   width: 50px;
   border-radius: 50%;
-  background-color: #2028eb;
+  background-color: ${({ theme }) => theme.colors.secondary};
   display: flex;
   justify-content: center;
   align-items: center;

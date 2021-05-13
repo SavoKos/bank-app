@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: 'https://quikcash-bank-default-rtdb.firebaseio.com',
+  baseURL: 'https://excellence-holdings-default-rtdb.firebaseio.com/',
 });
 
 export default instance;

@@ -17,12 +17,12 @@ const Transactions = () => {
       </StyledHeader>
       <form>
         <StyledRadio>
-          <input type="radio" id="option-one" name="selector" defaultChecked />
-          <label htmlFor="option-one">One</label>
-          <input type="radio" id="option-two" name="selector" />
-          <label htmlFor="option-two">Two</label>
-          <input type="radio" id="option-three" name="selector" />
-          <label htmlFor="option-three">Three</label>
+          <input type="radio" id="all" name="transactions" defaultChecked />
+          <label htmlFor="all">All</label>
+          <input type="radio" id="income" name="transactions" />
+          <label htmlFor="income">Income</label>
+          <input type="radio" id="outcome" name="transactions" />
+          <label htmlFor="outcome">Outcome</label>
         </StyledRadio>
       </form>
       <StyledTransactionList></StyledTransactionList>

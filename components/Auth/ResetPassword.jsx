@@ -3,29 +3,22 @@ import Router from 'next/router';
 import Image from 'next/image';
 import useAuth from '../../context/AuthContext';
 import Spinner from '../UI/Spinner';
+import styled from 'styled-components';
 
-const Login = props => {
-  const [credentials, setCredentials] = useState({
-    password: '',
-    email: '',
-  });
+const ResetPassword = props => {
+  const [email, setEmail] = useState('');
   const [inputError, setInputError] = useState([]);
   const [databaseError, setDatabaseError] = useState(undefined);
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const [message, setMessage] = useState(null);
+  const { resetPassword } = useAuth();
 
-  const updateInputValueHandler = event => {
-    setCredentials(prevState => ({
-      ...prevState,
-      [event.target.name]: event.target.value,
-    }));
-  };
-
-  const loginUser = () => {
+  const resetPasswordHandler = () => {
     setLoading(true);
-    login(credentials.email, credentials.password)
+    resetPassword(email)
       .then(user => {
-        Router.push('/');
+        setMessage('Check your email inbox for further instructions');
+        setLoading(false);
       })
       .catch(error => {
         console.log(error);
@@ -36,8 +29,8 @@ const Login = props => {
 
   const checkErrors = e => {
     e.preventDefault();
-    const isError = props.validateInput(credentials);
-    if (isError.length === 0) return loginUser();
+    const isError = props.validateEmail({ email: email });
+    if (isError.length === 0) return resetPasswordHandler();
     return setInputError(isError);
   };
 
@@ -50,8 +43,15 @@ const Login = props => {
     ));
 
   if (databaseError) error = <p>{databaseError}</p>;
-
   if (loading) return <Spinner />;
+
+  if (message)
+    return (
+      <StyledReset>
+        <h1>{message}</h1>
+        <button onClick={props.backToLogin}>Back to Login</button>
+      </StyledReset>
+    );
 
   return (
     <>
@@ -61,7 +61,7 @@ const Login = props => {
           <a onClick={props.toggleSignupActive}> Sign Up</a>
         </div>
         <div className="login-box-login">
-          <h1>Welcome back to Excellence Holdings</h1>
+          <h1>Reset your password at Excellence Holdings</h1>
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta,
             laudantium dolorem?
@@ -73,24 +73,12 @@ const Login = props => {
                 type="email"
                 name="email"
                 className="input-email"
-                onChange={event => updateInputValueHandler(event)}
-              />
-            </div>
-            <div>
-              <label htmlFor="password"> Password</label>
-              <input
-                type="password"
-                name="password"
-                className="input-password"
-                onChange={event => updateInputValueHandler(event)}
+                onChange={event => setEmail(event.target.value)}
               />
             </div>
             {error}
             <div>
-              <button className="btn">Login</button>
-              <a className="forgot-password" onClick={props.resetPassword}>
-                Forgot Password?
-              </a>
+              <button className="btn">Reset Password</button>
             </div>
           </form>
         </div>
@@ -104,4 +92,36 @@ const Login = props => {
   );
 };
 
-export default Login;
+// -------------------------------------------------- styling ----------------------------------------------
+const StyledReset = styled.div`
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  button {
+    background-color: #2028eb;
+    border-color: #2028eb;
+    outline: 0;
+    border: 0;
+    color: #fff;
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 5px;
+    margin-top: 40px;
+    width: fit-content;
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
+      background-color: #0f1396;
+      border-color: #0f1396;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+  }
+`;
+
+export default ResetPassword;

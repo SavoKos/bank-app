@@ -1,20 +1,22 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import Dashboard from '../components/Dashboard/Dashboard';
 import Navigation from '../components/Navigation/Navigation';
-import AuthContext from '../context/AuthContext';
+import useAuth from '../context/AuthContext';
 import Router from 'next/router';
 import Spinner from '../components/UI/Spinner';
 
 export default function Home() {
-  const [auth, setAuth] = useContext(AuthContext);
-  console.log(auth);
+  const { currentUser } = useAuth();
+  console.log('fetching user');
+  console.log(currentUser);
 
   useEffect(() => {
-    if (!auth) Router.push('/auth');
+    console.log('redirect');
+    if (!currentUser) Router.push('/auth');
   }, []);
 
-  if (!auth) return <Spinner />;
+  if (!currentUser) return <Spinner />;
 
   return (
     <StyledContainer>

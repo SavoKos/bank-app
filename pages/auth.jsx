@@ -1,11 +1,23 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Login from '../components/Auth/Login';
 import Signup from '../components/Auth/Signup';
 import { validation } from '../components/Auth/validation';
+import Router from 'next/router';
+import Spinner from '../components/UI/Spinner';
+import useAuth from '../context/AuthContext';
+import ResetPassword from '../components/Auth/ResetPassword';
 
 const auth = () => {
   const [signupActive, setSignupActive] = useState(false);
+  const [forgotPassword, setForgotPassword] = useState(false);
+  const { currentUser } = useAuth();
+  console.log(currentUser);
+
+  useEffect(() => {
+    console.log('redirect to home');
+    if (currentUser) Router.push('/');
+  }, []);
 
   const authHandler = info => {
     const error = validation(info);
@@ -16,18 +28,37 @@ const auth = () => {
     setSignupActive(prevActive => !prevActive);
   };
 
+  const backToLoginHandler = () => {
+    setForgotPassword(false);
+    setSignupActive(false);
+  };
+
+  if (currentUser) return <Spinner />;
+  if (forgotPassword)
+    return (
+      <StyledContainer>
+        <StyledAuth>
+          <ResetPassword
+            backToLogin={backToLoginHandler}
+            validateEmail={info => authHandler(info)}
+          />
+        </StyledAuth>
+      </StyledContainer>
+    );
+
   return (
     <StyledContainer>
       <StyledAuth>
         {signupActive ? (
           <Signup
             toggleSignupActive={toggleSignupActiveHandler}
-            trySignup={info => authHandler(info)}
+            validateInput={info => authHandler(info)}
           />
         ) : (
           <Login
+            resetPassword={() => setForgotPassword(true)}
             toggleSignupActive={toggleSignupActiveHandler}
-            tryLogin={info => authHandler(info)}
+            validateInput={info => authHandler(info)}
           />
         )}
       </StyledAuth>
@@ -51,11 +82,31 @@ const StyledAuth = styled.div`
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.025);
 
+  a {
+    color: #2028eb;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+
+    &.forgot-password {
+      text-align: center;
+      margin-top: 20px;
+      display: block;
+    }
+
+    &:hover,
+    &:focus {
+      text-decoration: underline;
+      color: #0f1396;
+    }
+  }
+
   .login-box-formbox,
   .login-box-quotebox {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     flex: 1 1 100%;
     //   width: 100%;
     padding: 4em 6em;
@@ -83,19 +134,13 @@ const StyledAuth = styled.div`
     background-size: 125%;
     background-repeat: no-repeat;
     background-position: center left;
-  }
+    margin-top: -200px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
 
-  .login-box-signup {
-    a {
-      color: #a0a4e3;
-      font-weight: 600;
-      text-decoration: inherit;
-      cursor: pointer;
-
-      &:hover,
-      &:focus {
-        color: #0f1396;
-      }
+    h1 {
+      color: #fff;
     }
   }
 
@@ -240,30 +285,16 @@ const StyledAuth = styled.div`
     }
   }
 
-  .quote-container {
-    padding: 1em 0;
-    position: relative;
+  padding: 1em 0;
+  position: relative;
 
-    &::before {
-      content: '';
-      position: absolute;
-      top: -4.5em;
-      left: -0.65em;
-      width: 3.5em;
-      height: 3.5em;
-      background-color: #93f8e0;
-      border-radius: 100%;
-    }
-
-    &::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 15px;
-      height: 100%;
-      width: 2px;
-      background-color: rgba(#fff, 0.25);
-    }
+  .logo {
+    cursor: pointer;
+    margin-bottom: 50px !important;
+    height: 193px !important;
+    width: 150px !important;
+    min-height: 0 !important;
+    position: static !important;
   }
 
   .quote {
@@ -271,23 +302,8 @@ const StyledAuth = styled.div`
     font-size: 7em;
     font-weight: 600;
     line-height: 1;
-  }
-
-  .quote-small {
-    color: #ebeef7;
-    line-height: 180%;
-    padding: 2em 0 0 6em;
-    position: relative;
-
-    &::before {
-      content: '';
-      position: absolute;
-      top: 2.75em;
-      left: 1.2em;
-      width: 3em;
-      height: 2px;
-      background-color: rgba(#fff, 0.25);
-    }
+    justify-self: center;
+    margin-top: 70px;
   }
 `;
 
