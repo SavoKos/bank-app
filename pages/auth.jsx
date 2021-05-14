@@ -25,19 +25,19 @@ const auth = () => {
 
   if (forgotPassword)
     return (
-      <StyledContainer>
-        <StyledAuth>
+      <S.Container>
+        <S.Auth>
           <ResetPassword
             backToLogin={backToLoginHandler}
             validateEmail={info => authHandler(info)}
           />
-        </StyledAuth>
-      </StyledContainer>
+        </S.Auth>
+      </S.Container>
     );
 
   return (
-    <StyledContainer>
-      <StyledAuth>
+    <S.Container>
+      <S.Auth>
         {signupActive ? (
           <Signup
             toggleSignupActive={toggleSignupActiveHandler}
@@ -50,19 +50,21 @@ const auth = () => {
             validateInput={info => authHandler(info)}
           />
         )}
-      </StyledAuth>
-    </StyledContainer>
+      </S.Auth>
+    </S.Container>
   );
 };
 export default auth;
 
-const StyledContainer = styled.div`
+// -------------------------------------------------- styling ----------------------------------------------
+const S = {};
+S.Container = styled.div`
   display: flex;
   height: 100vh;
   justify-content: center;
 `;
 
-const StyledAuth = styled.div`
+S.Auth = styled.div`
   display: flex;
   width: 75em;
   height: 100%;

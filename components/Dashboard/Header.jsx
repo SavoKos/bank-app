@@ -7,30 +7,32 @@ const Header = () => {
   const { currentUser } = useAuth();
   console.log(currentUser);
   return (
-    <StyledHeader>
-      <StyledLeft>
+    <S.Header>
+      <S.Left>
         <h1>Overview</h1>
         <p>Hi Savo, Welcome back.</p>
-      </StyledLeft>
-      <StyledRight>
+      </S.Left>
+      <S.Right>
         <SearchOutlined />
         <StyledUserPicture>
           <h2>{currentUser.email.slice(0, 1).toUpperCase()}</h2>
         </StyledUserPicture>
-      </StyledRight>
-    </StyledHeader>
+      </S.Right>
+    </S.Header>
   );
 };
 
-const StyledHeader = styled.div`
+// -------------------------------------------------- styling ----------------------------------------------
+const S = {};
+S.Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 40px;
 `;
 
-const StyledLeft = styled.div``;
-const StyledRight = styled.div`
+S.Left = styled.div``;
+S.Right = styled.div`
   display: flex;
   align-items: center;
   .avatar {

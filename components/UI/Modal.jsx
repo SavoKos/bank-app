@@ -15,21 +15,23 @@ class Modal extends Component {
   render() {
     return (
       <>
-        <StyledModal className={this.props.active && 'active'}>
+        <S.Modal className={this.props.active && 'active'}>
           <Icon
             type="icon-close"
             className="close-modal"
             clicked={this.props.closeModal}
           />
           {this.props.children}
-        </StyledModal>
+        </S.Modal>
         <Overlay active={this.props.active} clicked={this.props.closeModal} />
       </>
     );
   }
 }
 
-const StyledModal = styled.div`
+// -------------------------------------------------- styling ----------------------------------------------
+const S = {};
+S.Modal = styled.div`
   position: fixed;
   top: 35%;
   left: 50%;

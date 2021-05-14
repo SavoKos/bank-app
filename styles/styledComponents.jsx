@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 
-const S = {};
-
-S.Container = styled.div`
+const Styled = {};
+Styled.Container = styled.div`
   width: 100%;
   height: 100vh;
   background-color: ${({ theme }) => theme.colors.primary};
@@ -11,7 +10,7 @@ S.Container = styled.div`
   overflow: hidden;
 `;
 
-S.BlueButton = styled.button`
+Styled.BlueButton = styled.button`
   background-color: #2028eb;
   border-color: #2028eb;
   outline: 0;
@@ -34,7 +33,7 @@ S.BlueButton = styled.button`
   }
 `;
 
-S.RedButton = styled(S.BlueButton)`
+Styled.RedButton = styled(Styled.BlueButton)`
   background-color: #ff1800;
 
   &:hover,
@@ -45,4 +44,4 @@ S.RedButton = styled(S.BlueButton)`
   }
 `;
 
-export default S;
+export default Styled;

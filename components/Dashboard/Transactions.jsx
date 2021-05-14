@@ -4,43 +4,45 @@ import Icon from '../UI/Icon';
 
 const Transactions = () => {
   return (
-    <StyledTransactions>
-      <StyledHeader>
+    <S.Transactions>
+      <S.Header>
         <h1>All Transactions</h1>
-        <StyledIcons>
+        <S.Icons>
           <SearchOutlined />
           <Icon type="icon-sort" style={{ fontsize: '18px' }} />
-        </StyledIcons>
-      </StyledHeader>
+        </S.Icons>
+      </S.Header>
       <form>
-        <StyledRadio>
+        <S.Radio>
           <input type="radio" id="all" name="transactions" defaultChecked />
           <label htmlFor="all">All</label>
           <input type="radio" id="income" name="transactions" />
           <label htmlFor="income">Income</label>
           <input type="radio" id="outcome" name="transactions" />
           <label htmlFor="outcome">Outcome</label>
-        </StyledRadio>
+        </S.Radio>
       </form>
-      <StyledTransactionList></StyledTransactionList>
-    </StyledTransactions>
+      <S.TransactionsList></S.TransactionsList>
+    </S.Transactions>
   );
 };
 
-const StyledTransactions = styled.div`
+// -------------------------------------------------- styling ----------------------------------------------
+const S = {};
+S.Transactions = styled.div`
   border-right: 1px solid #ddd;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
-const StyledHeader = styled.div`
+S.Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
 `;
-const StyledIcons = styled.div`
+S.Icons = styled.div`
   & > * {
     font-size: 20px;
     margin: 0 10px;
@@ -49,7 +51,7 @@ const StyledIcons = styled.div`
   }
 `;
 
-const StyledRadio = styled.div`
+S.Radio = styled.div`
   display: inline-block;
   background-color: ${({ theme }) => theme.colors.primary};
   padding: 3px;
@@ -80,7 +82,7 @@ const StyledRadio = styled.div`
   }
 `;
 
-const StyledTransactionList = styled.div`
+S.TransactionsList = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;

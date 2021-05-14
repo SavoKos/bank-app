@@ -2,16 +2,17 @@ import styled from 'styled-components';
 import Header from './Header';
 import Main from './Main';
 
+const S = {};
 const Dashboard = () => {
   return (
-    <StyledDashboard>
+    <S.Dashboard>
       <Header />
       <Main />
-    </StyledDashboard>
+    </S.Dashboard>
   );
 };
 
-const StyledDashboard = styled.div`
+S.Dashboard = styled.div`
   background-color: #fff;
   width: 100%;
   border-radius: 30px 0 0 30px;

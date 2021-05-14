@@ -3,13 +3,15 @@ import Transactions from './Transactions';
 
 const Main = () => {
   return (
-    <StyledMainContent>
+    <S.MainContent>
       <Transactions />
-    </StyledMainContent>
+    </S.MainContent>
   );
 };
 
-const StyledMainContent = styled.main`
+// -------------------------------------------------- styling ----------------------------------------------
+const S = {};
+S.MainContent = styled.main`
   display: flex;
   align-items: center;
 

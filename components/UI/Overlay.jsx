@@ -2,12 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Overlay = props => {
-  return (
-    props.active && <StyledOverlay onClick={props.clicked}></StyledOverlay>
-  );
+  return props.active && <S.Overlay onClick={props.clicked}></S.Overlay>;
 };
 
-const StyledOverlay = styled.div`
+// -------------------------------------------------- styling ----------------------------------------------
+const S = {};
+S.Overlay = styled.div`
   position: fixed;
   top: 0;
   left: 0;

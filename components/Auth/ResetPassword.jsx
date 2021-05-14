@@ -47,10 +47,10 @@ const ResetPassword = props => {
 
   if (message)
     return (
-      <StyledReset>
+      <S.Reset>
         <h1>{message}</h1>
-        <button onClick={props.backToLogin}>Back to Login</button>
-      </StyledReset>
+        <S.BlueButton onClick={props.backToLogin}>Back to Login</S.BlueButton>
+      </S.Reset>
     );
 
   return (
@@ -93,7 +93,7 @@ const ResetPassword = props => {
 };
 
 // -------------------------------------------------- styling ----------------------------------------------
-const StyledReset = styled.div`
+S.Reset = styled.div`
   align-items: center;
   justify-content: center;
   display: flex;

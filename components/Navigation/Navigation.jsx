@@ -29,7 +29,7 @@ const Navigation = () => {
 
   if (loading) return <Spinner />;
   return (
-    <StyledNavigation>
+    <S.Navigation>
       <Image
         src="/navigationLogo.png"
         height={70}
@@ -56,20 +56,21 @@ const Navigation = () => {
       />
       <Modal active={modalActive} closeModal={() => setModalActive(false)}>
         <h1 style={{ color: '#fff' }}>Are you sure you want to log out?</h1>
-        <ButtonsContainer>
+        <S.ButtonsContainer>
           <S.BlueButton onClick={logoutHandler} type="blue">
             Logout
           </S.BlueButton>
           <S.RedButton onClick={() => setModalActive(false)} type="red">
             Cancel
           </S.RedButton>
-        </ButtonsContainer>
+        </S.ButtonsContainer>
       </Modal>
-    </StyledNavigation>
+    </S.Navigation>
   );
 };
 
-const StyledNavigation = styled.div`
+// -------------------------------------------------- styling ----------------------------------------------
+S.Navigation = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -87,7 +88,7 @@ const StyledNavigation = styled.div`
   }
 `;
 
-const ButtonsContainer = styled.div`
+S.ButtonsContainer = styled.div`
   display: flex;
   justify-content: space-around;
 `;

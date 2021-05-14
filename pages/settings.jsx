@@ -1,13 +1,13 @@
 import styled from 'styled-components';
-import { StyledContainer } from '.';
 import Navigation from '../components/Navigation/Navigation';
 import withAuth from '../hoc/withAuth';
+import S from '../styles/styledComponents';
 
 const settings = () => {
   return (
-    <StyledContainer>
+    <S.Container>
       <Navigation />
-    </StyledContainer>
+    </S.Container>
   );
 };
 

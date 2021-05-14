@@ -1,10 +1,12 @@
 import styled from 'styled-components';
 
 const Spinner = () => {
-  return <StyledSpinner />;
+  return <S.Spinner />;
 };
 
-const StyledSpinner = styled.div`
+// -------------------------------------------------- styling ----------------------------------------------
+const S = {};
+S.Spinner = styled.div`
   @keyframes spinner {
     from {
       transform: rotate(0deg);

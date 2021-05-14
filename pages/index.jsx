@@ -11,17 +11,18 @@ function Home() {
   console.log(currentUser);
 
   return (
-    <StyledContainer>
+    <S.Container>
       <Navigation />
       <Dashboard />
-    </StyledContainer>
+    </S.Container>
   );
 }
 
 export default withAuth(Home);
 
 // -------------------------------------------------- styling ----------------------------------------------
-const StyledContainer = styled.div`
+const S = {};
+S.Container = styled.div`
   width: 100%;
   height: 100vh;
   background-color: ${({ theme }) => theme.colors.primary};
@@ -29,5 +30,3 @@ const StyledContainer = styled.div`
   display: flex;
   overflow: hidden;
 `;
-
-export { StyledContainer };
