@@ -1,9 +1,9 @@
-import React, { useContext, useState } from 'react';
-import axios from '../../axios-instance';
+import React, { useState } from 'react';
 import useAuth from '../../context/AuthContext';
 import Router from 'next/router';
 import Image from 'next/image';
 import Spinner from '../UI/Spinner';
+import S from '../../styles/styledComponents';
 
 const Signup = props => {
   const [credentials, setCredentials] = useState({
@@ -99,7 +99,9 @@ const Signup = props => {
             </div>
             {error}
             <div>
-              <button className="btn">Sign Up</button>
+              <S.BlueButton className="login-btn" onClick={checkErrors}>
+                Sign Up
+              </S.BlueButton>
             </div>
           </form>
         </div>

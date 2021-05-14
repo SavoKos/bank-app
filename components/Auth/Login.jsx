@@ -3,6 +3,7 @@ import Router from 'next/router';
 import Image from 'next/image';
 import useAuth from '../../context/AuthContext';
 import Spinner from '../UI/Spinner';
+import S from '../../styles/styledComponents';
 
 const Login = props => {
   const [credentials, setCredentials] = useState({
@@ -87,7 +88,9 @@ const Login = props => {
             </div>
             {error}
             <div>
-              <button className="btn">Login</button>
+              <S.BlueButton className="login-btn" onClick={checkErrors}>
+                Login
+              </S.BlueButton>
               <a className="forgot-password" onClick={props.resetPassword}>
                 Forgot Password?
               </a>

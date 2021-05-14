@@ -1,23 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import Login from '../components/Auth/Login';
 import Signup from '../components/Auth/Signup';
 import { validation } from '../components/Auth/validation';
-import Router from 'next/router';
-import Spinner from '../components/UI/Spinner';
-import useAuth from '../context/AuthContext';
 import ResetPassword from '../components/Auth/ResetPassword';
 
 const auth = () => {
   const [signupActive, setSignupActive] = useState(false);
   const [forgotPassword, setForgotPassword] = useState(false);
-  const { currentUser } = useAuth();
-  console.log(currentUser);
-
-  useEffect(() => {
-    console.log('redirect to home');
-    if (currentUser) Router.push('/');
-  }, []);
 
   const authHandler = info => {
     const error = validation(info);
@@ -33,7 +23,6 @@ const auth = () => {
     setSignupActive(false);
   };
 
-  if (currentUser) return <Spinner />;
   if (forgotPassword)
     return (
       <StyledContainer>
@@ -65,6 +54,7 @@ const auth = () => {
     </StyledContainer>
   );
 };
+export default auth;
 
 const StyledContainer = styled.div`
   display: flex;
@@ -81,6 +71,12 @@ const StyledAuth = styled.div`
   background-color: #fff;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.025);
+
+  .login-btn {
+    display: block;
+    width: 100%;
+    margin: auto;
+  }
 
   a {
     color: #2028eb;
@@ -209,26 +205,6 @@ const StyledAuth = styled.div`
         color: #2028eb;
         font-weight: 600;
       }
-
-      .btn {
-        background-color: #2028eb;
-        border-color: #2028eb;
-        outline: 0;
-        border: 0;
-        color: #fff;
-        width: 100%;
-        padding: 20px;
-        font-size: 18px;
-        font-weight: 600;
-        border-radius: 5px;
-
-        &:hover,
-        &:focus {
-          background-color: #0f1396;
-          border-color: #0f1396;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-        }
-      }
     }
   }
 
@@ -306,5 +282,3 @@ const StyledAuth = styled.div`
     margin-top: 70px;
   }
 `;
-
-export default auth;

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import Router from 'next/router';
 import Image from 'next/image';
 import useAuth from '../../context/AuthContext';
 import Spinner from '../UI/Spinner';
 import styled from 'styled-components';
+import S from '../../styles/styledComponents';
 
 const ResetPassword = props => {
   const [email, setEmail] = useState('');
@@ -78,7 +78,7 @@ const ResetPassword = props => {
             </div>
             {error}
             <div>
-              <button className="btn">Reset Password</button>
+              <S.BlueButton>Reset Password</S.BlueButton>
             </div>
           </form>
         </div>
@@ -99,29 +99,6 @@ const StyledReset = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-
-  button {
-    background-color: #2028eb;
-    border-color: #2028eb;
-    outline: 0;
-    border: 0;
-    color: #fff;
-    width: 100%;
-    padding: 15px;
-    font-size: 18px;
-    font-weight: 600;
-    border-radius: 5px;
-    margin-top: 40px;
-    width: fit-content;
-    cursor: pointer;
-
-    &:hover,
-    &:focus {
-      background-color: #0f1396;
-      border-color: #0f1396;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-    }
-  }
 `;
 
 export default ResetPassword;

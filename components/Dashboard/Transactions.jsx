@@ -1,9 +1,6 @@
 import styled from 'styled-components';
-import { createFromIconfontCN, SearchOutlined } from '@ant-design/icons';
-
-const Icon = createFromIconfontCN({
-  scriptUrl: ['//at.alicdn.com/t/font_2539603_sr0jbo99sg.js'],
-});
+import { SearchOutlined } from '@ant-design/icons';
+import Icon from '../UI/Icon';
 
 const Transactions = () => {
   return (
@@ -12,7 +9,7 @@ const Transactions = () => {
         <h1>All Transactions</h1>
         <StyledIcons>
           <SearchOutlined />
-          <Icon type="icon-sort" />
+          <Icon type="icon-sort" style={{ fontsize: '18px' }} />
         </StyledIcons>
       </StyledHeader>
       <form>

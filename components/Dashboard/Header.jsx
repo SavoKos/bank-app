@@ -1,11 +1,11 @@
 import styled from 'styled-components';
-import Image from 'next/image';
 import { SearchOutlined } from '@ant-design/icons';
-import { useContext } from 'react';
-import AuthContext from '../../context/AuthContext';
+import useAuth from '../../context/AuthContext';
+import withAuth from '../../hoc/withAuth';
 
 const Header = () => {
-  // const [auth, setAuth] = useContext(AuthContext);
+  const { currentUser } = useAuth();
+  console.log(currentUser);
   return (
     <StyledHeader>
       <StyledLeft>
@@ -15,7 +15,7 @@ const Header = () => {
       <StyledRight>
         <SearchOutlined />
         <StyledUserPicture>
-          <h2>S</h2>
+          <h2>{currentUser.email.slice(0, 1).toUpperCase()}</h2>
         </StyledUserPicture>
       </StyledRight>
     </StyledHeader>
