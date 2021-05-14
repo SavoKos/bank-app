@@ -8,6 +8,7 @@ import S from '../../styles/styledComponents';
 const Signup = props => {
   const [credentials, setCredentials] = useState({
     password: '',
+    confirmPassword: '',
     email: '',
     name: '',
   });
@@ -69,7 +70,7 @@ const Signup = props => {
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta,
             laudantium dolorem?
           </p>
-          <form onSubmit={checkErrors}>
+          <S.Form onSubmit={checkErrors}>
             <div>
               <label htmlFor="name"> Name</label>
               <input
@@ -97,13 +98,22 @@ const Signup = props => {
                 onChange={event => updateInputValueHandler(event)}
               />
             </div>
+            <div>
+              <label htmlFor="confirmPassword"> Confirm Password</label>
+              <input
+                type="password"
+                name="confirmPassword"
+                className="input-password"
+                onChange={event => updateInputValueHandler(event)}
+              />
+            </div>
             {error}
             <div>
               <S.BlueButton className="login-btn" onClick={checkErrors}>
                 Sign Up
               </S.BlueButton>
             </div>
-          </form>
+          </S.Form>
         </div>
       </div>
       <div className="login-box-quotebox">

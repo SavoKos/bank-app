@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import Dashboard from '../components/Dashboard/Dashboard';
-import Navigation from '../components/Navigation/Navigation';
+import Navigation from '../components/Navigation';
 import useAuth from '../context/AuthContext';
 import withAuth from '../hoc/withAuth';
 

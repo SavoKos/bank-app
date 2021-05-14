@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import Image from 'next/image';
-import Icon from '../UI/Icon';
+import Icon from './UI/Icon';
 import { useState } from 'react';
 import Router from 'next/router';
-import Modal from '../UI/Modal';
-import useAuth from '../../context/AuthContext';
-import Spinner from '../UI/Spinner';
-import S from '../../styles/styledComponents';
+import Modal from './UI/Modal';
+import useAuth from '../context/AuthContext';
+import Spinner from './UI/Spinner';
+import S from '../styles/styledComponents';
 
 const Navigation = () => {
   const { logout } = useAuth();
@@ -35,16 +35,21 @@ const Navigation = () => {
         height={70}
         width={50}
         className="logo"
+        onClick={() => Router.push('/')}
       />
-      <Icon type="icon-dashboard" style={iconStyle} />
+      <Icon
+        type="icon-dashboard"
+        style={iconStyle}
+        clicked={() => Router.push('/')}
+      />
       <Icon type="icon-ic24-transaction" style={iconStyle} />
       <Icon type="icon-wallet" style={iconStyle} />
-      <Icon type="icon-user" style={iconStyle} />
       <Icon
-        type="icon-settings"
+        type="icon-user"
         style={iconStyle}
-        clicked={() => Router.push('/settings')}
+        clicked={() => Router.push('/profile')}
       />
+      <Icon type="icon-settings" style={iconStyle} />
       <Icon
         type="icon-logout"
         clicked={() => setModalActive(true)}

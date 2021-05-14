@@ -8,7 +8,7 @@ const theme = {
     activePage: '#3e7eff',
     green: '#0ac468',
     purple: '#af52de',
-    blue: '#5ac8fa',
+    blue: '#2028eb',
     black: '#141a1e',
     title: '#141736',
   },

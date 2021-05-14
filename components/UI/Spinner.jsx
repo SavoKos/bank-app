@@ -23,7 +23,7 @@ S.Spinner = styled.div`
   min-width: 40px;
   min-height: 40px;
   border: 5px solid rgba(255, 255, 255, 0.1);
-  border-right: 5px solid #2028eb;
+  border-right: 5px solid ${({ theme }) => theme.colors.blue};
   border-radius: 50%;
   animation: spinner 1s linear infinite;
 `;

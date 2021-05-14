@@ -10,5 +10,8 @@ export const validation = info => {
   if (!emailValidateRegex.test(String(info.email).toLowerCase()))
     errorMessage.push('Enter Valid Email!');
 
+  if (info.confirmPassword && info.password !== info.confirmPassword)
+    errorMessage.push('Passwords do not match!');
+
   return errorMessage;
 };
