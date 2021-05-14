@@ -2,21 +2,33 @@ import styled from 'styled-components';
 import { SearchOutlined } from '@ant-design/icons';
 import useAuth from '../../context/AuthContext';
 import withAuth from '../../hoc/withAuth';
+import Link from 'next/link';
 
 const Header = () => {
   const { currentUser } = useAuth();
   console.log(currentUser);
+  let welcomeMessage = (
+    <p>
+      Hi stranger, head to <Link href="/profile">profile options</Link> to
+      change your name.
+    </p>
+  );
+  if (currentUser.displayName)
+    welcomeMessage = <p>Hi {currentUser.displayName}. Welcome back!</p>;
+
   return (
     <S.Header>
       <S.Left>
-        <h1>Overview</h1>
-        <p>Hi Savo, Welcome back.</p>
+        <h1>Dashboard</h1>
+        {welcomeMessage}
       </S.Left>
       <S.Right>
         <SearchOutlined />
-        <StyledUserPicture>
-          <h2>{currentUser.email.slice(0, 1).toUpperCase()}</h2>
-        </StyledUserPicture>
+        <Link href="/profile">
+          <S.Avatar>
+            <h2>{currentUser.email.slice(0, 1).toUpperCase()}</h2>
+          </S.Avatar>
+        </Link>
       </S.Right>
     </S.Header>
   );
@@ -31,7 +43,11 @@ S.Header = styled.div`
   margin-bottom: 40px;
 `;
 
-S.Left = styled.div``;
+S.Left = styled.div`
+  a {
+    color: ${({ theme }) => theme.colors.blue};
+  }
+`;
 S.Right = styled.div`
   display: flex;
   align-items: center;
@@ -50,7 +66,7 @@ S.Right = styled.div`
   }
 `;
 
-const StyledUserPicture = styled.div`
+S.Avatar = styled.div`
   height: 50px;
   width: 50px;
   border-radius: 50%;
