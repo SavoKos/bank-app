@@ -66,7 +66,7 @@ const ResetPassword = props => {
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta,
             laudantium dolorem?
           </p>
-          <form onSubmit={checkErrors}>
+          <S.Form onSubmit={checkErrors}>
             <div>
               <label htmlFor="email"> E-Mail</label>
               <input
@@ -80,7 +80,7 @@ const ResetPassword = props => {
             <div>
               <S.BlueButton>Reset Password</S.BlueButton>
             </div>
-          </form>
+          </S.Form>
         </div>
       </div>
       <div className="login-box-quotebox">

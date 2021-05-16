@@ -50,7 +50,7 @@ const Login = props => {
       </p>
     ));
 
-  if (databaseError) error = <p>{databaseError}</p>;
+  if (databaseError) error = <p className="error-message">{databaseError}</p>;
 
   if (loading) return <Spinner />;
 

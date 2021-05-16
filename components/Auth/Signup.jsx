@@ -10,13 +10,12 @@ const Signup = props => {
     password: '',
     confirmPassword: '',
     email: '',
-    name: '',
   });
   const [inputError, setInputError] = useState([]);
   const [databaseError, setDatabaseError] = useState(undefined);
   const [loading, setLoading] = useState(false);
 
-  const { signup } = useAuth();
+  const { signup, currentUser } = useAuth();
 
   const updateInputValueHandler = event => {
     setCredentials(prevState => ({
@@ -29,6 +28,7 @@ const Signup = props => {
     setLoading(true);
     signup(credentials.email, credentials.password)
       .then(user => {
+        console.log(currentUser);
         Router.push('/');
       })
       .catch(error => {
@@ -53,7 +53,7 @@ const Signup = props => {
       </p>
     ));
 
-  if (databaseError) error = <p>{databaseError}</p>;
+  if (databaseError) error = <p className="error-message">{databaseError}</p>;
 
   if (loading) return <Spinner />;
 
@@ -71,15 +71,6 @@ const Signup = props => {
             laudantium dolorem?
           </p>
           <S.Form onSubmit={checkErrors}>
-            <div>
-              <label htmlFor="name"> Name</label>
-              <input
-                type="text"
-                name="name"
-                className="input-name"
-                onChange={event => updateInputValueHandler(event)}
-              />
-            </div>
             <div>
               <label htmlFor="email"> E-Mail</label>
               <input

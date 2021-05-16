@@ -12,8 +12,8 @@ Styled.Container = styled.div`
 `;
 
 Styled.BlueButton = styled.button`
-  background-color: ${({ theme }) => theme.colors.blue};
-  border-color: ${({ theme }) => theme.colors.blue};
+  background-color: ${({ theme }) => theme.colors.lightBlue};
+  border-color: ${({ theme }) => theme.colors.lightBlue};
   outline: 0;
   border: 0;
   color: #fff;
@@ -28,8 +28,8 @@ Styled.BlueButton = styled.button`
 
   &:hover,
   &:focus {
-    background-color: #0f1396;
-    border-color: #0f1396;
+    background-color: #09538e;
+    border-color: #09538e;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
   }
 `;
@@ -46,6 +46,11 @@ Styled.RedButton = styled(Styled.BlueButton)`
 `;
 
 Styled.Form = styled.form`
+  .error-message {
+    color: red;
+    font-weight: 400;
+  }
+
   & > div {
     position: relative;
     padding: 1.5em 0;

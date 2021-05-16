@@ -38,13 +38,17 @@ S.Modal = styled.div`
   transform: translate(-50%, -35%) !important;
   border-radius: 10px;
   padding: 50px 100px;
-  background-color: ${({ theme }) => theme.colors.secondary};
+  background-color: ${({ theme }) => theme.colors.darkBlue};
   color: #fff;
   opacity: 0;
   visibility: hidden;
   transition: all ease 0.5s;
   transform: translateY(100vh);
   z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
   .anticon {
     position: absolute;

@@ -3,15 +3,16 @@ import Image from 'next/image';
 import Icon from './UI/Icon';
 import { useState } from 'react';
 import Router from 'next/router';
-import Modal from './UI/Modal';
 import useAuth from '../context/AuthContext';
 import Spinner from './UI/Spinner';
 import S from '../styles/styledComponents';
+import LogoutModal from './Auth/LogoutModal';
 
 const Navigation = () => {
   const { logout } = useAuth();
-  const [modalActive, setModalActive] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [modalActive, setModalActive] = useState(false);
+
   const iconStyle = {
     color: '#7c8ea4',
     margin: '-20px 0',
@@ -59,17 +60,11 @@ const Navigation = () => {
           margin: '50px 0',
         }}
       />
-      <Modal active={modalActive} closeModal={() => setModalActive(false)}>
-        <h1 style={{ color: '#fff' }}>Are you sure you want to log out?</h1>
-        <S.ButtonsContainer>
-          <S.BlueButton onClick={logoutHandler} type="blue">
-            Logout
-          </S.BlueButton>
-          <S.RedButton onClick={() => setModalActive(false)} type="red">
-            Cancel
-          </S.RedButton>
-        </S.ButtonsContainer>
-      </Modal>
+      <LogoutModal
+        onLogout={logoutHandler}
+        modalActive={modalActive}
+        onSetModalActive={isActive => setModalActive(isActive)}
+      />
     </S.Navigation>
   );
 };
@@ -91,11 +86,6 @@ S.Navigation = styled.div`
     min-height: 0 !important;
     position: static !important;
   }
-`;
-
-S.ButtonsContainer = styled.div`
-  display: flex;
-  justify-content: space-around;
 `;
 
 export default Navigation;

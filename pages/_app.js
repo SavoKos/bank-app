@@ -10,7 +10,8 @@ const theme = {
     purple: '#af52de',
     blue: '#2028eb',
     black: '#141a1e',
-    title: '#141736',
+    darkBlue: '#141736',
+    lightBlue: '#2196f3',
   },
 };
 
@@ -38,7 +39,7 @@ p{
 }
 
 h1{
-  color: ${theme.colors.title}
+  color: ${theme.colors.darkBlue}
 }
 `;
 

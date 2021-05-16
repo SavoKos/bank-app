@@ -65,7 +65,7 @@ const EditProfileForm = ({
       </p>
     ));
 
-  if (dbError) error = <p>{dbError}</p>;
+  if (dbError) error = <p className="error-message">{dbError}</p>;
 
   let button = <S.BlueButton onClick={editHandler}>Edit</S.BlueButton>;
   if (isEditing)
