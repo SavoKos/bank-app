@@ -1,5 +1,7 @@
 import firebase from 'firebase';
 import 'firebase/auth';
+import 'firebase/database';
+import 'firebase/storage';
 
 let app = '';
 
@@ -15,6 +17,8 @@ if (!firebase.apps.length)
     measurementId: 'G-J4WCP7LH3L',
   });
 else app = firebase.app();
-
+console.log(firebase, app);
 export const auth = app.auth();
+export const database = app.database();
+export const storage = app.storage();
 export default app;

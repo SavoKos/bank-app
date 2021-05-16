@@ -4,18 +4,21 @@ import Router from 'next/router';
 import Image from 'next/image';
 import Spinner from '../UI/Spinner';
 import S from '../../styles/styledComponents';
+import { database, storage } from '../../firebase';
+import styled from 'styled-components';
 
 const Signup = props => {
   const [credentials, setCredentials] = useState({
     password: '',
     confirmPassword: '',
     email: '',
+    name: '',
   });
-  const [inputError, setInputError] = useState([]);
-  const [databaseError, setDatabaseError] = useState(undefined);
+  const [error, setError] = useState(undefined);
+  const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const { signup, currentUser } = useAuth();
+  const { signup } = useAuth();
 
   const updateInputValueHandler = event => {
     setCredentials(prevState => ({
@@ -24,36 +27,72 @@ const Signup = props => {
     }));
   };
 
+  const storeDatabase = user => {
+    console.log(user);
+    const userData = {
+      name: user.displayName,
+      email: user.email,
+      photoURL: user.photoURL,
+    };
+
+    database
+      .ref('users/' + user.uid)
+      .set(userData)
+      .then(() => Router.push('/'))
+      .catch(error => {
+        console.log(error.message);
+      });
+  };
+
+  const updateProfileHandler = (userData, url = null) => {
+    userData
+      .updateProfile({
+        displayName: credentials.name,
+        photoURL: url,
+      })
+      .then(() => storeDatabase(userData));
+  };
+
   const signupUser = () => {
     setLoading(true);
     signup(credentials.email, credentials.password)
       .then(user => {
-        console.log(currentUser);
-        Router.push('/');
+        const userData = user.user;
+        console.log(userData);
+        if (!image) return updateProfileHandler(userData);
+
+        const fileRef = storage.ref(`images/${image.name}`);
+        fileRef.put(image).then(() =>
+          fileRef.getDownloadURL().then(url => {
+            updateProfileHandler(userData, url);
+          })
+        );
       })
       .catch(error => {
         console.log(error);
-        setDatabaseError(error.message);
+        setError(error.message);
         setLoading(false);
       });
   };
-
-  const checkErrors = e => {
+  console.log(error);
+  const signupHandler = e => {
     e.preventDefault();
-    const isError = props.validateInput(credentials);
-    if (isError.length === 0) return signupUser();
-    return setInputError(isError);
+    if (credentials.password !== credentials.confirmPassword)
+      return setError('Passwords do not match!');
+    return signupUser();
   };
 
-  let error = '';
-  if (inputError !== [])
-    error = inputError.map(errorMessage => (
-      <p key={errorMessage} className="error-message">
-        {errorMessage}
-      </p>
-    ));
+  const setImageHandler = e => {
+    const image = e.target.files[0];
+    if (image.size > 10000000)
+      return setError('Image size must be less than 10MB');
 
-  if (databaseError) error = <p className="error-message">{databaseError}</p>;
+    setError(undefined);
+    setImage(image);
+  };
+
+  let errorMessage = '';
+  if (error) errorMessage = <p className="error-message">{error}</p>;
 
   if (loading) return <Spinner />;
 
@@ -70,7 +109,17 @@ const Signup = props => {
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta,
             laudantium dolorem?
           </p>
-          <S.Form onSubmit={checkErrors}>
+          <S.Form onSubmit={signupHandler}>
+            <div>
+              <label htmlFor="name"> Name</label>
+              <input
+                type="text"
+                name="name"
+                className="input-name"
+                onChange={event => updateInputValueHandler(event)}
+                required
+              />
+            </div>
             <div>
               <label htmlFor="email"> E-Mail</label>
               <input
@@ -78,6 +127,7 @@ const Signup = props => {
                 name="email"
                 className="input-email"
                 onChange={event => updateInputValueHandler(event)}
+                required
               />
             </div>
             <div>
@@ -87,6 +137,7 @@ const Signup = props => {
                 name="password"
                 className="input-password"
                 onChange={event => updateInputValueHandler(event)}
+                required
               />
             </div>
             <div>
@@ -96,13 +147,20 @@ const Signup = props => {
                 name="confirmPassword"
                 className="input-password"
                 onChange={event => updateInputValueHandler(event)}
+                required
               />
             </div>
-            {error}
+            <S.InputImage>
+              <input
+                type="file"
+                name="picture"
+                className="input-file"
+                onChange={setImageHandler}
+              />
+            </S.InputImage>
+            {errorMessage}
             <div>
-              <S.BlueButton className="login-btn" onClick={checkErrors}>
-                Sign Up
-              </S.BlueButton>
+              <S.BlueButton className="login-btn">Sign Up</S.BlueButton>
             </div>
           </S.Form>
         </div>
@@ -116,4 +174,23 @@ const Signup = props => {
   );
 };
 
+// -------------------------------------------------- styling ----------------------------------------------
+S.InputImage = styled.div`
+  padding: 0 !important;
+  margin: 0;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+  position: relative;
+  background-color: #acb6bb;
+  cursor: pointer;
+
+  ::before {
+    content: 'Add profile picture';
+    position: absolute;
+    font-size: 20px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+`;
 export default Signup;

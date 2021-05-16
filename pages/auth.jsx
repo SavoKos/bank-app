@@ -2,17 +2,11 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import Login from '../components/Auth/Login';
 import Signup from '../components/Auth/Signup';
-import { validation } from '../components/Auth/validation';
 import ResetPassword from '../components/Auth/ResetPassword';
 
 const auth = () => {
   const [signupActive, setSignupActive] = useState(false);
   const [forgotPassword, setForgotPassword] = useState(false);
-
-  const authHandler = info => {
-    const error = validation(info);
-    if (error !== []) return error;
-  };
 
   const toggleSignupActiveHandler = () => {
     setSignupActive(prevActive => !prevActive);
@@ -39,15 +33,11 @@ const auth = () => {
     <S.Container>
       <S.Auth>
         {signupActive ? (
-          <Signup
-            toggleSignupActive={toggleSignupActiveHandler}
-            validateInput={info => authHandler(info)}
-          />
+          <Signup toggleSignupActive={toggleSignupActiveHandler} />
         ) : (
           <Login
             resetPassword={() => setForgotPassword(true)}
             toggleSignupActive={toggleSignupActiveHandler}
-            validateInput={info => authHandler(info)}
           />
         )}
       </S.Auth>

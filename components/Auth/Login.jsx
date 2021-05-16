@@ -10,8 +10,7 @@ const Login = props => {
     password: '',
     email: '',
   });
-  const [inputError, setInputError] = useState([]);
-  const [databaseError, setDatabaseError] = useState(undefined);
+  const [error, setError] = useState(undefined);
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
 
@@ -31,26 +30,18 @@ const Login = props => {
       .catch(error => {
         console.log(error);
         setLoading(false);
-        setDatabaseError(error.message);
+        setError(error.message);
       });
   };
 
-  const checkErrors = e => {
+  const loginHandler = e => {
     e.preventDefault();
-    const isError = props.validateInput(credentials);
-    if (isError.length === 0) return loginUser();
-    return setInputError(isError);
+    return loginUser();
   };
 
-  let error = '';
-  if (inputError !== [])
-    error = inputError.map(errorMessage => (
-      <p key={errorMessage} className="error-message">
-        {errorMessage}
-      </p>
-    ));
+  let errorMessage = '';
 
-  if (databaseError) error = <p className="error-message">{databaseError}</p>;
+  if (error) errorMessage = <p className="error-message">{error}</p>;
 
   if (loading) return <Spinner />;
 
@@ -67,7 +58,7 @@ const Login = props => {
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta,
             laudantium dolorem?
           </p>
-          <S.Form onSubmit={checkErrors}>
+          <S.Form onSubmit={loginHandler}>
             <div>
               <label htmlFor="email"> E-Mail</label>
               <input
@@ -75,6 +66,7 @@ const Login = props => {
                 name="email"
                 className="input-email"
                 onChange={event => updateInputValueHandler(event)}
+                required
               />
             </div>
             <div>
@@ -84,13 +76,12 @@ const Login = props => {
                 name="password"
                 className="input-password"
                 onChange={event => updateInputValueHandler(event)}
+                required
               />
             </div>
-            {error}
+            {errorMessage}
             <div>
-              <S.BlueButton className="login-btn" onClick={checkErrors}>
-                Login
-              </S.BlueButton>
+              <S.BlueButton className="login-btn">Login</S.BlueButton>
               <a className="forgot-password" onClick={props.resetPassword}>
                 Forgot Password?
               </a>

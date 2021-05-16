@@ -3,6 +3,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import useAuth from '../../context/AuthContext';
 import withAuth from '../../hoc/withAuth';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const Header = () => {
   const { currentUser } = useAuth();
@@ -16,6 +17,18 @@ const Header = () => {
   if (currentUser.displayName)
     welcomeMessage = <p>Hi {currentUser.displayName}. Welcome back!</p>;
 
+  let avatar = <h2>{currentUser.email.slice(0, 1).toUpperCase()}</h2>;
+
+  if (currentUser.photoURL)
+    avatar = (
+      <Image
+        height={50}
+        width={50}
+        src={currentUser.photoURL}
+        className="avatar"
+      />
+    );
+
   return (
     <S.Header>
       <S.Left>
@@ -25,9 +38,7 @@ const Header = () => {
       <S.Right>
         <SearchOutlined />
         <Link href="/profile">
-          <S.Avatar>
-            <h2>{currentUser.email.slice(0, 1).toUpperCase()}</h2>
-          </S.Avatar>
+          <S.Avatar>{avatar}</S.Avatar>
         </Link>
       </S.Right>
     </S.Header>

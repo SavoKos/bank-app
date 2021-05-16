@@ -7,36 +7,71 @@ import Image from 'next/image';
 import Icon from '../components/UI/Icon';
 import EditProfileForm from '../components/EditProfileForm';
 import { useState } from 'react';
+import { database } from '../firebase';
+import Router from 'next/router';
 
 const settings = () => {
   const { currentUser } = useAuth();
   console.log(currentUser);
   const [initialCredentials, setInitialCredentials] = useState('');
-  const [dbError, setdbError] = useState(null);
+  const [updatedCredentials, setUpdatedCredentials] = useState('');
+  const [isRedirecting, setIsRedirecting] = useState(false);
+  const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
 
-  const updateProfileHandler = (type, data) => {
+  console.log(initialCredentials);
+
+  const updateProfile = (type, data) => {
     currentUser[type](data)
       .then(res => {
-        setSuccessMessage('Profile is successfully updated.');
+        setIsRedirecting(true);
+        setSuccessMessage(
+          'Profile is successfully updated. Redirecting in 2 seconds.'
+        );
+        setTimeout(() => {
+          Router.push('/');
+        }, 2000);
       })
-      .catch(error => setdbError(error.message));
+      .catch(error => setError(error.message));
   };
 
-  const updateCredentialsHandler = updatedCredentials => {
-    if (updatedCredentials.name !== initialCredentials.name)
-      return updateProfileHandler('updateProfile', {
-        displayName: updatedCredentials.name,
+  const updateDatabase = type => {
+    console.log(type, updatedCredentials);
+    database
+      .ref('users/' + currentUser.uid)
+      .update({ [type]: updatedCredentials[type] })
+      .catch(error => {
+        console.log(error.message);
       });
+  };
+
+  const updateName = () => {
+    updateDatabase('name');
+    updateProfile('updateProfile', {
+      displayName: updatedCredentials.name,
+    });
+  };
+
+  const updateEmail = () => {
+    updateDatabase('email');
+    updateProfile('updateEmail', updatedCredentials.email);
+  };
+
+  const filterChangedCredentials = () => {
+    if (updatedCredentials.name !== initialCredentials.name)
+      return updateName();
 
     if (updatedCredentials.email !== initialCredentials.email)
-      return updateProfileHandler('updateEmail', updatedCredentials.email);
+      return updateEmail();
 
-    if (updatedCredentials.password !== initialCredentials.password)
-      return updateProfileHandler(
-        'updatePassword',
-        updatedCredentials.password
-      );
+    if (
+      updatedCredentials.password !== updatedCredentials.password &&
+      updatedCredentials.password !== credentials.confirmPassword
+    )
+      return setError('Passwords do not match!');
+
+    if (updatedCredentials.password !== updatedCredentials.password)
+      return updateProfile('updatePassword', updatedCredentials.password);
 
     setSuccessMessage('No changes were made on profile.');
   };
@@ -49,10 +84,10 @@ const settings = () => {
   if (currentUser.photoURL)
     avatar = (
       <Image
-        height={100}
-        width={100}
+        height={120}
+        width={120}
         src={currentUser.photoURL}
-        style={{ borderRadius: '50%' }}
+        className="avatar"
       />
     );
 
@@ -77,10 +112,12 @@ const settings = () => {
         <EditProfileForm
           currentUser={currentUser}
           initialCredentials={credentials => setInitialCredentials(credentials)}
-          updateCredentials={credentials =>
-            updateCredentialsHandler(credentials)
+          setUpdatedCredentials={credentials =>
+            setUpdatedCredentials(credentials)
           }
-          dbError={dbError}
+          filterChangedCredentials={filterChangedCredentials}
+          error={error}
+          isRedirecting={isRedirecting}
         />
       </S.Settings>
     </S.Container>
@@ -111,6 +148,10 @@ S.Avatar = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
+
+  .avatar {
+    border-radius: 50%;
+  }
 
   .first-letter {
     color: #fff;

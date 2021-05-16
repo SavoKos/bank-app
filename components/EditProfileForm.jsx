@@ -1,27 +1,26 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import S from '../styles/styledComponents';
 import styled from 'styled-components';
 import Modal from './UI/Modal';
-import { validation } from './Auth/validation';
 
 const EditProfileForm = ({
   currentUser,
   initialCredentials,
-  updateCredentials,
+  filterChangedCredentials,
   dbError,
+  setUpdatedCredentials,
+  isRedirecting,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [modalActive, setModalActive] = useState(false);
-  const [inputError, setInputError] = useState([]);
   const [credentials, setCredentials] = useState({
     name: currentUser['displayName'] || '',
     email: currentUser['email'] || '',
-    phone: currentUser['phoneNumber'] || '',
     password: '',
     confirmPassword: '',
   });
   const inputStyle = isEditing ? { color: '#000' } : { color: '#bebebe' };
-
+  console.log(isEditing, isRedirecting);
   const editHandler = e => {
     e.preventDefault();
     setIsEditing(true);
@@ -31,6 +30,10 @@ const EditProfileForm = ({
     const storeInitialCredentials = initialCredentials(credentials);
     return storeInitialCredentials;
   }, []);
+
+  useEffect(() => {
+    setUpdatedCredentials(credentials);
+  }, [credentials]);
 
   const updateInputValueHandler = event => {
     setCredentials(prevState => ({
@@ -44,26 +47,13 @@ const EditProfileForm = ({
     setModalActive(true);
   };
 
-  const updateCredentialsHandler = credentials => {
+  const updateProfileHandler = () => {
     setIsEditing(false);
-    setInputError([]);
-    updateCredentials(credentials);
-  };
-
-  const validateInput = credentials => {
     setModalActive(false);
-    const error = validation(credentials);
-    if (error.length > 0) return setInputError(error);
-    return updateCredentialsHandler(credentials);
+    filterChangedCredentials(credentials);
   };
 
   let error = '';
-  if (inputError !== [])
-    error = inputError.map(errorMessage => (
-      <p key={errorMessage} className="error-message">
-        {errorMessage}
-      </p>
-    ));
 
   if (dbError) error = <p className="error-message">{dbError}</p>;
 
@@ -77,7 +67,7 @@ const EditProfileForm = ({
         <div>
           <label htmlFor="name"> Name</label>
           <input
-            disabled={!isEditing}
+            disabled={isRedirecting || !isEditing}
             type="text"
             name="name"
             className="input-name"
@@ -89,7 +79,7 @@ const EditProfileForm = ({
         <div>
           <label htmlFor="email"> E-Mail</label>
           <input
-            disabled={!isEditing}
+            disabled={isRedirecting || !isEditing}
             type="email"
             name="email"
             value={credentials.email}
@@ -101,7 +91,7 @@ const EditProfileForm = ({
         <div>
           <label htmlFor="password"> Password</label>
           <input
-            disabled={!isEditing}
+            disabled={isRedirecting || !isEditing}
             type="password"
             name="password"
             value={credentials.password}
@@ -113,7 +103,7 @@ const EditProfileForm = ({
         <div>
           <label htmlFor="confirmPassword"> Confirm Password</label>
           <input
-            disabled={!isEditing}
+            disabled={isRedirecting || !isEditing}
             type="password"
             name="confirmPassword"
             value={credentials.confirmPassword}
@@ -130,12 +120,7 @@ const EditProfileForm = ({
           Are you sure you want to apply changes? <br />
         </h1>
         <S.ButtonsContainer>
-          <S.BlueButton
-            onClick={() => {
-              validateInput(credentials);
-            }}
-            type="blue"
-          >
+          <S.BlueButton type="blue" onClick={updateProfileHandler}>
             Apply
           </S.BlueButton>
           <S.RedButton onClick={() => setModalActive(false)} type="red">
