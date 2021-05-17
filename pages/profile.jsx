@@ -7,8 +7,9 @@ import Image from 'next/image';
 import Icon from '../components/UI/Icon';
 import EditProfileForm from '../components/EditProfileForm';
 import { useState } from 'react';
-import { database } from '../firebase';
+import { database, storage } from '../firebase';
 import Router from 'next/router';
+import Spinner from '../components/UI/Spinner';
 
 const settings = () => {
   const { currentUser } = useAuth();
@@ -17,14 +18,14 @@ const settings = () => {
   const [updatedCredentials, setUpdatedCredentials] = useState('');
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [error, setError] = useState(null);
+  const [imageUpload, setImageUpload] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
-
-  console.log(initialCredentials);
 
   const updateProfile = (type, data) => {
     currentUser[type](data)
       .then(res => {
         setIsRedirecting(true);
+        setImageUpload(false);
         setSuccessMessage(
           'Profile is successfully updated. Redirecting in 2 seconds.'
         );
@@ -35,11 +36,11 @@ const settings = () => {
       .catch(error => setError(error.message));
   };
 
-  const updateDatabase = type => {
-    console.log(type, updatedCredentials);
+  const updateDatabase = (type, imageURL) => {
+    const data = imageURL ? imageURL : updatedCredentials[type];
     database
       .ref('users/' + currentUser.uid)
-      .update({ [type]: updatedCredentials[type] })
+      .update({ [type]: data })
       .catch(error => {
         console.log(error.message);
       });
@@ -76,6 +77,21 @@ const settings = () => {
     setSuccessMessage('No changes were made on profile.');
   };
 
+  const setImageHandler = e => {
+    const image = e.target.files[0];
+    if (image.size > 10000000)
+      return setError('Image size must be less than 10MB');
+
+    const fileRef = storage.ref(`images/${image.name}`);
+    setImageUpload(true);
+    fileRef.put(image).then(() =>
+      fileRef.getDownloadURL().then(url => {
+        updateProfile('updateProfile', { photoURL: url });
+        updateDatabase('photoURL', url);
+      })
+    );
+  };
+
   let avatar = (
     <h1 className="first-letter">
       {currentUser.email.slice(0, 1).toUpperCase()}
@@ -99,6 +115,25 @@ const settings = () => {
       </S.Message>
     );
 
+  if (imageUpload)
+    message = (
+      <S.Message>
+        <h2>Uploading... Please wait</h2>
+        <Spinner />
+      </S.Message>
+    );
+
+  const form = !imageUpload && (
+    <EditProfileForm
+      currentUser={currentUser}
+      initialCredentials={credentials => setInitialCredentials(credentials)}
+      setUpdatedCredentials={credentials => setUpdatedCredentials(credentials)}
+      filterChangedCredentials={filterChangedCredentials}
+      error={error}
+      isRedirecting={isRedirecting}
+    />
+  );
+
   return (
     <S.Container>
       <Navigation />
@@ -106,19 +141,11 @@ const settings = () => {
         <h1 className="title">Edit profile</h1>
         <S.Avatar>
           {avatar}
+          <input type="file" onChange={setImageHandler} />
           <Icon type="icon-edit" style={{ fontSize: '15px' }} />
         </S.Avatar>
         {message}
-        <EditProfileForm
-          currentUser={currentUser}
-          initialCredentials={credentials => setInitialCredentials(credentials)}
-          setUpdatedCredentials={credentials =>
-            setUpdatedCredentials(credentials)
-          }
-          filterChangedCredentials={filterChangedCredentials}
-          error={error}
-          isRedirecting={isRedirecting}
-        />
+        {form}
       </S.Settings>
     </S.Container>
   );
@@ -158,7 +185,8 @@ S.Avatar = styled.div`
     font-size: 40px;
   }
 
-  .anticon {
+  .anticon,
+  input {
     position: absolute;
     bottom: 5px;
     right: 8px;
@@ -167,6 +195,19 @@ S.Avatar = styled.div`
     color: #fff;
     padding: 7px;
     background-color: ${({ theme }) => theme.colors.blue};
+    cursor: pointer;
+  }
+
+  .anticon {
+    pointer-events: none;
+  }
+
+  input {
+    height: 30px;
+    width: 30px;
+    opacity: 0;
+    padding-left: 23px;
+    z-index: 5;
   }
 `;
 

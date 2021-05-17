@@ -7,7 +7,7 @@ const EditProfileForm = ({
   currentUser,
   initialCredentials,
   filterChangedCredentials,
-  dbError,
+  error,
   setUpdatedCredentials,
   isRedirecting,
 }) => {
@@ -17,6 +17,7 @@ const EditProfileForm = ({
     name: currentUser['displayName'] || '',
     email: currentUser['email'] || '',
     password: '',
+    photoURL: currentUser['photoURL'] || '',
     confirmPassword: '',
   });
   const inputStyle = isEditing ? { color: '#000' } : { color: '#bebebe' };
@@ -53,9 +54,9 @@ const EditProfileForm = ({
     filterChangedCredentials(credentials);
   };
 
-  let error = '';
+  let errorMessage = '';
 
-  if (dbError) error = <p className="error-message">{dbError}</p>;
+  if (error) errorMessage = <p className="error-message">{error}</p>;
 
   let button = <S.BlueButton onClick={editHandler}>Edit</S.BlueButton>;
   if (isEditing)
@@ -112,7 +113,7 @@ const EditProfileForm = ({
             style={inputStyle}
           />
         </div>
-        {error}
+        {errorMessage}
         <div>{button}</div>
       </S.Form>
       <Modal active={modalActive} closeModal={() => setModalActive(false)}>

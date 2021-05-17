@@ -17,7 +17,6 @@ const Signup = props => {
   const [error, setError] = useState(undefined);
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
-
   const { signup } = useAuth();
 
   const updateInputValueHandler = event => {
@@ -28,7 +27,6 @@ const Signup = props => {
   };
 
   const storeDatabase = user => {
-    console.log(user);
     const userData = {
       name: user.displayName,
       email: user.email,
@@ -38,10 +36,7 @@ const Signup = props => {
     database
       .ref('users/' + user.uid)
       .set(userData)
-      .then(() => Router.push('/'))
-      .catch(error => {
-        console.log(error.message);
-      });
+      .then(() => Router.push('/'));
   };
 
   const updateProfileHandler = (userData, url = null) => {
@@ -74,7 +69,7 @@ const Signup = props => {
         setLoading(false);
       });
   };
-  console.log(error);
+
   const signupHandler = e => {
     e.preventDefault();
     if (credentials.password !== credentials.confirmPassword)
