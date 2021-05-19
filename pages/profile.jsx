@@ -20,6 +20,7 @@ const settings = () => {
   const [error, setError] = useState(null);
   const [imageUpload, setImageUpload] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
+  console.log(initialCredentials, updatedCredentials);
 
   const updateProfile = (type, data) => {
     currentUser[type](data)
@@ -36,45 +37,38 @@ const settings = () => {
       .catch(error => setError(error.message));
   };
 
-  const updateDatabase = (type, imageURL) => {
-    const data = imageURL ? imageURL : updatedCredentials[type];
+  const updateDatabase = (url = currentUser.photoURL) => {
     database
       .ref('users/' + currentUser.uid)
-      .update({ [type]: data })
+      .update({
+        email: updatedCredentials['email'],
+        name: updatedCredentials['name'],
+        photoURL: url,
+      })
       .catch(error => {
         console.log(error.message);
       });
   };
 
-  const updateName = () => {
-    updateDatabase('name');
-    updateProfile('updateProfile', {
-      displayName: updatedCredentials.name,
-    });
-  };
-
-  const updateEmail = () => {
-    updateDatabase('email');
-    updateProfile('updateEmail', updatedCredentials.email);
-  };
-
   const filterChangedCredentials = () => {
-    if (updatedCredentials.name !== initialCredentials.name)
-      return updateName();
-
-    if (updatedCredentials.email !== initialCredentials.email)
-      return updateEmail();
-
     if (
-      updatedCredentials.password !== updatedCredentials.password &&
-      updatedCredentials.password !== credentials.confirmPassword
+      updatedCredentials.password !== initialCredentials.password &&
+      updatedCredentials.password !== updatedCredentials.confirmPassword
     )
       return setError('Passwords do not match!');
 
-    if (updatedCredentials.password !== updatedCredentials.password)
-      return updateProfile('updatePassword', updatedCredentials.password);
+    if (updatedCredentials.name !== initialCredentials.name)
+      updateProfile('updateProfile', {
+        displayName: updatedCredentials.name,
+      });
 
-    setSuccessMessage('No changes were made on profile.');
+    if (updatedCredentials.email !== initialCredentials.email)
+      updateProfile('updateEmail', updatedCredentials.email);
+
+    if (updatedCredentials.password !== initialCredentials.password)
+      updateProfile('updatePassword', updatedCredentials.password);
+
+    updateDatabase();
   };
 
   const setImageHandler = e => {
@@ -87,7 +81,7 @@ const settings = () => {
     fileRef.put(image).then(() =>
       fileRef.getDownloadURL().then(url => {
         updateProfile('updateProfile', { photoURL: url });
-        updateDatabase('photoURL', url);
+        updateDatabase(url);
       })
     );
   };

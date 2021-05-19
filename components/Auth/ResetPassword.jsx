@@ -4,6 +4,7 @@ import useAuth from '../../context/AuthContext';
 import Spinner from '../UI/Spinner';
 import styled from 'styled-components';
 import S from '../../styles/styledComponents';
+import Router from 'next/router';
 
 const ResetPassword = props => {
   const [email, setEmail] = useState('');
@@ -57,8 +58,8 @@ const ResetPassword = props => {
     <>
       <div className="login-box-formbox">
         <div className="login-box-signup">
-          Don't have an account?
-          <a onClick={props.toggleSignupActive}> Sign Up</a>
+          Log in to existing account?
+          <a onClick={props.backToLogin}> Log in</a>
         </div>
         <div className="login-box-login">
           <h1>Reset your password at Excellence Holdings</h1>

@@ -1,10 +1,14 @@
 import styled from 'styled-components';
 import Transactions from './Transactions';
+import Savings from './Savings/Savings';
+import CardOptions from './CardOptions/CardOptions';
 
 const Main = () => {
   return (
     <S.MainContent>
       <Transactions />
+      <Savings />
+      <CardOptions />
     </S.MainContent>
   );
 };
@@ -13,7 +17,7 @@ const Main = () => {
 const S = {};
 S.MainContent = styled.main`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 
   & > * {
     width: 32%;

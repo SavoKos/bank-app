@@ -95,7 +95,7 @@ const Signup = props => {
     <>
       <div className="login-box-formbox">
         <div className="login-box-signup">
-          Login to existing account?
+          Log in to existing account?
           <a onClick={props.toggleSignupActive}> Log in</a>
         </div>
         <div className="login-box-login">

@@ -24,7 +24,6 @@ export default withAuth(Home);
 const S = {};
 S.Container = styled.div`
   width: 100%;
-  height: 100vh;
   background-color: ${({ theme }) => theme.colors.primary};
   border-radius: 30px;
   display: flex;

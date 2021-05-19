@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { SearchOutlined } from '@ant-design/icons';
 import Icon from '../UI/Icon';
+import Transaction from './Transaction';
 
 const Transactions = () => {
   return (
@@ -22,7 +23,26 @@ const Transactions = () => {
           <label htmlFor="outcome">Outcome</label>
         </S.Radio>
       </form>
-      <S.TransactionsList></S.TransactionsList>
+      <S.TransactionsList>
+        <Transaction />
+        <Transaction />
+        <Transaction />
+        <Transaction />
+        <Transaction />
+        <Transaction />
+        <Transaction />
+        <Transaction />
+        <Transaction />
+        <Transaction />
+        <Transaction />
+        <Transaction />
+        <Transaction />
+        <Transaction />
+        <Transaction />
+        <Transaction />
+        <Transaction />
+        <Transaction />
+      </S.TransactionsList>
     </S.Transactions>
   );
 };

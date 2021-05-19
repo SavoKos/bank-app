@@ -81,7 +81,7 @@ const Login = props => {
             </div>
             {errorMessage}
             <div>
-              <S.BlueButton className="login-btn">Login</S.BlueButton>
+              <S.BlueButton className="login-btn">Log in</S.BlueButton>
               <a className="forgot-password" onClick={props.resetPassword}>
                 Forgot Password?
               </a>
