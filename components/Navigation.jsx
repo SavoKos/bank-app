@@ -13,11 +13,6 @@ const Navigation = () => {
   const [loading, setLoading] = useState(false);
   const [modalActive, setModalActive] = useState(false);
 
-  const iconStyle = {
-    color: '#7c8ea4',
-    margin: '-20px 0',
-  };
-
   const logoutHandler = () => {
     setLoading(true);
     logout()
@@ -39,26 +34,22 @@ const Navigation = () => {
         onClick={() => Router.push('/')}
       />
       <Icon
-        type="icon-dashboard"
-        style={iconStyle}
+        className={Router.pathname === '/' && 'active'}
+        type="icon-dashboard1"
         clicked={() => Router.push('/')}
       />
-      <Icon type="icon-ic24-transaction" style={iconStyle} />
-      <Icon type="icon-wallet" style={iconStyle} />
+      <Icon type="icon-arrows-left-right" />
+      <Icon type="icon-wallet1" />
       <Icon
-        type="icon-user"
-        style={iconStyle}
+        type="icon-LC_icon_user_line_1"
+        className={Router.pathname === '/profile' && 'active'}
         clicked={() => Router.push('/profile')}
       />
-      <Icon type="icon-settings" style={iconStyle} />
+      <Icon type="icon-cog3" />
       <Icon
+        className="logout"
         type="icon-logout"
         clicked={() => setModalActive(true)}
-        style={{
-          fontSize: '25px',
-          color: '#7c8ea4',
-          margin: '50px 0',
-        }}
       />
       <LogoutModal
         onLogout={logoutHandler}
@@ -86,6 +77,23 @@ S.Navigation = styled.div`
     width: 50px !important;
     min-height: 0 !important;
     position: static !important;
+  }
+
+  .anticon {
+    color: #7c8ea4;
+    margin: -20px 0;
+    padding: 10px;
+    border-radius: 15px;
+
+    &.logout {
+      font-size: 25px;
+      margin: 50px 0;
+    }
+
+    &.active {
+      background-color: ${({ theme }) => theme.colors.lightBlue};
+      color: #fff;
+    }
   }
 `;
 
