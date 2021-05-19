@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Transactions from './Transactions';
 import Savings from './Savings/Savings';
-import CardOptions from './CardOptions/CardOptions';
+import CardOptions from './CardOptions';
 
 const Main = () => {
   return (

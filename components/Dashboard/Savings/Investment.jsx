@@ -7,12 +7,12 @@ const Investment = () => {
         <Icon type="icon-savings" />
       </div>
       <div className="info">
-        <h4>Investment</h4>
+        <h3>Investment</h3>
         <div className="money">
           <h3>$ 16.000</h3>
           <h4>$ 20.000</h4>
         </div>
-        <div className="progressbar">
+        <div className="progressbar investment">
           <div className="fill"></div>
         </div>
         <div className="goal">

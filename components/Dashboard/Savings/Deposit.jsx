@@ -7,7 +7,7 @@ const Deposit = () => {
         <Icon type="icon-luggage-deposit-fill" />
       </div>
       <div className="info">
-        <h4>Deposit</h4>
+        <h3>Deposit</h3>
         <div className="money">
           <h3>$ 16.000</h3>
           <h4>$ 20.000</h4>

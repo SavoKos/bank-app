@@ -18,10 +18,10 @@ S.Savings = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-left: 40px;
+  margin: 0 40px;
 
   > div {
-    margin: 20px 0;
+    margin-top: 20px;
     border-radius: 30px;
     display: flex;
     align-items: center;
@@ -77,13 +77,19 @@ S.Savings = styled.div`
           transition: 0.3s all ease;
           background-color: ${({ theme }) => theme.colors.lightBlue};
         }
+
+        &.investment {
+          background-color: #af52de57;
+          .fill {
+            background-color: ${({ theme }) => theme.colors.purple};
+          }
+        }
       }
 
       .goal {
         margin-top: 20px;
       }
 
-      h4,
       h4 {
         color: ${({ theme }) => theme.colors.secondary};
       }

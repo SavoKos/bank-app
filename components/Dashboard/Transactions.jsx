@@ -103,11 +103,25 @@ S.Radio = styled.div`
 `;
 
 S.TransactionsList = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   width: 100%;
+  max-height: 600px;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    width: 12px; /* width of the entire scrollbar */
+  }
+
+  &::-webkit-scrollbar-track {
+    border-radius: 20px; /* roundness of the scroll thumb */
+    background: ${({ theme }) =>
+      theme.colors.primary}; /* color of the tracking area */
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: ${({ theme }) =>
+      theme.colors.lightBlue}; /* color of the scroll thumb */
+    border-radius: 20px; /* roundness of the scroll thumb */
+  }
 `;
 
 export default Transactions;

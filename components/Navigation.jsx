@@ -74,6 +74,7 @@ S.Navigation = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  height: 100vh;
   align-items: center;
   background-color: ${({ theme }) => theme.colors.primary};
   padding: 0 30px;
