@@ -1,22 +1,25 @@
 import styled from 'styled-components';
+import Card from '../UI/Card';
 import Icon from '../UI/Icon';
+import Router from 'next/router';
 
 const CardOptions = () => {
   return (
     <S.CardOptions>
-      <div className="card">
-        <h3>Savo Kos</h3>
-        <h1>$ 150.000</h1>
-        <h4>3402 2424 3262 5628</h4>
-        <Icon type="icon-visa" />
-      </div>
+      <Card />
       <S.CardFeatures>
-        <div className="addbalance">
+        <div
+          className="addbalance"
+          onClick={() => Router.push('/transactions')}
+        >
           <Icon type="icon-add" />
           <h3>Add Balance</h3>
           <Icon type="icon-arrow-right" />
         </div>
-        <div className="movebalance">
+        <div
+          className="movebalance"
+          onClick={() => Router.push('/transactions')}
+        >
           <Icon type="icon-account-transfer" />
           <h3>Move Balance</h3>
           <Icon type="icon-arrow-right" />
@@ -46,47 +49,12 @@ const S = {};
 S.CardOptions = styled.div`
   display: flex;
   justify-content: flex-start;
+  width: 28% !important;
   align-items: center;
   flex-direction: column;
   padding: 10px;
   background-color: ${({ theme }) => theme.colors.primary};
   border-radius: 30px;
-
-  .card {
-    border-radius: 30px;
-    padding: 20px;
-    position: relative;
-    min-height: 200px;
-    width: 100%;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
-    background: rgb(123, 234, 207);
-    background: linear-gradient(
-      45deg,
-      rgba(123, 234, 207, 1) 0%,
-      rgba(82, 193, 245, 1) 39%,
-      rgba(52, 84, 255, 1) 100%
-    );
-
-    h1 {
-      color: #fff;
-    }
-
-    h4,
-    h1 {
-      letter-spacing: 3px;
-    }
-
-    .anticon {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      color: #fff;
-    }
-  }
 `;
 
 S.CardFeatures = styled.div`

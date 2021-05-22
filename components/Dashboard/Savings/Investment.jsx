@@ -4,7 +4,7 @@ const Investment = () => {
   return (
     <div>
       <div className="icon investment">
-        <Icon type="icon-savings" />
+        <Icon type="icon-investment" />
       </div>
       <div className="info">
         <h3>Investment</h3>

@@ -5,7 +5,7 @@ import withAuth from '../../hoc/withAuth';
 import Link from 'next/link';
 import Image from 'next/image';
 
-const Header = () => {
+const Header = ({ page = 'Excellence Holdings' }) => {
   const { currentUser } = useAuth();
   console.log(currentUser);
   let welcomeMessage = (
@@ -32,7 +32,7 @@ const Header = () => {
   return (
     <S.Header>
       <S.Left>
-        <h1>Dashboard</h1>
+        <h1>{page}</h1>
         {welcomeMessage}
       </S.Left>
       <S.Right>

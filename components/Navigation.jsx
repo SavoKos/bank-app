@@ -38,14 +38,18 @@ const Navigation = () => {
         type="icon-dashboard1"
         clicked={() => Router.push('/')}
       />
-      <Icon type="icon-arrows-left-right" />
-      <Icon type="icon-wallet1" />
+      <Icon
+        className={Router.pathname === '/transactions' && 'active'}
+        type="icon-arrows-left-right"
+        clicked={() => Router.push('/transactions')}
+      />
+      <Icon type="icon-wallet1" clicked={() => Router.push('/wallet')} />
       <Icon
         type="icon-LC_icon_user_line_1"
         className={Router.pathname === '/profile' && 'active'}
         clicked={() => Router.push('/profile')}
       />
-      <Icon type="icon-cog3" />
+      <Icon type="icon-piggy-bank" clicked={() => Router.push('/savings')} />
       <Icon
         className="logout"
         type="icon-logout"
