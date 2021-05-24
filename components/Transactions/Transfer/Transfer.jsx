@@ -6,17 +6,18 @@ import S from '../../../styles/styledComponents';
 import TransferForm from './TransferForm';
 import UserCard from './UserCard';
 
-const SendMoney = () => {
+const Transfer = () => {
   const [users, setUsers] = useState({});
   const [chosenUser, setChosenUser] = useState('');
   const [name, setName] = useState('');
   const { currentUser } = useAuth();
-
   const updateInputValueHandler = e => {
     setName(e.target.value);
   };
+  console.log(users);
 
   const selectUser = userData => {
+    console.log(userData);
     setChosenUser(userData);
     setUsers({});
   };
@@ -33,7 +34,7 @@ const SendMoney = () => {
           const searchedUserName = data[prop].name.toLowerCase();
           if (
             searchedUserName.includes(name.toLowerCase()) &&
-            data[prop].email != currentUser.email
+            data[prop].email !== currentUser.email
           )
             setUsers(prevUsers => {
               return { ...prevUsers, [prop]: data[prop] };
@@ -48,12 +49,12 @@ const SendMoney = () => {
   let displayUsers = [];
   if (users) {
     for (const prop in users) {
-      console.log(users[prop]);
+      console.log(users);
       displayUsers.push(
         <UserCard
           userData={users[prop]}
           key={prop}
-          clicked={userData => selectUser(userData)}
+          clicked={() => selectUser({ id: prop, ...users[prop] })}
         />
       );
     }
@@ -61,18 +62,18 @@ const SendMoney = () => {
 
   if (chosenUser)
     return (
-      <S.SendMoney>
+      <S.Transfer>
         <div className="header">
-          <h1>Send Money</h1>
+          <h1>Transfer</h1>
           <p onClick={() => setChosenUser('')}>Back to Search</p>
         </div>
-        <TransferForm user={chosenUser} />
-      </S.SendMoney>
+        <TransferForm recipient={chosenUser} />
+      </S.Transfer>
     );
 
   return (
-    <S.SendMoney>
-      <h1>Send Money</h1>
+    <S.Transfer>
+      <h1>Transfer</h1>
       <S.Form onSubmit={searchHandler}>
         <div>
           <input
@@ -88,12 +89,12 @@ const SendMoney = () => {
         <S.BlueButton className="search">Search</S.BlueButton>
       </S.Form>
       {displayUsers}
-    </S.SendMoney>
+    </S.Transfer>
   );
 };
 
 // -------------------------------------------------- styling ----------------------------------------------
-S.SendMoney = styled.div`
+S.Transfer = styled.div`
   margin: 0 40px;
   display: flex;
   flex-direction: column;
@@ -136,4 +137,4 @@ S.Form = styled(S.Form)`
     margin: 0 0 50px 0;
   }
 `;
-export default SendMoney;
+export default Transfer;

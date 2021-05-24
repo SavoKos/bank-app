@@ -4,7 +4,6 @@ import Transactions from '../Transactions/Transactions';
 import Savings from './Savings/Savings';
 import CardOptions from './CardOptions';
 
-const S = {};
 const Dashboard = () => {
   return (
     <S.Dashboard>
@@ -19,6 +18,7 @@ const Dashboard = () => {
 };
 
 // -------------------------------------------------- styling ----------------------------------------------
+const S = {};
 S.Dashboard = styled.div`
   background-color: #fff;
   width: 100%;

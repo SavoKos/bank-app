@@ -1,17 +1,35 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import useAuth from '../../../context/AuthContext';
+import { database } from '../../../firebase';
 import S from '../../../styles/styledComponents';
 import Icon from '../../UI/Icon';
 import Modal from '../../UI/Modal';
+import { v4 as uuid } from 'uuid';
 
 const Loan = () => {
   const [loan, setLoan] = useState(null);
   const [modalActive, setModalActive] = useState(false);
   const [loanAmount, setLoanAmount] = useState(false);
+  const { currentUser } = useAuth();
 
   const loanHandler = amount => {
     setModalActive(true);
     setLoanAmount(amount);
+  };
+
+  const takeLoanHandler = () => {
+    setModalActive(false);
+    database
+      .ref(`users/${currentUser.uid}/transactions/${uuid()}`)
+      .set({
+        type: 'income',
+        amount: loanAmount,
+        name: loan,
+        date: new Date().toISOString(),
+      })
+      .then(res => console.log(res))
+      .catch(err => console.log(err));
   };
 
   if (loan)
@@ -32,9 +50,7 @@ const Loan = () => {
             Are you sure you want take {loanAmount} loan? <br />
           </h1>
           <S.ButtonsContainer>
-            <S.BlueButton onClick={() => setModalActive(false)}>
-              Yes
-            </S.BlueButton>
+            <S.BlueButton onClick={takeLoanHandler}>Yes</S.BlueButton>
             <S.RedButton onClick={() => setModalActive(false)}>
               Cancel
             </S.RedButton>

@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import { SearchOutlined } from '@ant-design/icons';
 import useAuth from '../../context/AuthContext';
-import withAuth from '../../hoc/withAuth';
 import Link from 'next/link';
 import Image from 'next/image';
 
 const Header = ({ page = 'Excellence Holdings' }) => {
   const { currentUser } = useAuth();
+
   console.log(currentUser);
   let welcomeMessage = (
     <p>
@@ -14,12 +14,15 @@ const Header = ({ page = 'Excellence Holdings' }) => {
       change your name.
     </p>
   );
-  if (currentUser.displayName)
+  if (currentUser?.displayName)
     welcomeMessage = <p>Hi {currentUser.displayName}. Welcome back!</p>;
 
-  let avatar = <h2>{currentUser.email.slice(0, 1).toUpperCase()}</h2>;
+  let avatar = 'User';
 
-  if (currentUser.photoURL)
+  if (currentUser?.email)
+    avatar = <h2>{currentUser.displayName.slice(0, 1).toUpperCase()}</h2>;
+
+  if (currentUser?.photoURL)
     avatar = (
       <Image
         height={50}

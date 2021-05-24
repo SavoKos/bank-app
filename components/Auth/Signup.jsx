@@ -36,7 +36,7 @@ const Signup = props => {
     database
       .ref('users/' + user.uid)
       .set(userData)
-      .then(() => Router.push('/'));
+      .then(() => Router.replace('/'));
   };
 
   const updateProfileHandler = (userData, url = null) => {

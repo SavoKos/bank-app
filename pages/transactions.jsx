@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Header from '../components/Dashboard/Header';
 import Navigation from '../components/Navigation';
 import Loan from '../components/Transactions/Loan/Loan';
-import SendMoney from '../components/Transactions/SendMoney/SendMoney';
+import SendMoney from '../components/Transactions/Transfer/Transfer';
 import Transactions from '../components/Transactions/Transactions';
 import S from '../styles/styledComponents';
 

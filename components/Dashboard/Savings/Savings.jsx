@@ -43,6 +43,7 @@ S.Savings = styled.div`
       }
       .anticon {
         color: #fff;
+        cursor: default !important;
       }
     }
 

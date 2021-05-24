@@ -1,25 +1,42 @@
 import styled from 'styled-components';
 import Image from 'next/image';
 
-const Transaction = () => {
+const Transaction = props => {
+  const transaction = Object.values(props.transaction)[0];
+  console.log(transaction);
+  const imageSrc = transaction.photoURL
+    ? transaction.photoURL
+    : '/navigationLogo.png';
+
+  const formatAmount = () => {
+    const formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+    });
+
+    return formatter.format(transaction.amount);
+  };
+
   return (
     <S.Transaction>
       <div className="left">
         <Image
-          src="/navigationLogo.png"
+          src={imageSrc}
           height={35}
           width={35}
           layout="fixed"
           className="img"
         />
         <div className="info">
-          <h4>Netflix</h4>
-          <h5>23.08.2021</h5>
+          <h4>
+            {transaction.sender || transaction.recipient || transaction.name}
+          </h4>
+          <h5>{new Date(transaction.date).toLocaleDateString()}</h5>
         </div>
       </div>
       <div className="right">
-        <h4>$16.000</h4>
-        <h5>Income</h5>
+        <h4>{formatAmount()}</h4>
+        <h5 className={transaction.type}>{transaction.type}</h5>
       </div>
     </S.Transaction>
   );
@@ -40,6 +57,14 @@ S.Transaction = styled.div`
   h5 {
     font-weight: 600;
     color: ${({ theme }) => theme.colors.secondary};
+
+    &.income {
+      color: green;
+    }
+
+    &.outcome {
+      color: red;
+    }
   }
 
   .left {

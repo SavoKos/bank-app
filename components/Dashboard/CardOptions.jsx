@@ -6,33 +6,41 @@ import Router from 'next/router';
 const CardOptions = () => {
   return (
     <S.CardOptions>
-      <Card />
+      <S.CardSlider>
+        <button disabled>
+          <Icon type="icon-fanhui" className="arrow left" />
+        </button>
+        <Card />
+        <button>
+          <Icon type="icon-gengduo" className="arrow right" />
+        </button>
+      </S.CardSlider>
       <S.CardFeatures>
         <div
           className="addbalance"
           onClick={() => Router.push('/transactions')}
         >
-          <Icon type="icon-add" />
-          <h3>Add Balance</h3>
-          <Icon type="icon-arrow-right" />
+          <Icon type="icon-4" />
+          <h3>Loan</h3>
+          <Icon type="icon-gengduo" />
         </div>
         <div
           className="movebalance"
           onClick={() => Router.push('/transactions')}
         >
           <Icon type="icon-account-transfer" />
-          <h3>Move Balance</h3>
-          <Icon type="icon-arrow-right" />
+          <h3>Transfer</h3>
+          <Icon type="icon-gengduo" />
         </div>
         <div className="sendandpay">
           <Icon type="icon-Payment1" />
           <h3>Send and Pay</h3>
-          <Icon type="icon-arrow-right" />
+          <Icon type="icon-gengduo" />
         </div>
         <div className="payqr">
           <Icon type="icon-Qr_code" />
           <h3>Pay by QR</h3>
-          <Icon type="icon-arrow-right" />
+          <Icon type="icon-gengduo" />
         </div>
       </S.CardFeatures>
       <S.Invite>
@@ -49,12 +57,40 @@ const S = {};
 S.CardOptions = styled.div`
   display: flex;
   justify-content: flex-start;
-  width: 28% !important;
   align-items: center;
   flex-direction: column;
   padding: 10px;
   background-color: ${({ theme }) => theme.colors.primary};
   border-radius: 30px;
+`;
+
+S.CardSlider = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+
+  button {
+    border: 0;
+    outline: 0;
+    background-color: ${({ theme }) => theme.colors.lightBlue};
+    color: ${({ theme }) => theme.colors.primary};
+    cursor: pointer;
+    border-radius: 50%;
+
+    &:disabled {
+      pointer-events: none;
+      background-color: ${({ theme }) => theme.colors.secondary};
+      color: #fff;
+      opacity: 0.5;
+    }
+  }
+
+  .arrow {
+    padding: 3px;
+    font-size: 20px;
+    pointer-events: none;
+  }
 `;
 
 S.CardFeatures = styled.div`

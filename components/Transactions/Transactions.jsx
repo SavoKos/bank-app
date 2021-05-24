@@ -2,8 +2,38 @@ import styled from 'styled-components';
 import { SearchOutlined } from '@ant-design/icons';
 import Icon from '../UI/Icon';
 import Transaction from './Transaction';
+import { useEffect, useState } from 'react';
+import useAuth from '../../context/AuthContext';
+import Spinner from '../UI/Spinner';
+import { database } from '../../firebase';
 
 const Transactions = () => {
+  const { currentUser } = useAuth();
+  const [transactions, setTransactions] = useState(<Spinner />);
+  const [filter, setFilter] = useState('all');
+
+  useEffect(() => {
+    database
+      .ref(`users/${currentUser.uid}/transactions`)
+      .get()
+      .then(res => {
+        if (!res.val()) return setTransactions(<h2>No Transactions Found!</h2>);
+        const transactionsList = [];
+        for (const [key, value] of Object.entries(res.val())) {
+          if (filter === 'all' || value.type === filter)
+            transactionsList.push(
+              <Transaction transaction={[value]} key={key} />
+            );
+        }
+
+        setTransactions(
+          transactionsList !== [] ? transactionsList : 'No Transactions Found'
+        );
+      })
+      .catch(error => setTransactions('Something went wrong. Try again'));
+  }, [filter]);
+  console.log(transactions);
+
   return (
     <S.Transactions>
       <S.Header>
@@ -14,7 +44,7 @@ const Transactions = () => {
         </S.Icons>
       </S.Header>
       <form>
-        <S.Radio>
+        <S.Radio onChange={e => setFilter(e.target.id)}>
           <input type="radio" id="all" name="transactions" defaultChecked />
           <label htmlFor="all">All</label>
           <input type="radio" id="income" name="transactions" />
@@ -23,26 +53,7 @@ const Transactions = () => {
           <label htmlFor="outcome">Outcome</label>
         </S.Radio>
       </form>
-      <S.TransactionsList>
-        <Transaction />
-        <Transaction />
-        <Transaction />
-        <Transaction />
-        <Transaction />
-        <Transaction />
-        <Transaction />
-        <Transaction />
-        <Transaction />
-        <Transaction />
-        <Transaction />
-        <Transaction />
-        <Transaction />
-        <Transaction />
-        <Transaction />
-        <Transaction />
-        <Transaction />
-        <Transaction />
-      </S.TransactionsList>
+      <S.TransactionsList>{transactions}</S.TransactionsList>
     </S.Transactions>
   );
 };
@@ -106,6 +117,10 @@ S.TransactionsList = styled.div`
   width: 100%;
   max-height: 600px;
   overflow: auto;
+
+  h2 {
+    text-align: center;
+  }
 
   &::-webkit-scrollbar {
     width: 12px; /* width of the entire scrollbar */

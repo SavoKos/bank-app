@@ -25,7 +25,7 @@ const Login = props => {
     setLoading(true);
     login(credentials.email, credentials.password)
       .then(user => {
-        Router.push('/');
+        Router.replace('/');
       })
       .catch(error => {
         console.log(error);

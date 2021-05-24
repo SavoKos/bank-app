@@ -88,10 +88,10 @@ const settings = () => {
 
   let avatar = (
     <h1 className="first-letter">
-      {currentUser.email.slice(0, 1).toUpperCase()}
+      {currentUser.displayName.slice(0, 1).toUpperCase()}
     </h1>
   );
-  if (currentUser.photoURL)
+  if (currentUser?.photoURL)
     avatar = (
       <Image
         height={120}

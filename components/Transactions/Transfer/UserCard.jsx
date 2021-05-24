@@ -4,9 +4,10 @@ import S from '../../../styles/styledComponents';
 
 const UserCard = ({ userData, clicked }) => {
   console.log(userData);
-  let avatar = (
-    <h2 className="avatar">{userData.email.slice(0, 1).toUpperCase()}</h2>
-  );
+  let avatar = 'User';
+
+  if (userData && userData.name)
+    <h2 className="avatar">{userData.email.slice(0, 1).toUpperCase()}</h2>;
 
   if (userData.photoURL)
     avatar = (
@@ -24,7 +25,7 @@ const UserCard = ({ userData, clicked }) => {
         <h4>Name: {userData.name || 'Stranger'}</h4>
         <h5>Email: {userData.email || 'unknown'}</h5>
       </div>
-      <S.BlueButton className="select" onClick={() => clicked(userData)}>
+      <S.BlueButton className="select" onClick={clicked}>
         Select
       </S.BlueButton>
     </S.UserCard>

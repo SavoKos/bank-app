@@ -31,7 +31,8 @@ S.Card = styled.div`
   padding: 20px;
   position: relative;
   min-height: 250px;
-  width: 100%;
+  width: 80%;
+  margin: 0 8px;
   color: #fff;
   display: flex;
   flex-direction: column;

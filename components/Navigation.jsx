@@ -43,7 +43,7 @@ const Navigation = () => {
         type="icon-arrows-left-right"
         clicked={() => Router.push('/transactions')}
       />
-      <Icon type="icon-wallet1" clicked={() => Router.push('/wallet')} />
+      <Icon type="icon-CreditCard" clicked={() => Router.push('/card')} />
       <Icon
         type="icon-LC_icon_user_line_1"
         className={Router.pathname === '/profile' && 'active'}
