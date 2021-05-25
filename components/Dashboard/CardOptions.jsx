@@ -2,19 +2,37 @@ import styled from 'styled-components';
 import Card from '../UI/Card';
 import Icon from '../UI/Icon';
 import Router from 'next/router';
+import AliceCarousel from 'react-alice-carousel';
+import 'react-alice-carousel/lib/alice-carousel.css';
 
-const CardOptions = () => {
+const CardOptions = ({ cards }) => {
+  const cardList = [<Card />, <Card />, <Card />];
+  const responsive = {
+    0: { items: 1 },
+    568: { items: 1 },
+    1024: { items: 1 },
+  };
+
+  const displayCards =
+    cards.length > 0 ? (
+      <>
+        <S.Slider>
+          <AliceCarousel
+            mouseTracking
+            items={cardList}
+            responsive={responsive}
+          />
+        </S.Slider>
+      </>
+    ) : (
+      <h2 className="addCard" onClick={() => Router.push('/cardeditor')}>
+        Add cards
+      </h2>
+    );
+
   return (
     <S.CardOptions>
-      <S.CardSlider>
-        <button disabled>
-          <Icon type="icon-fanhui" className="arrow left" />
-        </button>
-        <Card />
-        <button>
-          <Icon type="icon-gengduo" className="arrow right" />
-        </button>
-      </S.CardSlider>
+      <S.CardSlider>{displayCards}</S.CardSlider>
       <S.CardFeatures>
         <div
           className="addbalance"
@@ -69,6 +87,13 @@ S.CardSlider = styled.div`
   align-items: center;
   width: 100%;
   justify-content: center;
+
+  .addCard {
+    text-decoration: underline;
+    margin-top: 20px;
+    color: ${({ theme }) => theme.colors.lightBlue};
+    cursor: pointer;
+  }
 
   button {
     border: 0;
@@ -146,6 +171,42 @@ S.Invite = styled.div`
     color: ${({ theme }) => theme.colors.lightBlue};
     background-color: ${({ theme }) => theme.colors.primary};
     border-radius: 50%;
+  }
+`;
+
+S.Slider = styled.div`
+  width: 100%;
+  margin: auto;
+
+  .addCard {
+    padding: 10px;
+    text-decoration: underline;
+    color: ${({ theme }) => theme.colors.lightBlue};
+    cursor: pointer;
+    width: fit-content;
+  }
+
+  .alice-carousel {
+    max-width: 460px;
+  }
+
+  .alice-carousel__prev-btn,
+  .alice-carousel__next-btn {
+    padding: 10px 15px;
+    font-size: 30px;
+  }
+
+  .alice-carousel__next-btn-item:hover,
+  .alice-carousel__prev-btn-item:hover {
+    color: ${({ theme }) => theme.colors.lightBlue};
+  }
+
+  .alice-carousel__dots-item:not(.__custom) {
+    background-color: #a8afcb;
+  }
+
+  .alice-carousel__dots-item:not(.__custom).__active {
+    background-color: #6e7ebc;
   }
 `;
 
