@@ -1,35 +1,51 @@
+import Router from 'next/router';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import Navigation from '../components/Navigation';
 import Card from '../components/UI/Card';
 import Icon from '../components/UI/Icon';
 import useAuth from '../context/AuthContext';
 import { database } from '../firebase';
 import S from '../styles/styledComponents';
 
-const cardeditor = ({ savo }) => {
-  console.log(savo);
-  const [isEditing, setIsEditing] = useState(true);
+const cardeditor = () => {
   const [provider, setProvider] = useState('Visa');
   const [number, setNumber] = useState('');
-  const [error, setError] = useState(null);
+  const [error, setError] = useState('');
   const { currentUser } = useAuth();
   const [successMessage, setSuccessMessage] = useState('');
+  const [editDisabled, setEditDisabled] = useState(false);
+  const [fetchedCards, setFetchedCards] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  console.log(fetchedCards);
   useEffect(() => {
     database
       .ref(`users/${currentUser.uid}/cards`)
       .get()
       .then(snap => {
-        setSuccessMessage('');
-        setError(null);
-        console.log(snap.val());
+        setLoading(false);
+
+        console.log();
         if (!snap.val()) return;
+        if (Object.keys(snap.val()).length > 4) {
+          setEditDisabled(true);
+          setError('You already have 5 credit cards!');
+        }
+        setSuccessMessage('');
+        setFetchedCards(Object.keys(snap.val()));
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        setLoading(false);
+      });
   }, []);
 
   const saveChanges = e => {
     e.preventDefault();
+
+    if (number.replaceAll(' ', '').length !== 16)
+      return setError('Card Number must contain 16 digits!');
+
     database
       .ref(`users/${currentUser.uid}/cards/${number}`)
       .set({
@@ -39,35 +55,65 @@ const cardeditor = ({ savo }) => {
         name: currentUser.displayName,
       })
       .then(() => {
-        setSuccessMessage('Card changes have been applied');
+        setSuccessMessage('Card changes have been applied.');
+        setTimeout(() => {
+          Router.push('/');
+        }, 2000);
       })
-      .catch(err => console.log(err));
-    setIsEditing(false);
-    setError(null);
+      .catch(err => {
+        setLoading(false);
+        setError(error);
+      });
   };
 
-  const enableEditing = () => {
-    setIsEditing(true);
-    setSuccessMessage('');
-    setError(null);
+  const removeCard = () => {
+    const cardNumExists = fetchedCards.find(
+      fetchedNum => fetchedNum === number
+    );
+
+    if (!cardNumExists)
+      return setError("Card with this card number doesn't exist");
+
+    setLoading(true);
+    database
+      .ref(`users/${currentUser.uid}/cards/${number}`)
+      .remove()
+      .then(res => {
+        setLoading(false);
+        setSuccessMessage('Card is successfully removed.');
+        setTimeout(() => {
+          Router.push('/');
+        }, 2000);
+      })
+      .catch(err => {
+        setLoading(false);
+        setError(err);
+      });
   };
 
   const errorMessage = error ? <p className="error">{error}</p> : null;
 
-  console.log(provider);
-  return (
-    <S.EditorContainer>
-      <Card
-        isEditing={isEditing}
-        className="card"
-        number={number}
-        provider={provider}
-        enableEditing={enableEditing}
-      />
+  if (successMessage)
+    return (
+      <S.EditorContainer>
+        <h1 className="success">
+          {successMessage + ' Redirecting in 2 seconds...'}
+        </h1>
+      </S.EditorContainer>
+    );
 
-      {successMessage ? (
+  return (
+    <S.Container>
+      <Navigation />
+      <S.EditorContainer>
+        <Card
+          isEditing={true}
+          className="card"
+          number={number}
+          provider={provider}
+        />
+
         <h1 className="success">{successMessage}</h1>
-      ) : (
         <S.Form className="editor" onSubmit={saveChanges}>
           <div>
             <label htmlFor="card-number"> Card Number</label>
@@ -76,12 +122,13 @@ const cardeditor = ({ savo }) => {
               type="tel"
               inputMode="numeric"
               name="card-number"
-              pattern="[0-9\s]{19}"
+              pattern="[0-9\s]{16}"
               autoComplete="cc-number"
-              maxLength="19"
-              placeholder="xxxx xxxx xxxx xxxx"
+              maxLength="16"
+              placeholder="Number of card you want to edit or add"
               className="input-number"
               onChange={e => setNumber(e.target.value)}
+              required
             />
           </div>
           <S.SelectContainer>
@@ -96,12 +143,15 @@ const cardeditor = ({ savo }) => {
             <Icon type="icon-arrow-left-c-copy" className="arrow" />
           </S.SelectContainer>
           {errorMessage}
-          <div>
-            <S.BlueButton className="save-btn">Save</S.BlueButton>
+          <div className="buttons">
+            <S.BlueButton className="save-btn" disabled={editDisabled}>
+              Save
+            </S.BlueButton>
+            <a onClick={removeCard}>Remove Card</a>
           </div>
         </S.Form>
-      )}
-    </S.EditorContainer>
+      </S.EditorContainer>
+    </S.Container>
   );
 };
 
@@ -114,6 +164,8 @@ S.EditorContainer = styled.div`
     rgba(90, 92, 106, 1) 0%,
     rgba(32, 45, 58, 1) 81.3%
   );
+  width: 100%;
+  border-radius: 30px 0 0 30px;
   height: 100vh;
   padding: 50px;
 
@@ -133,8 +185,26 @@ S.EditorContainer = styled.div`
     padding: 50px 0 20px 0;
     margin: auto;
 
-    .save-btn {
-      margin-top: -10px;
+    .buttons {
+      a {
+        margin-left: 20px;
+        color: ${({ theme }) => theme.colors.lightBlue};
+        cursor: pointer;
+        &:active,
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      .save-btn {
+        margin-top: -10px;
+
+        &:disabled,
+        &[disabled] {
+          background-color: #989ea6;
+          cursor: not-allowed;
+        }
+      }
     }
   }
 

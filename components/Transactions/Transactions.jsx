@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { SearchOutlined } from '@ant-design/icons';
 import Icon from '../UI/Icon';
+import Spinner from '../UI/Spinner';
 
 const Transactions = ({ setFilter, transactions }) => {
   return (
@@ -8,7 +8,6 @@ const Transactions = ({ setFilter, transactions }) => {
       <S.Header>
         <h1>All Transactions</h1>
         <S.Icons>
-          <SearchOutlined />
           <Icon type="icon-sort" style={{ fontsize: '18px' }} />
         </S.Icons>
       </S.Header>

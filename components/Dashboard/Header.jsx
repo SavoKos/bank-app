@@ -3,8 +3,9 @@ import { SearchOutlined } from '@ant-design/icons';
 import useAuth from '../../context/AuthContext';
 import Link from 'next/link';
 import Image from 'next/image';
+import { memo } from 'react';
 
-const Header = ({ page = 'Excellence Holdings' }) => {
+const Header = memo(({ page = 'Excellence Holdings' }) => {
   const { currentUser } = useAuth();
 
   console.log(currentUser);
@@ -46,7 +47,7 @@ const Header = ({ page = 'Excellence Holdings' }) => {
       </S.Right>
     </S.Header>
   );
-};
+});
 
 // -------------------------------------------------- styling ----------------------------------------------
 const S = {};

@@ -2,35 +2,20 @@ import styled from 'styled-components';
 import Icon from './Icon';
 import useAuth from '../../context/AuthContext';
 import Router from 'next/router';
-import { useState } from 'react';
+import formatAmount from '../Transactions/FormatNumber';
 
 const Card = ({
   isEditing = false,
-  enableEditing,
   className,
   number,
   provider,
   amount,
+  onClick,
 }) => {
   const { currentUser } = useAuth();
 
-  const formatAmount = () => {
-    const formatter = new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    });
-
-    if (!amount) return null;
-    return formatter.format(amount);
-  };
-
-  const editClicked = () => {
-    Router.push('/cardeditor');
-    enableEditing();
-  };
-
   return (
-    <S.Card className={className}>
+    <S.Card className={className} onClick={onClick}>
       <h4>Excellence Holdings</h4>
       <div className="card-number">
         <Icon type="icon-chip" className="chip" />
@@ -39,11 +24,11 @@ const Card = ({
       <div className="holdermoney">
         <h2>{currentUser.displayName || 'Stranger'}</h2>
         {!isEditing && (
-          <button className="edit" onClick={editClicked}>
+          <button className="edit" onClick={() => Router.push('/cardeditor')}>
             Edit
           </button>
         )}
-        <h2>{formatAmount() || '$ 10000'}</h2>
+        <h2>{formatAmount(amount) || formatAmount(10000)}</h2>
       </div>
 
       <Icon
@@ -67,7 +52,7 @@ S.Card = styled.div`
   position: relative;
   min-height: 230px;
   color: #fff;
-  max-width: 440px;
+  width: 440px;
   display: flex;
   margin: 0 10px;
   flex-direction: column;

@@ -1,14 +1,15 @@
 import styled from 'styled-components';
 import Image from 'next/image';
 import Icon from './UI/Icon';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import Router from 'next/router';
 import useAuth from '../context/AuthContext';
 import Spinner from './UI/Spinner';
 import S from '../styles/styledComponents';
 import LogoutModal from './Auth/LogoutModal';
 
-const Navigation = () => {
+const Navigation = memo(() => {
+  console.log('Navigation render');
   const { logout } = useAuth();
   const [loading, setLoading] = useState(false);
   const [modalActive, setModalActive] = useState(false);
@@ -44,6 +45,11 @@ const Navigation = () => {
         clicked={() => Router.push('/transactions')}
       />
       <Icon
+        className={Router.pathname === '/cardeditor' && 'active'}
+        type="icon-creditcard"
+        clicked={() => Router.push('/cardeditor')}
+      />
+      <Icon
         type="icon-LC_icon_user_line_1"
         className={Router.pathname === '/profile' && 'active'}
         clicked={() => Router.push('/profile')}
@@ -61,7 +67,7 @@ const Navigation = () => {
       />
     </S.Navigation>
   );
-};
+});
 
 // -------------------------------------------------- styling ----------------------------------------------
 S.Navigation = styled.div`

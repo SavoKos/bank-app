@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
-const Spinner = () => {
-  return <S.Spinner />;
+const Spinner = ({ absolute = true }) => {
+  const position = `${absolute ? 'absolute' : 'static'}`;
+  return <S.Spinner style={{ position: position }} />;
 };
 
 // -------------------------------------------------- styling ----------------------------------------------
@@ -16,7 +17,6 @@ S.Spinner = styled.div`
     }
   }
 
-  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);

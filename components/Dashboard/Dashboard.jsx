@@ -12,18 +12,32 @@ import Router from 'next/router';
 
 const Dashboard = () => {
   const { currentUser } = useAuth();
-  const [transactions, setTransactions] = useState(<Spinner />);
+  const [transactions, setTransactions] = useState(
+    <Spinner absolute={false} />
+  );
   const [cards, setCards] = useState('');
   const [filter, setFilter] = useState('all');
   const [loading, setLoading] = useState(true);
+
+  console.log(currentUser);
 
   useEffect(() => {
     database
       .ref(`users/${currentUser.uid}`)
       .get()
       .then(res => {
+        setLoading(false);
         const fetchedUser = res.val();
         if (!fetchedUser.cards) return Router.push('/cardeditor');
+
+        const cardsList = [];
+        if (fetchedUser.cards)
+          for (const [key, value] of Object.entries(fetchedUser.cards)) {
+            cardsList.push(value);
+          }
+
+        setCards(cardsList !== [] ? cardsList : null);
+
         if (!fetchedUser.transactions)
           return setTransactions(<h2>No Transactions Found!</h2>);
 
@@ -35,14 +49,6 @@ const Dashboard = () => {
             );
         }
 
-        const cardsList = [];
-        if (fetchedUser.cards)
-          for (const [key, value] of Object.entries(fetchedUser.cards)) {
-            cardsList.push(value);
-          }
-
-        setLoading(false);
-        setCards(cardsList !== [] ? cardsList : null);
         setTransactions(
           transactionsList !== [] ? transactionsList : 'No Transactions Found'
         );

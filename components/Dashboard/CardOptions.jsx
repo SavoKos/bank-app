@@ -6,7 +6,16 @@ import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
 
 const CardOptions = ({ cards }) => {
-  const cardList = [<Card />, <Card />, <Card />];
+  let cardList = [];
+  if (cards)
+    cardList = cards.map(card => (
+      <Card
+        isEditing={false}
+        amount={card.amount}
+        number={card.number}
+        provider={card.provider}
+      />
+    ));
   const responsive = {
     0: { items: 1 },
     568: { items: 1 },

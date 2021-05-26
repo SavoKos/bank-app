@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import Image from 'next/image';
+import formatAmount from './FormatNumber';
 
 const Transaction = props => {
   const transaction = Object.values(props.transaction)[0];
@@ -7,15 +8,6 @@ const Transaction = props => {
   const imageSrc = transaction.photoURL
     ? transaction.photoURL
     : '/navigationLogo.png';
-
-  const formatAmount = () => {
-    const formatter = new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    });
-
-    return formatter.format(transaction.amount);
-  };
 
   return (
     <S.Transaction>
@@ -35,7 +27,7 @@ const Transaction = props => {
         </div>
       </div>
       <div className="right">
-        <h4>{formatAmount()}</h4>
+        <h4>{formatAmount(transaction.amount)}</h4>
         <h5 className={transaction.type}>{transaction.type}</h5>
       </div>
     </S.Transaction>
