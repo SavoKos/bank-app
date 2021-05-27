@@ -1,13 +1,19 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import useAuth from '../../../context/AuthContext';
-import { database } from '../../../firebase';
-import S from '../../../styles/styledComponents';
-import Card from '../../UI/Card';
-import Spinner from '../../UI/Spinner';
-import LoanAmount from './LoanAmount';
+import useAuth from '../../context/AuthContext';
+import { database } from '../../firebase';
+import S from '../../styles/styledComponents';
+import Card from '../UI/Card';
+import Spinner from '../UI/Spinner';
+import LoanAmount from './Loan/LoanAmount';
+import TransferForm from './Transfer/TransferForm';
 
-const LoanCard = ({ setSelectedLoan, selectedLoan }) => {
+const ChooseCardList = ({
+  goBack,
+  selectedLoan,
+  recipient,
+  transactionType = 'loan',
+}) => {
   const [fetchedCards, setFetchedCards] = useState([]);
   const [selectedCard, setSelectedCard] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -36,13 +42,24 @@ const LoanCard = ({ setSelectedLoan, selectedLoan }) => {
       });
   }, []);
 
-  if (selectedCard?.length !== 0)
+  if (selectedCard?.length !== 0 && transactionType === 'loan')
     return (
       <LoanAmount
         selectedLoan={selectedLoan}
         setSelectedCard={setSelectedCard}
         selectedCard={selectedCard}
       />
+    );
+
+  if (selectedCard?.length !== 0 && transactionType === 'transfer')
+    return (
+      <>
+        <div className="header">
+          <h1>Transfer</h1>
+          <p onClick={() => setSelectedCard('')}>Back to Cards</p>
+        </div>
+        <TransferForm recipient={recipient} selectedCard={selectedCard} />
+      </>
     );
 
   if (loading)
@@ -56,7 +73,7 @@ const LoanCard = ({ setSelectedLoan, selectedLoan }) => {
     <S.Loan>
       <div className="header">
         <h1>{'Choose Card'}</h1>
-        <p onClick={() => setSelectedLoan(null)}>Back</p>
+        <p onClick={() => goBack(null)}>Back</p>
       </div>
       <S.LoanOption>
         {fetchedCards.map(card => (
@@ -75,7 +92,7 @@ const LoanCard = ({ setSelectedLoan, selectedLoan }) => {
   );
 };
 
-export default LoanCard;
+export default ChooseCardList;
 
 // -------------------------------------------------- styling ----------------------------------------------
 S.Loan = styled.div`
@@ -89,6 +106,10 @@ S.Loan = styled.div`
     justify-content: space-between;
     margin-bottom: 30px;
     width: 100%;
+
+    h1 {
+      padding-left: 25px;
+    }
 
     p {
       color: ${({ theme }) => theme.colors.lightBlue};

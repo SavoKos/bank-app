@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import Icon from '../../UI/Icon';
-import LoanCard from './LoanCard';
+import ChooseCardList from '../ChooseCardList';
 
 const LoanList = () => {
   const [selectedLoan, setSelectedLoan] = useState(null);
 
   if (selectedLoan)
     return (
-      <LoanCard selectedLoan={selectedLoan} setSelectedLoan={setSelectedLoan} />
+      <ChooseCardList selectedLoan={selectedLoan} goBack={setSelectedLoan} />
     );
 
   return (

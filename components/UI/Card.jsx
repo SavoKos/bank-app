@@ -22,13 +22,13 @@ const Card = ({
         <h2>{number}</h2>
       </div>
       <div className="holdermoney">
-        <h2>{currentUser.displayName || 'Stranger'}</h2>
+        <h5>{currentUser.displayName || 'Stranger'}</h5>
         {!isEditing && (
           <button className="edit" onClick={() => Router.push('/cardeditor')}>
             Edit
           </button>
         )}
-        <h2>{formatAmount(amount) || formatAmount(10000)}</h2>
+        <h3>{formatAmount(amount) || formatAmount(10000)}</h3>
       </div>
 
       <Icon

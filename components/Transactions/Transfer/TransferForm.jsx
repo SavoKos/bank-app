@@ -5,16 +5,19 @@ import useAuth from '../../../context/AuthContext';
 import { database } from '../../../firebase';
 import S from '../../../styles/styledComponents';
 import { v4 as uuid } from 'uuid';
+import formatAmount from '../FormatNumber';
+import Router from 'next/router';
 
-const TransferForm = ({ recipient }) => {
+const TransferForm = ({ recipient, selectedCard }) => {
   const [amount, setAmount] = useState(1);
+  const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState('');
   const { currentUser } = useAuth();
   const transactionID = uuid();
 
   console.log(recipient, currentUser);
-  const transferHandler = e => {
-    e.preventDefault();
-
+  const transferHandler = () => {
+    setError(null);
     database
       .ref(`users/${currentUser.uid}/transactions/${transactionID}`)
       .set({
@@ -26,7 +29,10 @@ const TransferForm = ({ recipient }) => {
         photoURL: recipient.photoURL || null,
       })
       .then(res => console.log(res))
-      .catch(err => console.log(err));
+      .catch(err => {
+        setSuccessMessage(false);
+        setError(err);
+      });
 
     database
       .ref(`users/${recipient.id}/transactions/${transactionID}`)
@@ -38,8 +44,30 @@ const TransferForm = ({ recipient }) => {
         date: new Date().toISOString(),
         photoURL: currentUser.photoURL,
       })
-      .then(res => console.log(res))
-      .catch(err => console.log(err));
+      .then(res => {
+        setSuccessMessage(true);
+        setTimeout(() => {
+          Router.push('/');
+        }, 2000);
+      })
+      .catch(err => {
+        setSuccessMessage(false);
+        setError(err);
+      });
+  };
+
+  const checkTransferValidity = e => {
+    e.preventDefault();
+    if (!selectedCard?.amount)
+      return setError(
+        'Something went wrong. Make sure you enter valid amount.'
+      );
+
+    if (selectedCard?.amount < amount)
+      return setError(`You do not have ${formatAmount(amount)}. Request Loan.`);
+
+    console.log(amount, selectedCard.amount);
+    transferHandler();
   };
 
   let avatar = <h1>{recipient.name.slice(0, 1).toUpperCase()}</h1>;
@@ -53,13 +81,21 @@ const TransferForm = ({ recipient }) => {
         className="img"
       />
     );
-  console.log(amount);
+
+  let errorMessage = '';
+  if (error) errorMessage = <p className="error-message">{error}</p>;
+
+  if (successMessage)
+    return (
+      <h1>Money has been successfully transfered. Redirecting in 2 seconds.</h1>
+    );
+
   return (
-    <S.Transfer>
+    <S.TransferForm>
       <S.Avatar>{avatar}</S.Avatar>
       <h2>{recipient.name || 'Stranger'}</h2>
       <h4>{recipient.email || 'Email unknown'}</h4>
-      <S.Form onSubmit={transferHandler}>
+      <S.Form onSubmit={checkTransferValidity}>
         <div className="amount">
           <label htmlFor="amount"> Amount</label>
           <input
@@ -72,17 +108,23 @@ const TransferForm = ({ recipient }) => {
             required
           />
         </div>
+        {errorMessage}
         <S.BlueButton className="send">Send</S.BlueButton>
       </S.Form>
-    </S.Transfer>
+    </S.TransferForm>
   );
 };
 
 // -------------------------------------------------- styling ----------------------------------------------
-S.Transfer = styled.div`
+S.TransferForm = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 0 40px;
+
+  .error-message {
+    margin-bottom: 50px;
+  }
 
   .amount {
     margin-top: 50px;

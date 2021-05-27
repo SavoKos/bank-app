@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import useAuth from '../../../context/AuthContext';
 import { database } from '../../../firebase';
 import S from '../../../styles/styledComponents';
+import ChooseCardList from '../ChooseCardList';
 import TransferForm from './TransferForm';
 import UserCard from './UserCard';
 
@@ -32,6 +33,7 @@ const Transfer = () => {
         const data = snapshot.val();
         for (const prop in data) {
           const searchedUserName = data[prop].name.toLowerCase();
+
           if (
             searchedUserName.includes(name.toLowerCase()) &&
             data[prop].email !== currentUser.email
@@ -63,13 +65,24 @@ const Transfer = () => {
   if (chosenUser)
     return (
       <S.Transfer>
-        <div className="header">
-          <h1>Transfer</h1>
-          <p onClick={() => setChosenUser('')}>Back to Search</p>
-        </div>
-        <TransferForm recipient={chosenUser} />
+        <ChooseCardList
+          goBack={() => setChosenUser('')}
+          recipient={chosenUser}
+          transactionType="transfer"
+        />
       </S.Transfer>
     );
+
+  // if (chosenUser)
+  //   return (
+  //     <S.Transfer>
+  //       <div className="header">
+  //         <h1>Transfer</h1>
+  //         <p onClick={() => setChosenUser('')}>Back to Search</p>
+  //       </div>
+  //       <TransferForm recipient={chosenUser} currentUserDb={currentUserDb} />
+  //     </S.Transfer>
+  //   );
 
   return (
     <S.Transfer>

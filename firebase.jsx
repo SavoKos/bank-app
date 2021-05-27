@@ -17,7 +17,6 @@ if (!firebase.apps.length)
     measurementId: 'G-J4WCP7LH3L',
   });
 else app = firebase.app();
-console.log(firebase, app);
 export const auth = app.auth();
 export const database = app.database();
 export const storage = app.storage();

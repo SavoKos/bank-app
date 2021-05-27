@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Header from '../components/Dashboard/Header';
 import Navigation from '../components/Navigation';
 import Loan from '../components/Transactions/Loan/LoanList';
-import SendMoney from '../components/Transactions/Transfer/Transfer';
+import Transfer from '../components/Transactions/Transfer/Transfer';
 import Transactions from '../components/Transactions/Transactions';
 import S from '../styles/styledComponents';
 import { useEffect, useState } from 'react';
@@ -60,7 +60,7 @@ const transactions = () => {
         <Header page="Transactions" />
         <S.Content>
           <Transactions transactions={transactions} setFilter={setFilter} />
-          <SendMoney />
+          <Transfer />
           <Loan />
         </S.Content>
       </S.Main>
