@@ -6,8 +6,10 @@ const UserCard = ({ userData, clicked }) => {
   console.log(userData);
   let avatar = 'User';
 
-  if (userData && userData.name)
-    <h2 className="avatar">{userData.email.slice(0, 1).toUpperCase()}</h2>;
+  if (userData?.name)
+    avatar = (
+      <h2 className="avatar">{userData.name.slice(0, 1).toUpperCase()}</h2>
+    );
 
   if (userData.photoURL)
     avatar = (

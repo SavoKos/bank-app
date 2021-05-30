@@ -5,20 +5,31 @@ import formatAmount from './FormatNumber';
 const Transaction = props => {
   const transaction = Object.values(props.transaction)[0];
   console.log(transaction);
+
   const imageSrc = transaction.photoURL
     ? transaction.photoURL
     : '/navigationLogo.png';
+  let avatar = (
+    <Image
+      src={imageSrc}
+      height={35}
+      width={35}
+      layout="fixed"
+      className="img"
+    />
+  );
+
+  if (transaction.sender)
+    avatar = (
+      <S.Avatar>
+        <h2>{transaction.sender.slice(0, 1)}</h2>
+      </S.Avatar>
+    );
 
   return (
     <S.Transaction>
       <div className="left">
-        <Image
-          src={imageSrc}
-          height={35}
-          width={35}
-          layout="fixed"
-          className="img"
-        />
+        {avatar}
         <div className="info">
           <h4>
             {transaction.sender || transaction.recipient || transaction.name}
@@ -70,4 +81,15 @@ S.Transaction = styled.div`
       margin-left: 25px;
     }
   }
+`;
+
+S.Avatar = styled.div`
+  background-color: ${({ theme }) => theme.colors.secondary};
+  border-radius: 50%;
+  height: 35px;
+  width: 35px;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

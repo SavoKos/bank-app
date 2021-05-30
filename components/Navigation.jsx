@@ -54,7 +54,11 @@ const Navigation = memo(() => {
         className={Router.pathname === '/profile' && 'active'}
         clicked={() => Router.push('/profile')}
       />
-      <Icon type="icon-piggy-bank" clicked={() => Router.push('/savings')} />
+      <Icon
+        type="icon-piggy-bank"
+        clicked={() => Router.push('/savings')}
+        className={Router.pathname === '/savings' && 'active'}
+      />
       <Icon
         className="logout"
         type="icon-logout"

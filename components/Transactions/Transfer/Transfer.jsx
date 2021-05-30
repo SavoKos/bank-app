@@ -31,6 +31,7 @@ const Transfer = () => {
       .then(snapshot => {
         if (!snapshot.exists()) throw new Error('No data available');
         const data = snapshot.val();
+        console.log(data);
         for (const prop in data) {
           const searchedUserName = data[prop].name.toLowerCase();
 
@@ -62,6 +63,7 @@ const Transfer = () => {
     }
   }
 
+  console.log(users);
   if (chosenUser)
     return (
       <S.Transfer>

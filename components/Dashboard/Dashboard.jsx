@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Header from './Header';
 import Transactions from '../Transactions/Transactions';
 import Transaction from '../Transactions/Transaction';
-import Savings from './Savings/Savings';
+import Savings from '../Savings/Savings';
 import CardOptions from './CardOptions';
 import { database } from '../../firebase';
 import useAuth from '../../context/AuthContext';

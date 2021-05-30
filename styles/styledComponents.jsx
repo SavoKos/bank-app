@@ -7,9 +7,21 @@ Styled.Container = styled.div`
   height: 100%;
   min-height: 100vh;
   background-color: ${({ theme }) => theme.colors.primary};
-  border-radius: 30px;
+  border-radius: 30px 0 0 30px;
   display: flex;
   overflow: hidden;
+`;
+
+Styled.EditButton = styled.button`
+  border-radius: 5px;
+  font-size: 14px;
+  background-color: #fff;
+  outline: 0;
+  border: 0;
+  padding: 7px 15px;
+  font-weight: 600;
+  cursor: pointer;
+  color: ${({ theme }) => theme.colors.lightBlue};
 `;
 
 Styled.BlueButton = styled.button`

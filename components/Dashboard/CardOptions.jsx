@@ -59,6 +59,11 @@ const CardOptions = ({ cards }) => {
           <h3>Transfer</h3>
           <Icon type="icon-gengduo" />
         </div>
+        <div className="savings" onClick={() => Router.push('/savings')}>
+          <Icon type="icon-piggy-bank" />
+          <h3>Savings</h3>
+          <Icon type="icon-gengduo" />
+        </div>
         <div className="sendandpay">
           <Icon type="icon-Payment1" />
           <h3>Send and Pay</h3>
@@ -144,7 +149,8 @@ S.CardFeatures = styled.div`
 
     &.addbalance,
     &.movebalance,
-    &.sendandpay {
+    &.sendandpay,
+    &.savings {
       border-bottom: 1px solid #ddd;
     }
 
