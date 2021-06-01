@@ -18,6 +18,8 @@ const Dashboard = () => {
   const [cards, setCards] = useState('');
   const [filter, setFilter] = useState('all');
   const [loading, setLoading] = useState(true);
+  const [investment, setInvestment] = useState(null);
+  const [deposit, setDeposit] = useState(null);
 
   console.log(currentUser);
 
@@ -37,6 +39,9 @@ const Dashboard = () => {
           }
 
         setCards(cardsList !== [] ? cardsList : null);
+
+        if (fetchedUser.investment) setInvestment(fetchedUser.investment);
+        if (fetchedUser.deposit) setDeposit(fetchedUser.deposit);
 
         if (!fetchedUser.transactions)
           return setTransactions(<h2>No Transactions Found!</h2>);
@@ -62,7 +67,7 @@ const Dashboard = () => {
       <Header page="Dashboard" />
       <S.MainContent>
         <Transactions setFilter={setFilter} transactions={transactions} />
-        <Savings />
+        <Savings investmentData={investment} depositData={deposit} />
         <CardOptions cards={cards} />
       </S.MainContent>
     </S.Dashboard>

@@ -130,4 +130,71 @@ Styled.Form = styled.form`
   }
 `;
 
+Styled.SavingsCard = styled.div`
+  margin-top: 20px;
+  max-height: 250px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  padding: 30px;
+  background: ${({ theme }) => theme.colors.primary};
+  width: 100%;
+
+  .add-goal {
+    color: ${({ theme }) => theme.colors.lightBlue};
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .add-goal,
+  .message {
+    margin-top: 30px;
+  }
+
+  .icon {
+    background-color: ${({ theme }) => theme.colors.lightBlue};
+    min-height: 130px;
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &.investment {
+      background-color: ${({ theme }) => theme.colors.purple};
+    }
+    .anticon {
+      color: #fff;
+      cursor: default !important;
+    }
+  }
+
+  .info {
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+    width: 100%;
+    .money {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 10px 0 20px 0;
+    }
+
+    .goal {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    h4 {
+      color: ${({ theme }) => theme.colors.secondary};
+    }
+  }
+`;
+
 export default Styled;
