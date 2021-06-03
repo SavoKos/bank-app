@@ -10,12 +10,13 @@ import S from '../../../styles/styledComponents';
 import Router from 'next/router';
 import Spinner from '../../UI/Spinner';
 
-const LoanAmount = ({ selectedLoan, setSelectedCard }) => {
+const LoanAmount = ({ selectedLoan, setSelectedCard, selectedCard }) => {
   const [modalActive, setModalActive] = useState(false);
   const [loanAmount, setLoanAmount] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const { currentUser } = useAuth();
+  console.log(selectedCard);
 
   const loanHandler = amount => {
     setModalActive(true);
@@ -25,14 +26,23 @@ const LoanAmount = ({ selectedLoan, setSelectedCard }) => {
   const takeLoanHandler = () => {
     setModalActive(false);
     setLoading(true);
-    database
-      .ref(`users/${currentUser.uid}/transactions/${uuid()}`)
-      .set({
+
+    const updatedAmount = selectedCard.amount * 1 + loanAmount * 1;
+    console.log(updatedAmount);
+    Promise.all([
+      database.ref(`users/${currentUser.uid}/transactions/${uuid()}`).set({
         type: 'income',
         amount: loanAmount,
         name: selectedLoan,
         date: new Date().toISOString(),
-      })
+      }),
+      database
+        .ref(`users/${currentUser.uid}/cards/${selectedCard.number}`)
+        .set({
+          ...selectedCard,
+          amount: updatedAmount,
+        }),
+    ])
       .then(res => {
         setLoading(false);
         setSuccessMessage(
