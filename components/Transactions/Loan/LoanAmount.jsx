@@ -28,21 +28,24 @@ const LoanAmount = ({ selectedLoan, setSelectedCard, selectedCard }) => {
     setLoading(true);
 
     const updatedAmount = selectedCard.amount * 1 + loanAmount * 1;
-    console.log(updatedAmount);
-    Promise.all([
-      database.ref(`users/${currentUser.uid}/transactions/${uuid()}`).set({
+
+    // 2 post request endpoints
+    const UpdateTransactionPromise = database
+      .ref(`users/${currentUser.uid}/transactions/${uuid()}`)
+      .set({
         type: 'income',
         amount: loanAmount,
         name: selectedLoan,
         date: new Date().toISOString(),
-      }),
-      database
-        .ref(`users/${currentUser.uid}/cards/${selectedCard.number}`)
-        .set({
-          ...selectedCard,
-          amount: updatedAmount,
-        }),
-    ])
+      });
+    const updateCardAmountPromise = database
+      .ref(`users/${currentUser.uid}/cards/${selectedCard.number}`)
+      .set({
+        ...selectedCard,
+        amount: updatedAmount,
+      });
+
+    Promise.all([UpdateTransactionPromise, updateCardAmountPromise])
       .then(res => {
         setLoading(false);
         setSuccessMessage(

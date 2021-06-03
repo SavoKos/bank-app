@@ -7,18 +7,22 @@ import S from '../../../styles/styledComponents';
 import { v4 as uuid } from 'uuid';
 import formatAmount from '../FormatNumber';
 import Router from 'next/router';
+import Spinner from '../../UI/Spinner';
 
 const TransferForm = ({ recipient, selectedCard }) => {
   const [amount, setAmount] = useState(1);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
+  const [loading, setLoading] = useState(false);
   const { currentUser } = useAuth();
   const transactionID = uuid();
 
   console.log(recipient, currentUser);
   const transferHandler = () => {
     setError(null);
-    database
+    setLoading(true);
+    // 2 post request endpoints
+    const UpdateCurrUserPromise = database
       .ref(`users/${currentUser.uid}/transactions/${transactionID}`)
       .set({
         type: 'outcome',
@@ -27,14 +31,9 @@ const TransferForm = ({ recipient, selectedCard }) => {
         recipient: recipient.name,
         date: new Date().toISOString(),
         photoURL: recipient.photoURL || null,
-      })
-      .then(res => console.log(res))
-      .catch(err => {
-        setSuccessMessage(false);
-        setError(err);
       });
 
-    database
+    const UpdateRecipientPromise = database
       .ref(`users/${recipient.id}/transactions/${transactionID}`)
       .set({
         type: 'income',
@@ -43,8 +42,11 @@ const TransferForm = ({ recipient, selectedCard }) => {
         sender: currentUser.displayName,
         date: new Date().toISOString(),
         photoURL: currentUser.photoURL,
-      })
-      .then(res => {
+      });
+
+    Promise.all([UpdateCurrUserPromise, UpdateRecipientPromise])
+      .then(() => {
+        setLoading(false);
         setSuccessMessage(true);
         setTimeout(() => {
           Router.push('/');
@@ -89,6 +91,8 @@ const TransferForm = ({ recipient, selectedCard }) => {
     return (
       <h1>Money has been successfully transfered. Redirecting in 2 seconds.</h1>
     );
+
+  if (lodgin) return <Spinner absolute={false} />;
 
   return (
     <S.TransferForm>

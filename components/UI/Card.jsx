@@ -55,6 +55,7 @@ S.Card = styled.div`
   width: 440px;
   display: flex;
   margin: 0 10px;
+  cursor: pointer;
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
