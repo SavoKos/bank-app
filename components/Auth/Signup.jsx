@@ -26,26 +26,24 @@ const Signup = props => {
     }));
   };
 
-  const storeDatabase = user => {
-    const userData = {
-      name: user.displayName,
-      email: user.email,
-      photoURL: user.photoURL,
-    };
-
-    database
-      .ref('users/' + user.uid)
-      .set(userData)
-      .then(() => Router.replace('/cardeditor'));
-  };
-
   const updateProfileHandler = (userData, url = null) => {
+    const updateUser = userData.updateProfile({
+      displayName: credentials.name,
+      photoURL: url,
+    });
+    const storeUserDatabase = database.ref('users/' + userData.uid).set({
+      name: userData.displayName,
+      email: userData.email,
+      photoURL: userData.photoURL,
+    });
+
+    Promise.all([updateUser, storeUserDatabase]);
     userData
       .updateProfile({
         displayName: credentials.name,
         photoURL: url,
       })
-      .then(() => storeDatabase(userData));
+      .then(() => Router.replace('/cardeditor'));
   };
 
   const signupUser = () => {

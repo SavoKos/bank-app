@@ -92,7 +92,7 @@ const TransferForm = ({ recipient, selectedCard }) => {
       <h1>Money has been successfully transfered. Redirecting in 2 seconds.</h1>
     );
 
-  if (lodgin) return <Spinner absolute={false} />;
+  if (loading) return <Spinner absolute={false} />;
 
   return (
     <S.TransferForm>

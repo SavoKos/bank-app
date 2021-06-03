@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Navigation from '../components/Navigation';
 import Card from '../components/UI/Card';
 import Icon from '../components/UI/Icon';
+import Spinner from '../components/UI/Spinner';
 import useAuth from '../context/AuthContext';
 import { database } from '../firebase';
 import S from '../styles/styledComponents';
@@ -21,7 +22,7 @@ const cardeditor = () => {
   console.log(fetchedCards);
   useEffect(() => {
     database
-      .ref(`users/${currentUser.uid}/cards`)
+      .ref(`users/${currentUser?.uid}/cards`)
       .get()
       .then(snap => {
         setLoading(false);
@@ -46,15 +47,17 @@ const cardeditor = () => {
     if (number.replaceAll(' ', '').length !== 16)
       return setError('Card Number must contain 16 digits!');
 
+    setLoading(true);
     database
-      .ref(`users/${currentUser.uid}/cards/${number}`)
+      .ref(`users/${currentUser?.uid}/cards/${number}`)
       .set({
         amount: 10000,
         provider: provider,
         number: number,
-        name: currentUser.displayName,
+        name: currentUser?.displayName,
       })
       .then(() => {
+        setLoading(false);
         setSuccessMessage('Card changes have been applied.');
         setTimeout(() => {
           Router.push('/');
@@ -67,7 +70,7 @@ const cardeditor = () => {
   };
 
   const removeCard = () => {
-    const cardNumExists = fetchedCards.find(
+    const cardNumExists = fetchedCards?.find(
       fetchedNum => fetchedNum === number
     );
 
@@ -76,7 +79,7 @@ const cardeditor = () => {
 
     setLoading(true);
     database
-      .ref(`users/${currentUser.uid}/cards/${number}`)
+      .ref(`users/${currentUser?.uid}/cards/${number}`)
       .remove()
       .then(res => {
         setLoading(false);
@@ -101,6 +104,8 @@ const cardeditor = () => {
         </h1>
       </S.EditorContainer>
     );
+
+  if (loading) return <Spinner />;
 
   return (
     <S.Container>
