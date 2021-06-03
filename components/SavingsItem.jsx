@@ -1,24 +1,27 @@
 import { useState } from 'react';
 import Router from 'next/router';
-import S from '../../styles/styledComponents';
-import Icon from '../UI/Icon';
+import S from '../styles/styledComponents';
+import Icon from './UI/Icon';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
-import { database } from '../../firebase';
-import useAuth from '../../context/AuthContext';
-import Spinner from '../UI/Spinner';
+import { database } from '../firebase';
+import useAuth from '../context/AuthContext';
+import Spinner from './UI/Spinner';
+import styled from 'styled-components';
 
 const SavingsItem = ({ savingsData, type }) => {
   console.log(savingsData);
   const { currentUser } = useAuth();
   const [editing, setEditing] = useState(false);
-  const [sliderGoal, setSliderGoal] = useState(savingsData?.goal || 0);
+  const [sliderGoal, setSliderGoal] = useState(savingsData?.goal || 10000);
   const [message, setMessage] = useState(null);
+  const [confirmation, setConfirmation] = useState(false);
 
   const capitalize = string => string[0].toUpperCase() + string.slice(1);
   const buttonHandler = () => {
-    Router.push('/savings');
+    if (Router.pathname !== '/savings') return Router.push('/savings');
     if (!editing) return setEditing(true);
+    if (!confirmation) return setConfirmation(true);
 
     const goalProgress = type === 'investment' ? 'invested' : 'deposited';
     database
@@ -27,7 +30,8 @@ const SavingsItem = ({ savingsData, type }) => {
         goal: sliderGoal,
         [goalProgress]: 0,
       })
-      .then(() => {
+      .then(res => {
+        setConfirmation(false);
         setMessage(
           `Your ${capitalize(type)} goal has been set. Redirecting in 2 seconds`
         );
@@ -40,6 +44,13 @@ const SavingsItem = ({ savingsData, type }) => {
       );
 
     setEditing(false);
+  };
+
+  const discardChanges = () => {
+    setEditing(false);
+    setSliderGoal(savingsData?.goal || 10000);
+    setMessage(null);
+    setConfirmation(false);
   };
 
   let info = (
@@ -94,6 +105,20 @@ const SavingsItem = ({ savingsData, type }) => {
 
   if (message) info = <h2 className="message">{message}</h2>;
 
+  if (confirmation)
+    info = (
+      <S.Confirmation>
+        <h3 className="confirm-title">
+          If you already have {capitalize(type)} goal, it will be overwriten.
+        </h3>
+        <h3>Are you sure you want to continue?</h3>
+        <div className="buttons">
+          <S.BlueConfirmBtn onClick={buttonHandler}>Continue</S.BlueConfirmBtn>
+          <S.RedConfirmBtn onClick={discardChanges}>Cancel</S.RedConfirmBtn>
+        </div>
+      </S.Confirmation>
+    );
+
   return (
     <S.SavingsCard>
       <div className={`icon ${type}`}>
@@ -113,6 +138,33 @@ const SavingsItem = ({ savingsData, type }) => {
   );
 };
 
-// -------------------------------------------------- styling ----------------------------------------------
-
 export default SavingsItem;
+
+// -------------------------------------------------- styling ----------------------------------------------
+S.BlueConfirmBtn = styled.button`
+  font-size: 20px;
+  padding: 8px 18px;
+  outline: 0;
+  border: 0;
+  background-color: ${({ theme }) => theme.colors.lightBlue};
+  color: #fff;
+  border-radius: 5px;
+  margin: 0 10px;
+  margin-top: 20px;
+  cursor: pointer;
+`;
+
+S.RedConfirmBtn = styled(S.BlueConfirmBtn)`
+  background-color: red;
+`;
+
+S.Confirmation = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .confirm-title {
+    margin-top: 10px;
+  }
+`;

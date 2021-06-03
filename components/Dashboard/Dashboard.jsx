@@ -2,13 +2,13 @@ import styled from 'styled-components';
 import Header from './Header';
 import Transactions from '../Transactions/Transactions';
 import Transaction from '../Transactions/Transaction';
-import Savings from '../Savings/Savings';
 import CardOptions from './CardOptions';
 import { database } from '../../firebase';
 import useAuth from '../../context/AuthContext';
 import { useEffect, useState } from 'react';
 import Spinner from '../UI/Spinner';
 import Router from 'next/router';
+import SavingsItem from '../SavingsItem';
 
 const Dashboard = () => {
   const { currentUser } = useAuth();
@@ -67,7 +67,11 @@ const Dashboard = () => {
       <Header page="Dashboard" />
       <S.MainContent>
         <Transactions setFilter={setFilter} transactions={transactions} />
-        <Savings investmentData={investment} depositData={deposit} />
+        <S.Savings>
+          <h1>Savings</h1>
+          <SavingsItem type="deposit" savingsData={deposit} />
+          <SavingsItem type="investment" savingsData={investment} />
+        </S.Savings>
         <CardOptions cards={cards} />
       </S.MainContent>
     </S.Dashboard>
@@ -91,4 +95,11 @@ S.MainContent = styled.main`
   & > * {
     width: 32%;
   }
+`;
+
+S.Savings = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0 40px;
 `;

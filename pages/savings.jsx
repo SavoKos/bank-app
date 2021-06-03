@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Navigation from '../components/Navigation';
 import S from '../styles/styledComponents';
-import SavingsItem from '../components/Savings/SavingsItem';
+import SavingsItem from '../components/SavingsItem';
 import { useEffect, useState } from 'react';
 import { database } from '../firebase';
 import useAuth from '../context/AuthContext';
