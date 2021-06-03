@@ -5,7 +5,9 @@ import Image from 'next/image';
 import Spinner from '../UI/Spinner';
 import S from '../../styles/styledComponents';
 import { database, storage } from '../../firebase';
+import Icon from '../UI/Icon';
 import styled from 'styled-components';
+import { v4 as uuidv4 } from 'uuid';
 
 const Signup = props => {
   const [credentials, setCredentials] = useState({
@@ -15,10 +17,12 @@ const Signup = props => {
     name: '',
   });
   const [error, setError] = useState(undefined);
-  const [image, setImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [imageLoading, setImageLoading] = useState(false);
+  const [isImageUploaded, setIsImageUploaded] = useState(false);
   const { signup } = useAuth();
-
+  console.log(selectedImage);
   const updateInputValueHandler = event => {
     setCredentials(prevState => ({
       ...prevState,
@@ -26,41 +30,30 @@ const Signup = props => {
     }));
   };
 
-  const updateProfileHandler = (userData, url = null) => {
+  const updateProfileHandler = userData => {
     const updateUser = userData.updateProfile({
       displayName: credentials.name,
-      photoURL: url,
+      photoURL: credentials.photoURL || userData.photoURL || null,
     });
     const storeUserDatabase = database.ref('users/' + userData.uid).set({
       name: userData.displayName,
       email: userData.email,
-      photoURL: userData.photoURL,
+      photoURL: credentials.photoURL || userData.photoURL,
     });
 
-    Promise.all([updateUser, storeUserDatabase]);
-    userData
-      .updateProfile({
-        displayName: credentials.name,
-        photoURL: url,
-      })
-      .then(() => Router.replace('/cardeditor'));
+    Promise.all([updateUser, storeUserDatabase])
+      .then(() => Router.replace('/cardeditor'))
+      .catch(error => {
+        console.log(error);
+        setError(error.message);
+        setLoading(false);
+      });
   };
 
   const signupUser = () => {
     setLoading(true);
     signup(credentials.email, credentials.password)
-      .then(user => {
-        const userData = user.user;
-        console.log(userData);
-        if (!image) return updateProfileHandler(userData);
-
-        const fileRef = storage.ref(`images/${image.name}`);
-        fileRef.put(image).then(() =>
-          fileRef.getDownloadURL().then(url => {
-            updateProfileHandler(userData, url);
-          })
-        );
-      })
+      .then(user => updateProfileHandler(user.user))
       .catch(error => {
         console.log(error);
         setError(error.message);
@@ -75,13 +68,45 @@ const Signup = props => {
     return signupUser();
   };
 
-  const setImageHandler = e => {
+  const selectImage = e => {
     const image = e.target.files[0];
+    console.log(image);
+
+    // file format validity (only accepts jpg/jpeg/png)
+    const idxDot = image.name.lastIndexOf('.') + 1;
+    const extFile = image.name.substr(idxDot, image.name.length).toLowerCase();
+    if (extFile !== 'jpg' && extFile !== 'jpeg' && extFile !== 'png')
+      return setError('Only jpg/jpeg and png files are allowed!');
+
     if (image.size > 10000000)
       return setError('Image size must be less than 10MB');
 
     setError(undefined);
-    setImage(image);
+    setSelectedImage(image);
+    setCredentials(prevCredentials => {
+      return { ...prevCredentials, photoURL: null };
+    });
+  };
+
+  const databaseUploadImageHandler = () => {
+    setImageLoading(true);
+    console.log(selectedImage);
+    const fileRef = storage.ref(`images/${uuidv4()}`);
+    fileRef
+      .put(selectedImage)
+      .then(() =>
+        fileRef.getDownloadURL().then(url => {
+          setImageLoading(false);
+          setSelectedImage(false);
+          setCredentials(prevCredentials => {
+            return { ...prevCredentials, photoURL: url };
+          });
+        })
+      )
+      .catch(error => {
+        setError(error.message);
+        setImageLoading(false);
+      });
   };
 
   let errorMessage = '';
@@ -144,12 +169,31 @@ const Signup = props => {
               />
             </div>
             <S.InputImage>
+              <label htmlFor="img-upload" className="image-upload">
+                <Icon
+                  type={
+                    credentials.photoURL
+                      ? 'icon-tick'
+                      : 'icon-LC_icon_user_line_1'
+                  }
+                  className={credentials.photoURL && 'uploaded'}
+                />
+                {credentials.photoURL ? 'Picture Uploaded' : 'Profile Picture'}
+              </label>
               <input
+                id="img-upload"
                 type="file"
-                name="picture"
-                className="input-file"
-                onChange={setImageHandler}
+                onChange={selectImage}
+                accept="image/*"
               />
+              {selectedImage && (
+                <S.UploadButton
+                  onClick={databaseUploadImageHandler}
+                  disabled={imageLoading}
+                >
+                  {imageLoading ? <S.ImageSpinner /> : 'Upload'}
+                </S.UploadButton>
+              )}
             </S.InputImage>
             {errorMessage}
             <div>
@@ -166,24 +210,47 @@ const Signup = props => {
     </>
   );
 };
+export default Signup;
 
 // -------------------------------------------------- styling ----------------------------------------------
 S.InputImage = styled.div`
-  padding: 0 !important;
-  margin: 0;
-  border: 1px solid #bbb;
-  border-radius: 5px;
-  position: relative;
-  background-color: #acb6bb;
-  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-  ::before {
-    content: 'Add profile picture';
-    position: absolute;
-    font-size: 20px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  input[type='file'] {
+    display: none;
+  }
+  .image-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    left: 0;
+    position: static;
+  }
+
+  .anticon {
+    margin-right: 10px;
+
+    &.uploaded {
+      color: #009600;
+    }
   }
 `;
-export default Signup;
+
+S.UploadButton = styled(S.BlueButton)`
+  position: relative;
+  font-size: 14px;
+  padding: 6px 12px;
+  margin: 0;
+`;
+
+S.ImageSpinner = styled(S.Spinner)`
+  min-width: 20px !important;
+  min-height: 20px !important;
+  border: 2px solid ${({ theme }) => theme.colors.lightBlue} !important;
+  border-right: 2px solid #fff !important;
+`;

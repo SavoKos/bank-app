@@ -12,6 +12,27 @@ Styled.Container = styled.div`
   overflow: hidden;
 `;
 
+Styled.Spinner = styled.div`
+  @keyframes spinner {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 40px;
+  min-height: 40px;
+  border: 5px solid rgba(255, 255, 255, 0.1);
+  border-right: 5px solid ${({ theme }) => theme.colors.blue};
+  border-radius: 50%;
+  animation: spinner 1s linear infinite;
+`;
+
 Styled.EditButton = styled.button`
   border-radius: 5px;
   font-size: 14px;
@@ -44,6 +65,16 @@ Styled.BlueButton = styled.button`
     background-color: #09538e;
     border-color: #09538e;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  &:disabled {
+    cursor: default;
+
+    &:hover {
+      background-color: ${({ theme }) => theme.colors.lightBlue};
+      border-color: ${({ theme }) => theme.colors.lightBlue};
+      box-shadow: none;
+    }
   }
 `;
 
@@ -123,7 +154,7 @@ Styled.Form = styled.form`
       padding: 0 0.5em;
     }
 
-    &:focus-within label {
+    &:focus-within label:not(.image-upload) {
       color: ${({ theme }) => theme.colors.blue};
       font-weight: 600;
     }
