@@ -4,7 +4,7 @@ import useAuth from '../../context/AuthContext';
 import Spinner from '../UI/Spinner';
 import styled from 'styled-components';
 import S from '../../styles/styledComponents';
-import Head from '../Head';
+import Router from 'next/router';
 
 const ResetPassword = props => {
   const [email, setEmail] = useState('');
@@ -56,7 +56,6 @@ const ResetPassword = props => {
 
   return (
     <>
-      <Head title="Reset Password" />
       <div className="login-box-formbox">
         <div className="login-box-signup">
           Log in to existing account?
