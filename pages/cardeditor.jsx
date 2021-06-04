@@ -1,6 +1,7 @@
 import Router from 'next/router';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import Head from '../components/Head';
 import Navigation from '../components/Navigation';
 import Card from '../components/UI/Card';
 import Icon from '../components/UI/Icon';
@@ -98,65 +99,77 @@ const cardeditor = () => {
 
   if (successMessage)
     return (
-      <S.EditorContainer>
-        <h1 className="success">
-          {successMessage + ' Redirecting in 2 seconds...'}
-        </h1>
-      </S.EditorContainer>
+      <>
+        <Head title="Card Editor" />
+        <S.EditorContainer>
+          <h1 className="success">
+            {successMessage + ' Redirecting in 2 seconds...'}
+          </h1>
+        </S.EditorContainer>
+      </>
     );
 
-  if (loading) return <Spinner />;
+  if (loading)
+    return (
+      <>
+        <Head title="Card Editor" /> <Spinner />
+      </>
+    );
 
   return (
-    <S.Container>
-      <Navigation />
-      <S.EditorContainer>
-        <Card
-          isEditing={true}
-          className="card"
-          number={number}
-          provider={provider}
-        />
+    <>
+      <Head title="Card Editor" />
 
-        <h1 className="success">{successMessage}</h1>
-        <S.Form className="editor" onSubmit={saveChanges}>
-          <div>
-            <label htmlFor="card-number"> Card Number</label>
-            <input
-              id="ccn"
-              type="tel"
-              inputMode="numeric"
-              name="card-number"
-              pattern="[0-9\s]{16}"
-              autoComplete="cc-number"
-              maxLength="16"
-              placeholder="Number of card you want to edit or add"
-              className="input-number"
-              onChange={e => setNumber(e.target.value)}
-              required
-            />
-          </div>
-          <S.SelectContainer>
-            <select
-              name="card-number"
-              onChange={e => setProvider(e.target.value)}
-            >
-              <option>Visa</option>
-              <option>Master Card</option>
-              <option>American Express</option>
-            </select>
-            <Icon type="icon-arrow-left-c-copy" className="arrow" />
-          </S.SelectContainer>
-          {errorMessage}
-          <div className="buttons">
-            <S.BlueButton className="save-btn" disabled={editDisabled}>
-              Save
-            </S.BlueButton>
-            <a onClick={removeCard}>Remove Card</a>
-          </div>
-        </S.Form>
-      </S.EditorContainer>
-    </S.Container>
+      <S.Container>
+        <Navigation />
+        <S.EditorContainer>
+          <Card
+            isEditing={true}
+            className="card"
+            number={number}
+            provider={provider}
+          />
+
+          <h1 className="success">{successMessage}</h1>
+          <S.Form className="editor" onSubmit={saveChanges}>
+            <div>
+              <label htmlFor="card-number"> Card Number</label>
+              <input
+                id="ccn"
+                type="tel"
+                inputMode="numeric"
+                name="card-number"
+                pattern="[0-9\s]{16}"
+                autoComplete="cc-number"
+                maxLength="16"
+                placeholder="Number of card you want to edit or add"
+                className="input-number"
+                onChange={e => setNumber(e.target.value)}
+                required
+              />
+            </div>
+            <S.SelectContainer>
+              <select
+                name="card-number"
+                onChange={e => setProvider(e.target.value)}
+              >
+                <option>Visa</option>
+                <option>Master Card</option>
+                <option>American Express</option>
+              </select>
+              <Icon type="icon-arrow-left-c-copy" className="arrow" />
+            </S.SelectContainer>
+            {errorMessage}
+            <div className="buttons">
+              <S.BlueButton className="save-btn" disabled={editDisabled}>
+                Save
+              </S.BlueButton>
+              <a onClick={removeCard}>Remove Card</a>
+            </div>
+          </S.Form>
+        </S.EditorContainer>
+      </S.Container>
+    </>
   );
 };
 

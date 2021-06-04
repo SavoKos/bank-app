@@ -129,19 +129,22 @@ const settings = () => {
   );
 
   return (
-    <S.Container>
-      <Navigation />
-      <S.Settings>
-        <h1 className="title">Edit profile</h1>
-        <S.Avatar>
-          {avatar}
-          <input type="file" onChange={setImageHandler} />
-          <Icon type="icon-edit" style={{ fontSize: '15px' }} />
-        </S.Avatar>
-        {message}
-        {form}
-      </S.Settings>
-    </S.Container>
+    <>
+      <Head title="Profile" /> <Spinner />
+      <S.Container>
+        <Navigation />
+        <S.Settings>
+          <h1 className="title">Edit profile</h1>
+          <S.Avatar>
+            {avatar}
+            <input type="file" onChange={setImageHandler} />
+            <Icon type="icon-edit" style={{ fontSize: '15px' }} />
+          </S.Avatar>
+          {message}
+          {form}
+        </S.Settings>
+      </S.Container>
+    </>
   );
 };
 

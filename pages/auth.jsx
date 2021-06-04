@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Login from '../components/Auth/Login';
 import Signup from '../components/Auth/Signup';
 import ResetPassword from '../components/Auth/ResetPassword';
+import Head from '../components/Head';
 
 const auth = () => {
   const [signupActive, setSignupActive] = useState(false);
@@ -19,29 +20,35 @@ const auth = () => {
 
   if (forgotPassword)
     return (
-      <S.Container>
-        <S.Auth>
-          <ResetPassword
-            backToLogin={backToLoginHandler}
-            validateEmail={info => authHandler(info)}
-          />
-        </S.Auth>
-      </S.Container>
+      <>
+        <Head title="Auth" />
+        <S.Container>
+          <S.Auth>
+            <ResetPassword
+              backToLogin={backToLoginHandler}
+              validateEmail={info => authHandler(info)}
+            />
+          </S.Auth>
+        </S.Container>
+      </>
     );
 
   return (
-    <S.Container>
-      <S.Auth>
-        {signupActive ? (
-          <Signup toggleSignupActive={toggleSignupActiveHandler} />
-        ) : (
-          <Login
-            resetPassword={() => setForgotPassword(true)}
-            toggleSignupActive={toggleSignupActiveHandler}
-          />
-        )}
-      </S.Auth>
-    </S.Container>
+    <>
+      <Head title="Auth" />
+      <S.Container>
+        <S.Auth>
+          {signupActive ? (
+            <Signup toggleSignupActive={toggleSignupActiveHandler} />
+          ) : (
+            <Login
+              resetPassword={() => setForgotPassword(true)}
+              toggleSignupActive={toggleSignupActiveHandler}
+            />
+          )}
+        </S.Auth>
+      </S.Container>
+    </>
   );
 };
 export default auth;

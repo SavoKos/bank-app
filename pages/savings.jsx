@@ -7,6 +7,7 @@ import { database } from '../firebase';
 import useAuth from '../context/AuthContext';
 import Spinner from '../components/UI/Spinner';
 import Header from '../components/Dashboard/Header';
+import Head from '../components/Head';
 
 const savings = () => {
   const [investment, setInvestment] = useState(null);
@@ -31,19 +32,28 @@ const savings = () => {
       });
   }, []);
 
-  if (loading) return <Spinner />;
+  if (loading)
+    return (
+      <>
+        <Head title="Savings" /> <Spinner />
+        <Spinner />
+      </>
+    );
 
   return (
-    <S.Container>
-      <Navigation />
-      <S.Savings>
-        <Header page="Savings" />
-        <div className="cards">
-          <SavingsItem savingsData={deposit} type="deposit" />
-          <SavingsItem savingsData={investment} type="investment" />
-        </div>
-      </S.Savings>
-    </S.Container>
+    <>
+      <Head title="Savings" /> <Spinner />
+      <S.Container>
+        <Navigation />
+        <S.Savings>
+          <Header page="Savings" />
+          <div className="cards">
+            <SavingsItem savingsData={deposit} type="deposit" />
+            <SavingsItem savingsData={investment} type="investment" />
+          </div>
+        </S.Savings>
+      </S.Container>
+    </>
   );
 };
 

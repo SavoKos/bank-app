@@ -11,6 +11,7 @@ import { database } from '../firebase';
 import useAuth from '../context/AuthContext';
 import Router from 'next/router';
 import Transaction from '../components/Transactions/Transaction';
+import Head from '../components/Head';
 
 const transactions = () => {
   const [loading, setLoading] = useState(true);
@@ -52,19 +53,28 @@ const transactions = () => {
       });
   }, [filter]);
 
-  if (loading) return <Spinner />;
+  if (loading)
+    return (
+      <>
+        <Head title="Transactions" />
+        <Spinner />
+      </>
+    );
   return (
-    <S.Container>
-      <Navigation />
-      <S.Main>
-        <Header page="Transactions" />
-        <S.Content>
-          <Transactions transactions={transactions} setFilter={setFilter} />
-          <Transfer />
-          <Loan />
-        </S.Content>
-      </S.Main>
-    </S.Container>
+    <>
+      <Head title="Transactions" />
+      <S.Container>
+        <Navigation />
+        <S.Main>
+          <Header page="Transactions" />
+          <S.Content>
+            <Transactions transactions={transactions} setFilter={setFilter} />
+            <Transfer />
+            <Loan />
+          </S.Content>
+        </S.Main>
+      </S.Container>
+    </>
   );
 };
 
