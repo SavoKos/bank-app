@@ -7,7 +7,6 @@ module.exports = {
       'https://excellence.savokos.com',
       'https://firebasestorage.googleapis.com',
       'http://firebasestorage.googleapis.com',
-      'firebasestorage.googleapis.com',
       'https://firebasestorage.googleapis.com/v0/b/excellence-holdings.appspot.com/o/images',
       'https://excellence.savokos.com/nextimg',
     ],

@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { database, storage } from '../firebase';
 import Router from 'next/router';
 import Spinner from '../components/UI/Spinner';
+import Head from '../components/Head';
 
 const settings = () => {
   const { currentUser } = useAuth();
@@ -130,7 +131,7 @@ const settings = () => {
 
   return (
     <>
-      <Head title="Profile" /> <Spinner />
+      <Head title="Profile" />
       <S.Container>
         <Navigation />
         <S.Settings>
