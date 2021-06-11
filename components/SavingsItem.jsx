@@ -131,7 +131,7 @@ const SavingsItem = ({ savingsData, type }) => {
         />
       </div>
       <div className="info">
-        <h3>{capitalize(type)}</h3>
+        <h3 className="price">{capitalize(type)}</h3>
         {info}
       </div>
     </S.SavingsCard>

@@ -76,7 +76,7 @@ S.Radio = styled.div`
     cursor: pointer;
     color: ${({ theme }) => theme.colors.secondary};
     font-weight: bold;
-    padding: 10px 40px;
+    padding: 10px 20px;
     border-radius: 30px;
   }
 `;

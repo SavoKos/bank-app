@@ -203,6 +203,10 @@ S.EditorContainer = styled.div`
     padding: 50px 0 20px 0;
     margin: auto;
 
+    @media (max-width: 768px) {
+      max-width: 100%;
+    }
+
     .buttons {
       a {
         margin-left: 20px;
@@ -228,6 +232,12 @@ S.EditorContainer = styled.div`
 
   .card {
     margin: auto;
+    width: 440px;
+    cursor: default;
+
+    @media (max-width: 576px) {
+      width: unset;
+    }
   }
 `;
 

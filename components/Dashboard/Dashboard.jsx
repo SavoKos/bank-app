@@ -86,6 +86,10 @@ S.Dashboard = styled.div`
   width: 100%;
   border-radius: 30px 0 0 30px;
   padding: 40px 40px;
+
+  @media (max-width: 576px) {
+    width: 90%;
+  }
 `;
 
 S.MainContent = styled.main`
@@ -95,6 +99,15 @@ S.MainContent = styled.main`
   & > * {
     width: 32%;
   }
+
+  @media (max-width: 1200px) {
+    flex-direction: column;
+    & > * {
+      border-right: 0;
+      width: 100%;
+      margin-bottom: 100px;
+    }
+  }
 `;
 
 S.Savings = styled.div`
@@ -102,4 +115,9 @@ S.Savings = styled.div`
   flex-direction: column;
   align-items: flex-start;
   margin: 0 40px;
+
+  @media (max-width: 1200px) {
+    margin: unset;
+    margin-bottom: 100px;
+  }
 `;

@@ -93,6 +93,16 @@ S.Content = styled.div`
   & > * {
     width: 32%;
   }
+
+  @media (max-width: 1200px) {
+    flex-direction: column;
+    & > * {
+      margin: unset;
+      border-right: 0;
+      width: 100%;
+      margin-bottom: 100px;
+    }
+  }
 `;
 
 export default transactions;

@@ -136,6 +136,10 @@ const EditProfileForm = ({
 S.Form = styled(S.Form)`
   margin-top: 70px;
   width: 70%;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 export default EditProfileForm;

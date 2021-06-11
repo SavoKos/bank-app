@@ -10,6 +10,7 @@ const CardOptions = ({ cards }) => {
   if (cards)
     cardList = cards.map(card => (
       <Card
+        className="card"
         isEditing={false}
         amount={card.amount}
         number={card.number}
@@ -102,6 +103,42 @@ S.CardSlider = styled.div`
   width: 100%;
   justify-content: center;
 
+  @media (max-width: 1400px) {
+    .card {
+      min-width: unset;
+      width: 96%;
+
+      .card-number h2 {
+        letter-spacing: 3px;
+      }
+    }
+  }
+
+  @media (max-width: 1200px) {
+    .card {
+      min-width: 440px;
+      width: 97%;
+
+      .card-number h2 {
+        letter-spacing: 7px;
+      }
+    }
+  }
+
+  @media (max-width: 576px) {
+    .card {
+      min-width: unset;
+      width: 96%;
+
+      .card-number h2 {
+        letter-spacing: 3px;
+      }
+    }
+  }
+
+  .card {
+    cursor: default;
+  }
   .addCard {
     text-decoration: underline;
     margin-top: 20px;

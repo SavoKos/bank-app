@@ -35,14 +35,14 @@ const savings = () => {
   if (loading)
     return (
       <>
-        <Head title="Savings" /> <Spinner />
+        <Head title="Savings" />
         <Spinner />
       </>
     );
 
   return (
     <>
-      <Head title="Savings" /> <Spinner />
+      <Head title="Savings" />
       <S.Container>
         <Navigation />
         <S.Savings>
@@ -71,6 +71,15 @@ S.Savings = styled.div`
 
     > div {
       margin: 0 40px;
+    }
+
+    @media (max-width: 900px) {
+      flex-direction: column;
+
+      > div {
+        margin: unset;
+        margin-top: 20px;
+      }
     }
   }
 `;

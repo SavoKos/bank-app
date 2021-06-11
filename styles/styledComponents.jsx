@@ -60,6 +60,11 @@ Styled.BlueButton = styled.button`
   width: fit-content;
   cursor: pointer;
 
+  @media (max-width: 768px) {
+    padding: 15px 30px;
+    font-size: 16px;
+  }
+
   &:hover,
   &:focus {
     background-color: #09538e;
@@ -224,6 +229,19 @@ Styled.SavingsCard = styled.div`
 
     h4 {
       color: ${({ theme }) => theme.colors.secondary};
+    }
+  }
+
+  @media (max-width: 640px) {
+    padding: 15px;
+    border-radius: 15px;
+
+    .info .money {
+      display: block;
+    }
+
+    .price {
+      font-size: 16px;
     }
   }
 `;

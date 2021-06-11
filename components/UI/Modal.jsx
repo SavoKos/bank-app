@@ -50,9 +50,22 @@ S.Modal = styled.div`
   align-items: center;
   justify-content: center;
 
+  @media (max-width: 1200px) {
+    width: 80%;
+  }
+
+  @media (max-width: 768px) {
+    width: 90%;
+    padding: 40px;
+
+    h1 {
+      font-size: 22px;
+    }
+  }
+
   .anticon {
     position: absolute;
-    top: 10px;
+    top: 25px;
     color: #fff;
     right: 10px;
     font-size: 26px;

@@ -52,7 +52,7 @@ S.Card = styled.div`
   position: relative;
   min-height: 230px;
   color: #fff;
-  width: 440px;
+  min-width: 340px;
   display: flex;
   margin: 0 10px;
   cursor: pointer;
