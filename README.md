@@ -1,5 +1,5 @@
 <p align="center"><a href="https://excellence.savokos.com" target="_blank" rel="noopener noreferrer"><img width="100" src="https://res.cloudinary.com/dicynt7ms/image/upload/v1630437493/important/navigationLogo_inzgq1.png"></a></p>
-<h1 align="center">Excellence Holdings</h1>
+<h1 align="center"><a href="https://excellence.savokos.com" target="_blank" rel="noopener noreferrer">Excellence Holdings</a></h1>
 
 <br>
 
@@ -9,6 +9,8 @@
 ![Project Image3](https://res.cloudinary.com/dicynt7ms/image/upload/v1630436838/important/Screenshot_9_inyeoy.png)
 ![Project Image4](https://res.cloudinary.com/dicynt7ms/image/upload/v1630436838/important/Screenshot_11_qeqwlv.png)
 ![Project Image5](https://res.cloudinary.com/dicynt7ms/image/upload/v1630436835/important/Screenshot_10_nusy42.png)
+
+![LiveWebsite](https://res.cloudinary.com/dicynt7ms/image/upload/w_20,h_20/v1630442590/important/NicePng_website-png_187940_pizwnr.png) <span>Live website - <a href="https://excellence.savokos.com" target="_blank" rel="noopener noreferrer"> excellence.savokos.com</a></span>
 
 ### Table of Contents
 
@@ -47,7 +49,7 @@ Excellence Holdings has many features:
 - Lend a loan
 - Make deposit and investment goals
 
-## Technologies
+## Built with
 
 - React
 - Next JS
