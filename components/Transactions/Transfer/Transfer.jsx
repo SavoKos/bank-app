@@ -4,7 +4,6 @@ import useAuth from '../../../context/AuthContext';
 import { database } from '../../../firebase';
 import S from '../../../styles/styledComponents';
 import ChooseCardList from '../ChooseCardList';
-import TransferForm from './TransferForm';
 import UserCard from './UserCard';
 
 const Transfer = () => {
@@ -12,26 +11,23 @@ const Transfer = () => {
   const [chosenUser, setChosenUser] = useState('');
   const [name, setName] = useState('');
   const { currentUser } = useAuth();
-  const updateInputValueHandler = e => {
+  const updateInputValueHandler = (e) => {
     setName(e.target.value);
   };
-  console.log(users);
 
-  const selectUser = userData => {
-    console.log(userData);
+  const selectUser = (userData) => {
     setChosenUser(userData);
     setUsers({});
   };
 
-  const searchHandler = e => {
+  const searchHandler = (e) => {
     e.preventDefault();
     database
       .ref('users')
       .get()
-      .then(snapshot => {
+      .then((snapshot) => {
         if (!snapshot.exists()) throw new Error('No data available');
         const data = snapshot.val();
-        console.log(data);
         for (const prop in data) {
           const searchedUserName = data[prop].name.toLowerCase();
 
@@ -39,12 +35,12 @@ const Transfer = () => {
             searchedUserName.includes(name.toLowerCase()) &&
             data[prop].email !== currentUser.email
           )
-            setUsers(prevUsers => {
+            setUsers((prevUsers) => {
               return { ...prevUsers, [prop]: data[prop] };
             });
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
   };
@@ -52,7 +48,6 @@ const Transfer = () => {
   let displayUsers = [];
   if (users) {
     for (const prop in users) {
-      console.log(users);
       displayUsers.push(
         <UserCard
           userData={users[prop]}
@@ -63,14 +58,13 @@ const Transfer = () => {
     }
   }
 
-  console.log(users);
   if (chosenUser)
     return (
       <S.Transfer>
         <ChooseCardList
           goBack={() => setChosenUser('')}
           recipient={chosenUser}
-          transactionType="transfer"
+          transactionType='transfer'
         />
       </S.Transfer>
     );
@@ -92,16 +86,16 @@ const Transfer = () => {
       <S.Form onSubmit={searchHandler}>
         <div>
           <input
-            type="text"
-            name="name"
+            type='text'
+            name='name'
             value={name}
-            className="input-name"
-            onChange={event => updateInputValueHandler(event)}
-            placeholder="Enter name of user to transfer money"
+            className='input-name'
+            onChange={(event) => updateInputValueHandler(event)}
+            placeholder='Enter name of user to transfer money'
             required
           />
         </div>
-        <S.BlueButton className="search">Search</S.BlueButton>
+        <S.BlueButton className='search'>Search</S.BlueButton>
       </S.Form>
       {displayUsers}
     </S.Transfer>

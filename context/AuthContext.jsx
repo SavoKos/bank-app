@@ -24,13 +24,12 @@ export const AuthProvider = ({ children }) => {
     return auth.signOut();
   };
 
-  const resetPassword = email => {
+  const resetPassword = (email) => {
     return auth.sendPasswordResetEmail(email);
   };
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(user => {
-      console.log(user);
+    const unsubscribe = auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
       setLoading(false);
     });

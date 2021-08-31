@@ -2,9 +2,8 @@ import styled from 'styled-components';
 import Image from 'next/image';
 import formatAmount from './FormatNumber';
 
-const Transaction = props => {
+const Transaction = (props) => {
   const transaction = Object.values(props.transaction)[0];
-  console.log(transaction);
 
   const imageSrc = transaction.photoURL
     ? transaction.photoURL
@@ -14,8 +13,8 @@ const Transaction = props => {
       src={imageSrc}
       height={35}
       width={35}
-      layout="fixed"
-      className="img"
+      layout='fixed'
+      className='img'
     />
   );
 
@@ -28,16 +27,16 @@ const Transaction = props => {
 
   return (
     <S.Transaction>
-      <div className="left">
+      <div className='left'>
         {avatar}
-        <div className="info">
+        <div className='info'>
           <h4>
             {transaction.sender || transaction.recipient || transaction.name}
           </h4>
           <h5>{new Date(transaction.date).toLocaleDateString()}</h5>
         </div>
       </div>
-      <div className="right">
+      <div className='right'>
         <h4>{formatAmount(transaction.amount)}</h4>
         <h5 className={transaction.type}>{transaction.type}</h5>
       </div>

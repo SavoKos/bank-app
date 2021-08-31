@@ -21,13 +21,11 @@ const Dashboard = () => {
   const [investment, setInvestment] = useState(null);
   const [deposit, setDeposit] = useState(null);
 
-  console.log(currentUser);
-
   useEffect(() => {
     database
       .ref(`users/${currentUser.uid}`)
       .get()
-      .then(res => {
+      .then((res) => {
         setLoading(false);
         const fetchedUser = res.val();
         if (!fetchedUser.cards) return Router.push('/cardeditor');
@@ -58,19 +56,19 @@ const Dashboard = () => {
           transactionsList !== [] ? transactionsList : 'No Transactions Found'
         );
       })
-      .catch(error => setTransactions('Something went wrong. Try again'));
+      .catch((error) => setTransactions('Something went wrong. Try again'));
   }, [filter]);
 
   if (loading) return <Spinner />;
   return (
     <S.Dashboard>
-      <Header page="Dashboard" />
+      <Header page='Dashboard' />
       <S.MainContent>
         <Transactions setFilter={setFilter} transactions={transactions} />
         <S.Savings>
           <h1>Savings</h1>
-          <SavingsItem type="deposit" savingsData={deposit} />
-          <SavingsItem type="investment" savingsData={investment} />
+          <SavingsItem type='deposit' savingsData={deposit} />
+          <SavingsItem type='investment' savingsData={investment} />
         </S.Savings>
         <CardOptions cards={cards} />
       </S.MainContent>

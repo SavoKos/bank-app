@@ -18,13 +18,12 @@ const ChooseCardList = ({
   const [selectedCard, setSelectedCard] = useState([]);
   const [loading, setLoading] = useState(true);
   const { currentUser } = useAuth();
-  console.log(selectedCard);
 
   useEffect(() => {
     database
       .ref(`users/${currentUser.uid}/cards`)
       .get()
-      .then(res => {
+      .then((res) => {
         const cardsList = [];
         const fetchedUser = res.val();
         setLoading(false);
@@ -36,7 +35,7 @@ const ChooseCardList = ({
 
         setFetchedCards(cardsList !== [] ? cardsList : null);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
         setLoading(false);
       });
@@ -54,7 +53,7 @@ const ChooseCardList = ({
   if (selectedCard?.length !== 0 && transactionType === 'transfer')
     return (
       <>
-        <div className="header">
+        <div className='header'>
           <h1>Transfer</h1>
           <p onClick={() => setSelectedCard('')}>Back to Cards</p>
         </div>
@@ -71,16 +70,16 @@ const ChooseCardList = ({
 
   return (
     <S.Loan>
-      <div className="header">
+      <div className='header'>
         <h1>{'Choose Card'}</h1>
         <p onClick={() => goBack(null)}>Back</p>
       </div>
       <S.LoanOption>
-        {fetchedCards.map(card => (
+        {fetchedCards.map((card) => (
           <Card
             onClick={() => setSelectedCard(card)}
             isEditing={true}
-            className="loan-card"
+            className='loan-card'
             key={card.number}
             amount={card.amount}
             provider={card.provider}

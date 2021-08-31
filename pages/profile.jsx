@@ -3,31 +3,26 @@ import Navigation from '../components/Navigation';
 import useAuth from '../context/AuthContext';
 import withAuth from '../hoc/withAuth';
 import S from '../styles/styledComponents';
-import Image from 'next/image';
 import Icon from '../components/UI/Icon';
 import EditProfileForm from '../components/EditProfileForm';
 import { useState } from 'react';
-import { database, storage } from '../firebase';
+import { database } from '../firebase';
 import Router from 'next/router';
-import Spinner from '../components/UI/Spinner';
 import Head from '../components/Head';
 
 const settings = () => {
   const { currentUser } = useAuth();
-  console.log(currentUser);
   const [initialCredentials, setInitialCredentials] = useState('');
   const [updatedCredentials, setUpdatedCredentials] = useState('');
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [error, setError] = useState(null);
-  const [imageUpload, setImageUpload] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
-  console.log(initialCredentials, updatedCredentials);
 
   const updateProfile = (type, data) => {
     currentUser[type](data)
-      .then(res => {
+      .then((res) => {
         setIsRedirecting(true);
-        setImageUpload(false);
+
         setSuccessMessage(
           'Profile is successfully updated. Redirecting in 2 seconds.'
         );
@@ -35,7 +30,7 @@ const settings = () => {
           Router.push('/');
         }, 2000);
       })
-      .catch(error => setError(error.message));
+      .catch((error) => setError(error.message));
   };
 
   const updateDatabase = (url = currentUser.photoURL) => {
@@ -46,7 +41,7 @@ const settings = () => {
         name: updatedCredentials['name'],
         photoURL: url,
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error.message);
       });
   };
@@ -72,35 +67,11 @@ const settings = () => {
     updateDatabase();
   };
 
-  const setImageHandler = e => {
-    const image = e.target.files[0];
-    if (image.size > 10000000)
-      return setError('Image size must be less than 10MB');
-
-    const fileRef = storage.ref(`images/${image.name}`);
-    setImageUpload(true);
-    fileRef.put(image).then(() =>
-      fileRef.getDownloadURL().then(url => {
-        updateProfile('updateProfile', { photoURL: url });
-        updateDatabase(url);
-      })
-    );
-  };
-
   let avatar = (
-    <h1 className="first-letter">
+    <h1 className='first-letter'>
       {currentUser.displayName.slice(0, 1).toUpperCase()}
     </h1>
   );
-  if (currentUser?.photoURL)
-    avatar = (
-      <Image
-        height={120}
-        width={120}
-        src={currentUser.photoURL}
-        className="avatar"
-      />
-    );
 
   let message = '';
   if (successMessage)
@@ -110,19 +81,13 @@ const settings = () => {
       </S.Message>
     );
 
-  if (imageUpload)
-    message = (
-      <S.Message>
-        <h2>Uploading... Please wait</h2>
-        <Spinner />
-      </S.Message>
-    );
-
-  const form = !imageUpload && (
+  const form = (
     <EditProfileForm
       currentUser={currentUser}
-      initialCredentials={credentials => setInitialCredentials(credentials)}
-      setUpdatedCredentials={credentials => setUpdatedCredentials(credentials)}
+      initialCredentials={(credentials) => setInitialCredentials(credentials)}
+      setUpdatedCredentials={(credentials) =>
+        setUpdatedCredentials(credentials)
+      }
       filterChangedCredentials={filterChangedCredentials}
       error={error}
       isRedirecting={isRedirecting}
@@ -131,15 +96,14 @@ const settings = () => {
 
   return (
     <>
-      <Head title="Profile" />
+      <Head title='Profile' />
       <S.Container>
         <Navigation />
         <S.Settings>
-          <h1 className="title">Edit profile</h1>
+          <h1 className='title'>Edit profile</h1>
           <S.Avatar>
             {avatar}
-            <input type="file" onChange={setImageHandler} />
-            <Icon type="icon-edit" style={{ fontSize: '15px' }} />
+            <Icon type='icon-edit' style={{ fontSize: '15px' }} />
           </S.Avatar>
           {message}
           {form}

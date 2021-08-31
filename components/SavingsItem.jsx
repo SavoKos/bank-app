@@ -10,14 +10,13 @@ import Spinner from './UI/Spinner';
 import styled from 'styled-components';
 
 const SavingsItem = ({ savingsData, type }) => {
-  console.log(savingsData);
   const { currentUser } = useAuth();
   const [editing, setEditing] = useState(false);
   const [sliderGoal, setSliderGoal] = useState(savingsData?.goal || 10000);
   const [message, setMessage] = useState(null);
   const [confirmation, setConfirmation] = useState(false);
 
-  const capitalize = string => string[0].toUpperCase() + string.slice(1);
+  const capitalize = (string) => string[0].toUpperCase() + string.slice(1);
   const buttonHandler = () => {
     if (Router.pathname !== '/savings') return Router.push('/savings');
     if (!editing) return setEditing(true);
@@ -30,7 +29,7 @@ const SavingsItem = ({ savingsData, type }) => {
         goal: sliderGoal,
         [goalProgress]: 0,
       })
-      .then(res => {
+      .then((res) => {
         setConfirmation(false);
         setMessage(
           `Your ${capitalize(type)} goal has been set. Redirecting in 2 seconds`
@@ -54,7 +53,7 @@ const SavingsItem = ({ savingsData, type }) => {
   };
 
   let info = (
-    <h2 className="add-goal" onClick={buttonHandler}>
+    <h2 className='add-goal' onClick={buttonHandler}>
       Add new {capitalize(type)} Goal
     </h2>
   );
@@ -66,7 +65,7 @@ const SavingsItem = ({ savingsData, type }) => {
   if (savingsData || editing)
     info = (
       <>
-        <div className="money">
+        <div className='money'>
           <h4>
             {savingsData ? '$ 0' : `What is your ${capitalize(type)} goal?`}
           </h4>
@@ -90,10 +89,10 @@ const SavingsItem = ({ savingsData, type }) => {
           defaultValue={savingsData?.goal || 10000}
           step={5000}
           disabled={!editing}
-          onChange={value => setSliderGoal(value)}
+          onChange={(value) => setSliderGoal(value)}
         />
 
-        <div className="goal">
+        <div className='goal'>
           {savingsData && goalMessage && <p>{goalMessage}</p>}
 
           <S.EditButton onClick={buttonHandler}>
@@ -103,16 +102,16 @@ const SavingsItem = ({ savingsData, type }) => {
       </>
     );
 
-  if (message) info = <h2 className="message">{message}</h2>;
+  if (message) info = <h2 className='message'>{message}</h2>;
 
   if (confirmation)
     info = (
       <S.Confirmation>
-        <h3 className="confirm-title">
+        <h3 className='confirm-title'>
           If you already have {capitalize(type)} goal, it will be overwriten.
         </h3>
         <h3>Are you sure you want to continue?</h3>
-        <div className="buttons">
+        <div className='buttons'>
           <S.BlueConfirmBtn onClick={buttonHandler}>Continue</S.BlueConfirmBtn>
           <S.RedConfirmBtn onClick={discardChanges}>Cancel</S.RedConfirmBtn>
         </div>
@@ -130,8 +129,8 @@ const SavingsItem = ({ savingsData, type }) => {
           }
         />
       </div>
-      <div className="info">
-        <h3 className="price">{capitalize(type)}</h3>
+      <div className='info'>
+        <h3 className='price'>{capitalize(type)}</h3>
         {info}
       </div>
     </S.SavingsCard>

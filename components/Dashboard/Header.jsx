@@ -8,10 +8,9 @@ import { memo } from 'react';
 const Header = memo(({ page = 'Excellence Holdings' }) => {
   const { currentUser } = useAuth();
 
-  console.log(currentUser);
   let welcomeMessage = (
     <p>
-      Hi stranger, head to <Link href="/profile">profile options</Link> to
+      Hi stranger, head to <Link href='/profile'>profile options</Link> to
       change your name.
     </p>
   );
@@ -23,16 +22,6 @@ const Header = memo(({ page = 'Excellence Holdings' }) => {
   if (currentUser?.email)
     avatar = <h2>{currentUser.displayName.slice(0, 1).toUpperCase()}</h2>;
 
-  if (currentUser?.photoURL)
-    avatar = (
-      <Image
-        height={50}
-        width={50}
-        src={currentUser.photoURL}
-        className="avatar"
-      />
-    );
-
   return (
     <S.Header>
       <S.Left>
@@ -41,7 +30,7 @@ const Header = memo(({ page = 'Excellence Holdings' }) => {
       </S.Left>
       <S.Right>
         <SearchOutlined />
-        <Link href="/profile">
+        <Link href='/profile'>
           <S.Avatar>{avatar}</S.Avatar>
         </Link>
       </S.Right>

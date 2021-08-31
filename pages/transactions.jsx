@@ -25,7 +25,7 @@ const transactions = () => {
     database
       .ref(`users/${currentUser.uid}`)
       .get()
-      .then(res => {
+      .then((res) => {
         setLoading(false);
         const fetchedUser = res.val();
         if (!fetchedUser.cards) return Router.push('/cardeditor');
@@ -34,7 +34,6 @@ const transactions = () => {
           return setTransactions(<h2>No Transactions Found!</h2>);
 
         const transactionsList = [];
-        console.log(Object.keys(fetchedUser.transactions));
         for (const [key, value] of Object.entries(fetchedUser.transactions)) {
           if (filter === 'all' || value.type === filter)
             transactionsList.push(
@@ -46,7 +45,7 @@ const transactions = () => {
           transactionsList !== [] ? transactionsList : 'No Transactions Found'
         );
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
         setLoading(false);
         setTransactions('Something went wrong. Try again');
@@ -56,17 +55,17 @@ const transactions = () => {
   if (loading)
     return (
       <>
-        <Head title="Transactions" />
+        <Head title='Transactions' />
         <Spinner />
       </>
     );
   return (
     <>
-      <Head title="Transactions" />
+      <Head title='Transactions' />
       <S.Container>
         <Navigation />
         <S.Main>
-          <Header page="Transactions" />
+          <Header page='Transactions' />
           <S.Content>
             <Transactions transactions={transactions} setFilter={setFilter} />
             <Transfer />

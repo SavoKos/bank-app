@@ -16,9 +16,8 @@ const LoanAmount = ({ selectedLoan, setSelectedCard, selectedCard }) => {
   const [successMessage, setSuccessMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const { currentUser } = useAuth();
-  console.log(selectedCard);
 
-  const loanHandler = amount => {
+  const loanHandler = (amount) => {
     setModalActive(true);
     setLoanAmount(amount);
   };
@@ -46,7 +45,7 @@ const LoanAmount = ({ selectedLoan, setSelectedCard, selectedCard }) => {
       });
 
     Promise.all([UpdateTransactionPromise, updateCardAmountPromise])
-      .then(res => {
+      .then((res) => {
         setLoading(false);
         setSuccessMessage(
           'Your loan has been approved. Redirecing in 2 seconds.'
@@ -55,7 +54,7 @@ const LoanAmount = ({ selectedLoan, setSelectedCard, selectedCard }) => {
           Router.push('/');
         }, 2000);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
         setLoading(false);
       });
@@ -64,7 +63,7 @@ const LoanAmount = ({ selectedLoan, setSelectedCard, selectedCard }) => {
   if (successMessage)
     return (
       <S.Loan>
-        <h1 className="success-message">{successMessage}</h1>
+        <h1 className='success-message'>{successMessage}</h1>
       </S.Loan>
     );
 
@@ -77,7 +76,7 @@ const LoanAmount = ({ selectedLoan, setSelectedCard, selectedCard }) => {
 
   return (
     <S.Loan>
-      <div className="header">
+      <div className='header'>
         <h1>{selectedLoan || 'Loan'}</h1>
         <p onClick={() => setSelectedCard([])}>Back</p>
       </div>
@@ -88,7 +87,7 @@ const LoanAmount = ({ selectedLoan, setSelectedCard, selectedCard }) => {
         <h1 onClick={() => loanHandler('40000')}>{formatAmount(40000)}</h1>
       </S.LoanOption>
       <Modal active={modalActive} closeModal={() => setModalActive(false)}>
-        <Image src="/navigationLogo.png" height={70} width={50} />
+        <Image src='/navigationLogo.png' height={70} width={50} />
         <h1 style={{ color: '#fff', marginTop: '40px' }}>
           Are you sure you want take {formatAmount(loanAmount)} loan? <br />
         </h1>

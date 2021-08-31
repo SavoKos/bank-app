@@ -9,7 +9,6 @@ import S from '../styles/styledComponents';
 import LogoutModal from './Auth/LogoutModal';
 
 const Navigation = memo(() => {
-  console.log('Navigation render');
   const { logout } = useAuth();
   const [loading, setLoading] = useState(false);
   const [modalActive, setModalActive] = useState(false);
@@ -17,57 +16,54 @@ const Navigation = memo(() => {
   const logoutHandler = () => {
     setLoading(true);
     logout()
-      .then(res => {
-        console.log(res);
-        Router.push('/auth');
-      })
-      .catch(error => alert(error.message));
+      .then(() => Router.push('/auth'))
+      .catch((error) => alert(error.message));
   };
 
   if (loading) return <Spinner />;
   return (
     <S.Navigation>
       <Image
-        src="/navigationLogo.png"
+        src='/navigationLogo.png'
         height={70}
         width={50}
-        className="logo"
+        className='logo'
         onClick={() => Router.push('/')}
       />
       <Icon
         className={Router.pathname === '/' && 'active'}
-        type="icon-dashboard1"
+        type='icon-dashboard1'
         clicked={() => Router.push('/')}
       />
       <Icon
         className={Router.pathname === '/transactions' && 'active'}
-        type="icon-arrows-left-right"
+        type='icon-arrows-left-right'
         clicked={() => Router.push('/transactions')}
       />
       <Icon
         className={Router.pathname === '/cardeditor' && 'active'}
-        type="icon-creditcard"
+        type='icon-creditcard'
         clicked={() => Router.push('/cardeditor')}
       />
       <Icon
-        type="icon-LC_icon_user_line_1"
+        type='icon-LC_icon_user_line_1'
         className={Router.pathname === '/profile' && 'active'}
         clicked={() => Router.push('/profile')}
       />
       <Icon
-        type="icon-piggy-bank"
+        type='icon-piggy-bank'
         clicked={() => Router.push('/savings')}
         className={Router.pathname === '/savings' && 'active'}
       />
       <Icon
-        className="logout"
-        type="icon-logout"
+        className='logout'
+        type='icon-logout'
         clicked={() => setModalActive(true)}
       />
       <LogoutModal
         onLogout={logoutHandler}
         modalActive={modalActive}
-        onSetModalActive={isActive => setModalActive(isActive)}
+        onSetModalActive={(isActive) => setModalActive(isActive)}
       />
     </S.Navigation>
   );

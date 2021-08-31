@@ -17,7 +17,6 @@ const TransferForm = ({ recipient, selectedCard }) => {
   const { currentUser } = useAuth();
   const transactionID = uuid();
 
-  console.log(recipient, currentUser);
   const transferHandler = () => {
     setError(null);
     setLoading(true);
@@ -52,13 +51,13 @@ const TransferForm = ({ recipient, selectedCard }) => {
           Router.push('/');
         }, 2000);
       })
-      .catch(err => {
+      .catch((err) => {
         setSuccessMessage(false);
         setError(err);
       });
   };
 
-  const checkTransferValidity = e => {
+  const checkTransferValidity = (e) => {
     e.preventDefault();
     if (!selectedCard?.amount)
       return setError(
@@ -68,7 +67,6 @@ const TransferForm = ({ recipient, selectedCard }) => {
     if (selectedCard?.amount < amount)
       return setError(`You do not have ${formatAmount(amount)}. Request Loan.`);
 
-    console.log(amount, selectedCard.amount);
     transferHandler();
   };
 
@@ -80,12 +78,12 @@ const TransferForm = ({ recipient, selectedCard }) => {
         height={100}
         width={100}
         src={recipient.photoURL}
-        className="img"
+        className='img'
       />
     );
 
   let errorMessage = '';
-  if (error) errorMessage = <p className="error-message">{error}</p>;
+  if (error) errorMessage = <p className='error-message'>{error}</p>;
 
   if (successMessage)
     return (
@@ -100,20 +98,20 @@ const TransferForm = ({ recipient, selectedCard }) => {
       <h2>{recipient.name || 'Stranger'}</h2>
       <h4>{recipient.email || 'Email unknown'}</h4>
       <S.Form onSubmit={checkTransferValidity}>
-        <div className="amount">
-          <label htmlFor="amount"> Amount</label>
+        <div className='amount'>
+          <label htmlFor='amount'> Amount</label>
           <input
-            type="number"
-            min="1"
-            name="amount"
-            className="input-amount"
-            id="amount"
-            onChange={e => setAmount(+e.target.value)}
+            type='number'
+            min='1'
+            name='amount'
+            className='input-amount'
+            id='amount'
+            onChange={(e) => setAmount(+e.target.value)}
             required
           />
         </div>
         {errorMessage}
-        <S.BlueButton className="send">Send</S.BlueButton>
+        <S.BlueButton className='send'>Send</S.BlueButton>
       </S.Form>
     </S.TransferForm>
   );

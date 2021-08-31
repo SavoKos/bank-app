@@ -21,8 +21,7 @@ const EditProfileForm = ({
     confirmPassword: '',
   });
   const inputStyle = isEditing ? { color: '#000' } : { color: '#bebebe' };
-  console.log(isEditing, isRedirecting);
-  const editHandler = e => {
+  const editHandler = (e) => {
     e.preventDefault();
     setIsEditing(true);
   };
@@ -36,14 +35,14 @@ const EditProfileForm = ({
     setUpdatedCredentials(credentials);
   }, [credentials]);
 
-  const updateInputValueHandler = event => {
-    setCredentials(prevState => ({
+  const updateInputValueHandler = (event) => {
+    setCredentials((prevState) => ({
       ...prevState,
       [event.target.name]: event.target.value,
     }));
   };
 
-  const saveHandler = e => {
+  const saveHandler = (e) => {
     e.preventDefault();
     setModalActive(true);
   };
@@ -56,60 +55,59 @@ const EditProfileForm = ({
 
   let errorMessage = '';
 
-  if (error) errorMessage = <p className="error-message">{error}</p>;
+  if (error) errorMessage = <p className='error-message'>{error}</p>;
 
   let button = <S.BlueButton onClick={editHandler}>Edit</S.BlueButton>;
   if (isEditing)
     button = <S.BlueButton onClick={saveHandler}>Save</S.BlueButton>;
-  console.log(modalActive);
   return (
     <>
       <S.Form>
         <div>
-          <label htmlFor="name"> Name</label>
+          <label htmlFor='name'> Name</label>
           <input
             disabled={isRedirecting || !isEditing}
-            type="text"
-            name="name"
-            className="input-name"
+            type='text'
+            name='name'
+            className='input-name'
             value={credentials.name}
-            onChange={event => updateInputValueHandler(event)}
+            onChange={(event) => updateInputValueHandler(event)}
             style={inputStyle}
           />
         </div>
         <div>
-          <label htmlFor="email"> E-Mail</label>
+          <label htmlFor='email'> E-Mail</label>
           <input
             disabled={isRedirecting || !isEditing}
-            type="email"
-            name="email"
+            type='email'
+            name='email'
             value={credentials.email}
-            className="input-email"
-            onChange={event => updateInputValueHandler(event)}
+            className='input-email'
+            onChange={(event) => updateInputValueHandler(event)}
             style={inputStyle}
           />
         </div>
         <div>
-          <label htmlFor="password"> Password</label>
+          <label htmlFor='password'> Password</label>
           <input
             disabled={isRedirecting || !isEditing}
-            type="password"
-            name="password"
+            type='password'
+            name='password'
             value={credentials.password}
-            className="input-password"
-            onChange={event => updateInputValueHandler(event)}
+            className='input-password'
+            onChange={(event) => updateInputValueHandler(event)}
             style={inputStyle}
           />
         </div>
         <div>
-          <label htmlFor="confirmPassword"> Confirm Password</label>
+          <label htmlFor='confirmPassword'> Confirm Password</label>
           <input
             disabled={isRedirecting || !isEditing}
-            type="password"
-            name="confirmPassword"
+            type='password'
+            name='confirmPassword'
             value={credentials.confirmPassword}
-            className="input-password"
-            onChange={event => updateInputValueHandler(event)}
+            className='input-password'
+            onChange={(event) => updateInputValueHandler(event)}
             style={inputStyle}
           />
         </div>
@@ -121,10 +119,10 @@ const EditProfileForm = ({
           Are you sure you want to apply changes? <br />
         </h1>
         <S.ButtonsContainer>
-          <S.BlueButton type="blue" onClick={updateProfileHandler}>
+          <S.BlueButton type='blue' onClick={updateProfileHandler}>
             Apply
           </S.BlueButton>
-          <S.RedButton onClick={() => setModalActive(false)} type="red">
+          <S.RedButton onClick={() => setModalActive(false)} type='red'>
             Cancel
           </S.RedButton>
         </S.ButtonsContainer>

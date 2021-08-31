@@ -17,14 +17,14 @@ const Card = ({
   return (
     <S.Card className={className} onClick={onClick}>
       <h4>Excellence Holdings</h4>
-      <div className="card-number">
-        <Icon type="icon-chip" className="chip" />
+      <div className='card-number'>
+        <Icon type='icon-chip' className='chip' />
         <h2>{number}</h2>
       </div>
-      <div className="holdermoney">
-        <h5>{currentUser.displayName || 'Stranger'}</h5>
+      <div className='holdermoney'>
+        <h5>{currentUser?.displayName || 'Stranger'}</h5>
         {!isEditing && (
-          <button className="edit" onClick={() => Router.push('/cardeditor')}>
+          <button className='edit' onClick={() => Router.push('/cardeditor')}>
             Edit
           </button>
         )}
@@ -38,7 +38,7 @@ const Card = ({
           (provider === 'American Express' && 'icon-americanexpress') ||
           'icon-VISA'
         }
-        className="visa"
+        className='visa'
       />
     </S.Card>
   );

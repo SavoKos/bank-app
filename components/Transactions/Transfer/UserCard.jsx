@@ -3,12 +3,11 @@ import Image from 'next/image';
 import S from '../../../styles/styledComponents';
 
 const UserCard = ({ userData, clicked }) => {
-  console.log(userData);
   let avatar = 'User';
 
   if (userData?.name)
     avatar = (
-      <h2 className="avatar">{userData.name.slice(0, 1).toUpperCase()}</h2>
+      <h2 className='avatar'>{userData.name.slice(0, 1).toUpperCase()}</h2>
     );
 
   if (userData.photoURL)
@@ -17,17 +16,17 @@ const UserCard = ({ userData, clicked }) => {
         height={50}
         width={50}
         src={userData.photoURL}
-        className="card-image"
+        className='card-image'
       />
     );
   return (
     <S.UserCard>
       <S.CardAvatar>{avatar}</S.CardAvatar>
-      <div className="info">
+      <div className='info'>
         <h4>Name: {userData.name || 'Stranger'}</h4>
         <h5>Email: {userData.email || 'unknown'}</h5>
       </div>
-      <S.BlueButton className="select" onClick={clicked}>
+      <S.BlueButton className='select' onClick={clicked}>
         Select
       </S.BlueButton>
     </S.UserCard>

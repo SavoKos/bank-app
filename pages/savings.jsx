@@ -19,14 +19,13 @@ const savings = () => {
     database
       .ref(`users/${currentUser.uid}`)
       .get()
-      .then(snap => {
+      .then((snap) => {
         const data = snap.val();
         if (data.investment) setInvestment(data.investment);
         if (data.deposit) setDeposit(data.deposit);
         setLoading(false);
-        console.log(snap.val());
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
         setLoading(false);
       });
@@ -35,21 +34,21 @@ const savings = () => {
   if (loading)
     return (
       <>
-        <Head title="Savings" />
+        <Head title='Savings' />
         <Spinner />
       </>
     );
 
   return (
     <>
-      <Head title="Savings" />
+      <Head title='Savings' />
       <S.Container>
         <Navigation />
         <S.Savings>
-          <Header page="Savings" />
-          <div className="cards">
-            <SavingsItem savingsData={deposit} type="deposit" />
-            <SavingsItem savingsData={investment} type="investment" />
+          <Header page='Savings' />
+          <div className='cards'>
+            <SavingsItem savingsData={deposit} type='deposit' />
+            <SavingsItem savingsData={investment} type='investment' />
           </div>
         </S.Savings>
       </S.Container>

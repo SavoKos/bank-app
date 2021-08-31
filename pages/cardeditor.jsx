@@ -20,15 +20,13 @@ const cardeditor = () => {
   const [fetchedCards, setFetchedCards] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  console.log(fetchedCards);
   useEffect(() => {
     database
       .ref(`users/${currentUser?.uid}/cards`)
       .get()
-      .then(snap => {
+      .then((snap) => {
         setLoading(false);
 
-        console.log();
         if (!snap.val()) return;
         if (Object.keys(snap.val()).length > 4) {
           setEditDisabled(true);
@@ -37,12 +35,12 @@ const cardeditor = () => {
         setSuccessMessage('');
         setFetchedCards(Object.keys(snap.val()));
       })
-      .catch(err => {
+      .catch((err) => {
         setLoading(false);
       });
   }, []);
 
-  const saveChanges = e => {
+  const saveChanges = (e) => {
     e.preventDefault();
 
     if (number.replaceAll(' ', '').length !== 16)
@@ -64,7 +62,7 @@ const cardeditor = () => {
           Router.push('/');
         }, 2000);
       })
-      .catch(err => {
+      .catch((err) => {
         setLoading(false);
         setError(error);
       });
@@ -72,7 +70,7 @@ const cardeditor = () => {
 
   const removeCard = () => {
     const cardNumExists = fetchedCards?.find(
-      fetchedNum => fetchedNum === number
+      (fetchedNum) => fetchedNum === number
     );
 
     if (!cardNumExists)
@@ -82,27 +80,27 @@ const cardeditor = () => {
     database
       .ref(`users/${currentUser?.uid}/cards/${number}`)
       .remove()
-      .then(res => {
+      .then((res) => {
         setLoading(false);
         setSuccessMessage('Card is successfully removed.');
         setTimeout(() => {
           Router.push('/');
         }, 2000);
       })
-      .catch(err => {
+      .catch((err) => {
         setLoading(false);
         setError(err);
       });
   };
 
-  const errorMessage = error ? <p className="error">{error}</p> : null;
+  const errorMessage = error ? <p className='error'>{error}</p> : null;
 
   if (successMessage)
     return (
       <>
-        <Head title="Card Editor" />
+        <Head title='Card Editor' />
         <S.EditorContainer>
-          <h1 className="success">
+          <h1 className='success'>
             {successMessage + ' Redirecting in 2 seconds...'}
           </h1>
         </S.EditorContainer>
@@ -112,56 +110,56 @@ const cardeditor = () => {
   if (loading)
     return (
       <>
-        <Head title="Card Editor" /> <Spinner />
+        <Head title='Card Editor' /> <Spinner />
       </>
     );
 
   return (
     <>
-      <Head title="Card Editor" />
+      <Head title='Card Editor' />
 
       <S.Container>
         <Navigation />
         <S.EditorContainer>
           <Card
             isEditing={true}
-            className="card"
+            className='card'
             number={number}
             provider={provider}
           />
 
-          <h1 className="success">{successMessage}</h1>
-          <S.Form className="editor" onSubmit={saveChanges}>
+          <h1 className='success'>{successMessage}</h1>
+          <S.Form className='editor' onSubmit={saveChanges}>
             <div>
-              <label htmlFor="card-number"> Card Number</label>
+              <label htmlFor='card-number'> Card Number</label>
               <input
-                id="ccn"
-                type="tel"
-                inputMode="numeric"
-                name="card-number"
-                pattern="[0-9\s]{16}"
-                autoComplete="cc-number"
-                maxLength="16"
-                placeholder="Number of card you want to edit or add"
-                className="input-number"
-                onChange={e => setNumber(e.target.value)}
+                id='ccn'
+                type='tel'
+                inputMode='numeric'
+                name='card-number'
+                pattern='[0-9\s]{16}'
+                autoComplete='cc-number'
+                maxLength='16'
+                placeholder='Number of card you want to edit or add'
+                className='input-number'
+                onChange={(e) => setNumber(e.target.value)}
                 required
               />
             </div>
             <S.SelectContainer>
               <select
-                name="card-number"
-                onChange={e => setProvider(e.target.value)}
+                name='card-number'
+                onChange={(e) => setProvider(e.target.value)}
               >
                 <option>Visa</option>
                 <option>Master Card</option>
                 <option>American Express</option>
               </select>
-              <Icon type="icon-arrow-left-c-copy" className="arrow" />
+              <Icon type='icon-arrow-left-c-copy' className='arrow' />
             </S.SelectContainer>
             {errorMessage}
-            <div className="buttons">
-              <S.BlueButton className="save-btn" disabled={editDisabled}>
+            <div className='buttons'>
+              <S.BlueButton className='save-btn' disabled={editDisabled}>
                 Save
               </S.BlueButton>
               <a onClick={removeCard}>Remove Card</a>
