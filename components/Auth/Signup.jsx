@@ -75,8 +75,8 @@ const Signup = (props) => {
         <div className='login-box-login'>
           <h1>Welcome to Excellence Holdings</h1>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta,
-            laudantium dolorem?
+            Excellence Holdings is a (fictional) bank, and its idea is to allow
+            people to manage their credit cards.
           </p>
           <S.Form onSubmit={signupHandler}>
             <div>

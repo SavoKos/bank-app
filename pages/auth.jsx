@@ -10,7 +10,7 @@ const auth = () => {
   const [forgotPassword, setForgotPassword] = useState(false);
 
   const toggleSignupActiveHandler = () => {
-    setSignupActive(prevActive => !prevActive);
+    setSignupActive((prevActive) => !prevActive);
   };
 
   const backToLoginHandler = () => {
@@ -21,12 +21,12 @@ const auth = () => {
   if (forgotPassword)
     return (
       <>
-        <Head title="Auth" />
+        <Head title='Auth' />
         <S.Container>
           <S.Auth>
             <ResetPassword
               backToLogin={backToLoginHandler}
-              validateEmail={info => authHandler(info)}
+              validateEmail={(info) => authHandler(info)}
             />
           </S.Auth>
         </S.Container>
@@ -35,7 +35,7 @@ const auth = () => {
 
   return (
     <>
-      <Head title="Auth" />
+      <Head title='Auth' />
       <S.Container>
         <S.Auth>
           {signupActive ? (
@@ -57,19 +57,21 @@ export default auth;
 const S = {};
 S.Container = styled.div`
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
   justify-content: center;
 `;
 
 S.Auth = styled.div`
   display: flex;
-  width: 75em;
-  height: 100%;
-  min-height: 60em;
-  border-radius: 20px;
+  min-height: 100vh;
   background-color: #fff;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.025);
+  flex-direction: column-reverse;
+
+  @media screen and (min-width: 768px) {
+    flex-direction: row;
+  }
 
   .login-btn {
     display: block;
@@ -103,8 +105,15 @@ S.Auth = styled.div`
     justify-content: center;
     align-items: center;
     flex: 1 1 100%;
-    //   width: 100%;
-    padding: 4em 6em;
+    padding: 4em 2.5em;
+
+    @media screen and (min-width: 1400px) {
+      padding: 4em 6em;
+    }
+  }
+
+  .login-box-signup {
+    margin-bottom: 2.5em;
   }
 
   .login-box-quotebox {
@@ -136,6 +145,7 @@ S.Auth = styled.div`
 
     h1 {
       color: #fff;
+      text-align: center;
     }
   }
 
@@ -218,10 +228,18 @@ S.Auth = styled.div`
 
   .quote {
     color: #fff;
-    font-size: 7em;
+    font-size: 4em;
     font-weight: 600;
     line-height: 1;
     justify-self: center;
     margin-top: 70px;
+
+    @media screen and (min-width: 768px) {
+      font-size: 5em;
+    }
+
+    @media screen and (min-width: 1400px) {
+      font-size: 7em;
+    }
   }
 `;

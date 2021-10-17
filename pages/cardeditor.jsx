@@ -131,7 +131,9 @@ const cardeditor = () => {
           <h1 className='success'>{successMessage}</h1>
           <S.Form className='editor' onSubmit={saveChanges}>
             <div>
-              <label htmlFor='card-number'> Card Number</label>
+              <label htmlFor='card-number'>
+                Card Number (must contain 16 numbers)
+              </label>
               <input
                 id='ccn'
                 type='tel'
@@ -140,7 +142,7 @@ const cardeditor = () => {
                 pattern='[0-9\s]{16}'
                 autoComplete='cc-number'
                 maxLength='16'
-                placeholder='Number of card you want to edit or add'
+                placeholder='Number of card you want to edit or add (must contain 16 numbers)'
                 className='input-number'
                 onChange={(e) => setNumber(e.target.value)}
                 required
