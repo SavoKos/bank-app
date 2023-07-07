@@ -1,5 +1,5 @@
-<p align="center"><a href="https://excellence.savokos.com" target="_blank" rel="noopener noreferrer"><img width="100" src="https://res.cloudinary.com/dicynt7ms/image/upload/v1630437493/important/navigationLogo_inzgq1.png"></a></p>
-<h1 align="center"><a href="https://excellence.savokos.com" target="_blank" rel="noopener noreferrer">Excellence Holdings</a></h1>
+<p align="center"><a href="https://excellence.savo-kos.com" target="_blank" rel="noopener noreferrer"><img width="100" src="https://res.cloudinary.com/dicynt7ms/image/upload/v1630437493/important/navigationLogo_inzgq1.png"></a></p>
+<h1 align="center"><a href="https://excellence.savo-kos.com" target="_blank" rel="noopener noreferrer">Excellence Holdings</a></h1>
 
 <br>
 
@@ -10,7 +10,7 @@
 ![Project Image4](https://res.cloudinary.com/dicynt7ms/image/upload/v1630436838/important/Screenshot_11_qeqwlv.png)
 ![Project Image5](https://res.cloudinary.com/dicynt7ms/image/upload/v1630436835/important/Screenshot_10_nusy42.png)
 
-![LiveWebsite](https://res.cloudinary.com/dicynt7ms/image/upload/w_20,h_20/v1630442590/important/NicePng_website-png_187940_pizwnr.png) <span>Live website - <a href="https://excellence.savokos.com" target="_blank" rel="noopener noreferrer"> excellence.savokos.com</a></span>
+![LiveWebsite](https://res.cloudinary.com/dicynt7ms/image/upload/w_20,h_20/v1630442590/important/NicePng_website-png_187940_pizwnr.png) <span>Live website - <a href="https://excellence.savo-kos.com" target="_blank" rel="noopener noreferrer"> excellence.savo-kos.com</a></span>
 
 ### Table of Contents
 
@@ -82,5 +82,5 @@ SOFTWARE.
 
 ## Author Info
 
-- Upwork - [Savo Kos](https://links.savokos.com/upwork)
-- Website - [savokos.com](https://savokos.com)
+- Upwork - [Savo Kos](https://links.savo-kos.com/upwork)
+- Website - [savo-kos.com](https://savo-kos.com)
